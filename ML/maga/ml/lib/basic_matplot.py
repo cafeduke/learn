@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import ml.core_util as mu
 from sklearn.datasets import make_blobs
+import maga.ml.util as mu
 
 ##
 # Basic Graph
@@ -30,3 +30,4 @@ y_line = 5 - x_line
 plt.plot(x_line, y_line)
 
 plt.show()
+

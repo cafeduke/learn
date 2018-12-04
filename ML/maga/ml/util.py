@@ -17,5 +17,5 @@ def sigmoid (z):
     return 1 / (1 + np.exp(-z))
 
 
-def to_list (l):
+def to_list_of_str (l):
     return seq(l).map(lambda x : str(x)).to_list()

@@ -1,8 +1,7 @@
 import numpy as np
 from functional import seq
 from sklearn.datasets import make_blobs
-import ml.core_util as mlutil
-import util as util
+import pyduke.common.core_util as util
 
 class Operation:
     global _default_graph
@@ -166,4 +165,5 @@ def main ():
     
 if __name__ == '__main__':
     main()
+
 
