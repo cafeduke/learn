@@ -13,6 +13,7 @@
 
 import pyduke.common.core_util as util
 
+
 class A:
 
     var_class = "Class Variable"
@@ -27,7 +28,7 @@ class A:
 
     @staticmethod
     def method_static(x):
-        print("A static method -- Annotated with @staticmethod")        
+        print("A static method -- Annotated with @staticmethod")
         print("A static method -- Can access only {0}".format(A.var_class))
 
     @classmethod
@@ -38,26 +39,33 @@ class A:
     def __str__(self):
         return "x=" + str(self.x)
 
-# -----------------------------------------------------------------------------
+##
 # Main
 # -----------------------------------------------------------------------------
+##
 
-a = A()
 
-# Invoke instnace method, style-1
-a.method_instance()
+def main():
+    a = A()
 
-# Invoke instnace method, style-2
-A.method_instance(a)
+    # Invoke instnace method, style-1
+    a.method_instance()
 
-# Static method
-# -------------
-util.heading("Static Method")
-A.method_static(3)
-print ("")
+    # Invoke instnace method, style-2
+    A.method_instance(a)
 
-# Class method
-# -------------
-util.heading("Class Method")
-obj = A.method_class(5)
-print("Object returned by class method Type:{0} Str:{1}".format(type(obj), str(obj)))
+    # Static method
+    # -------------
+    util.heading("Static Method")
+    A.method_static(3)
+    print("")
+
+    # Class method
+    # -------------
+    util.heading("Class Method")
+    obj = A.method_class(5)
+    print("Object returned by class method Type:{0} Str:{1}".format(type(obj), str(obj)))
+
+
+if __name__ == '__main__':
+    main()
