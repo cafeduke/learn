@@ -8,7 +8,6 @@ class A:
     def fun(self):
         print("[{0}] Hello".format(A.__name__))
 
-
 class B1(A):
     def __init__(self):
         print("[{0}] Before Super".format(B1.__name__))
@@ -39,19 +38,23 @@ class C(B1, B2):
         print("Using B2")
         B2.fun(self)
 
-# -----------------------------------------------------------------------------
+##
 # Main
 # -----------------------------------------------------------------------------
+##
+def main():
+    util.heading("Order")
+    c = C()
 
+    util.heading("MRO -- Method resolution order")
+    print(C.__mro__)
 
-util.heading("Order")
-c = C()
+    util.heading("Diamond Inheritance")
+    c.fun()
 
-util.heading("MRO -- Method resolution order")
-print(C.__mro__)
+    util.heading("Resolving Diamond Inheritance")
+    c.have_fun()
 
-util.heading("Diamond Inheritance")
-c.fun()
-
-util.heading("Resolving Diamond Inheritance")
-c.have_fun()
+if __name__ == '__main__':
+    main()
+    
