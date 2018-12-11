@@ -2,7 +2,7 @@ import time
 import threading
 import pyduke.common.core_util as util
 
-def tinfo ():
+def tinfo():
     t = threading.current_thread()
     print('[{0}] [{1}] Hello'.format(util.now(), t.name))
     time.sleep(1)
