@@ -1,5 +1,6 @@
 from datetime import datetime
 import threading
+import time
 
 def timestamp():
     formatA = "%a, %d-%b-%Y %H:%M:%S"
@@ -12,6 +13,11 @@ def tlog(mesg):
     tname = threading.current_thread().getName()
     record = "[{}][{}] {}".format(timestamp(), tname, mesg)
     print(record)
+
+def sleepMilli(milli):
+    if not milli or milli == 0:
+        return
+    time.sleep(milli/1000)
 
 if __name__ == "__main__":
     tlog("Hello")

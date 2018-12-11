@@ -1,33 +1,30 @@
 import time
 import threading
-from concurrent import futures
 import numpy as np
+from functional import seq
+from concurrent import futures
+import pyduke.common.core_util as util
 import maga.concurrency.thread_util as tutil
 
-def do_something(zz):    
-    tutil.tlog("Sleeping for {} milli".format(zz))
-    time.sleep(zz/1000)
+def do_something(zz, mesg=None):    
+    mesg = "" if mesg is None else " Mesg=" + mesg
+    tutil.tlog("Sleeping for {} milli.{}".format(zz, mesg))
+    tutil.sleepMilli(zz)
     tutil.tlog("Done sleeping")
 
 def main ():
 
     sleep_time = [10, 100, 150, 40, 50, 80, 80, 100, 10, 10, 10]
-
+    mesg = ['X', 'C', 'CL', 'XL', 'L', 'XXC', 'XXC', 'C', 'X', 'X', 'X']
+    
+    util.heading("Thread Pool Executor - submit")
     with futures.ThreadPoolExecutor(max_workers=3, thread_name_prefix="t") as executor:
-        list_future = []
-        for i in range(len(sleep_time)):
-            f = executor.submit(do_something, zz=sleep_time[i])
-            list_future.append(f)    
+        list_future = seq(range(len(sleep_time))).map(lambda i : executor.submit(do_something, zz=sleep_time[i])).to_list()
         futures.wait(list_future)
 
-    print ("----------------")
+    util.heading("Thread Pool Executor - map")
     with futures.ThreadPoolExecutor(max_workers=3, thread_name_prefix="t") as executor:
-        list_result = executor.map(do_something, sleep_time)        
-        for curr in list_result:
-            pass
-        
-
-        
+        executor.map(do_something, sleep_time, mesg)        
 
 if __name__ == '__main__':
     main()
