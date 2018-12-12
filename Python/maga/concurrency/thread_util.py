@@ -2,13 +2,17 @@ import threading
 from datetime import datetime
 from datetime import timezone
 
-_TIME_FORMAT_A = '%a, %d-%b-%Y %H:%M:%S'
-_TIME_FORMAT_B = '%Z'
+def timestamp():
+    formatA = "%a, %d-%b-%Y %H:%M:%S"
+    formatB = "%Z"
+    t = datetime.now().astimezone()
+    milli   = int(t.microsecond/1000)
+    return "{}.{:03d} {}".format(datetime.strftime(t, formatA), milli, datetime.strftime(t, formatB))
 
-def timestamp ():
-    # Get time with timezone aware. By default datetime returns an object with blank timezone
-    t = datetime.now(timezone.utc).astimezone()
-    return "{}.{} {}".format(t.strftime(_TIME_FORMAT_A), int(t.microsecond/1000), t.strftime(_TIME_FORMAT_B))
+def tlog(mesg):
+    tname = threading.current_thread().getName()
+    record = "[{}][{}] {}".format(timestamp(), tname, mesg)
+    print(record)
 
-def tlog (mesg):    
-    return "[{}] [{}] {}".format(timestamp(), threading.current_thread().name, mesg)
+if __name__ == "__main__":
+    tlog("Hello")
