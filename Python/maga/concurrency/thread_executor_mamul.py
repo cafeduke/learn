@@ -22,7 +22,7 @@ def matmul (A, B):
     with futures.ThreadPoolExecutor(max_workers=3, thread_name_prefix="t") as executor:
         list_future = seq(list_rc).map(lambda curr_rc: executor.submit(sop, A, B, *curr_rc)).to_list()
         futures.wait(list_future)
-        list_result = seq(list_future).map(lambda f : f.result()).to_list()
+        list_result = seq(list_future).map(lambda f: f.result()).to_list()
         C = np.reshape(list_result, newshape=(A.shape[0], B.shape[1]))    
     return C
 
