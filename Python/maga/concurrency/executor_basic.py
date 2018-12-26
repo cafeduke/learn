@@ -5,6 +5,7 @@ from functional import seq
 from concurrent import futures
 import pyduke.common.core_util as util
 import maga.concurrency.thread_util as tutil
+import pyduke.common.core_util as util
 
 def do_something(zz, mesg=None):    
     mesg = "" if mesg is None else " Mesg=" + mesg

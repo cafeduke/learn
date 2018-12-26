@@ -4,7 +4,7 @@ import time
 
 def timestamp():
     formatA = "%a, %d-%b-%Y %H:%M:%S"
-    formatB = "%z"
+    formatB = "%Z"
     t = datetime.now().astimezone()
     milli   = int(t.microsecond/1000)
     return "{}.{:03d} {}".format(datetime.strftime(t, formatA), milli, datetime.strftime(t, formatB))

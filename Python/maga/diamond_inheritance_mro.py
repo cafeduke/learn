@@ -1,5 +1,5 @@
-import pyduke.common.core_util as util
 # Super does not necessarily refer to the parent class but the next class in the MRO (Method Resolution Order)
+import pyduke.common.core_util as util
 
 class A:
     def __init__(self):
@@ -16,7 +16,6 @@ class B1(A):
 
     def fun(self):
         print("[{0}] Hello".format(B1.__name__))
-
 
 class B2(A):
     def __init__(self):
