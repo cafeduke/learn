@@ -1,3 +1,5 @@
+import pyduke.common.core_util as util
+
 ##
 # Static Method -- Annotated with @staticmethod
 # ---------------------------------------------
@@ -10,9 +12,6 @@
 #   - A class method is accessed using a class and is supposed to return an instance of a class!
 #   - In Java terms, a class method is a static method that returns an instance of the class.
 ##
-
-import pyduke.common.core_util as util
-
 
 class A:
 
