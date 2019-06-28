@@ -20,7 +20,6 @@ class B:
 
     def __call__(self):
         return C()
-
 class C:
     pass
 

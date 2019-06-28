@@ -9,6 +9,11 @@ public class User
    private String name;
    
    private Date dob;
+   
+   protected User()
+   {
+      
+   }
 
    public User(Integer id, String name, Date dob)
    {

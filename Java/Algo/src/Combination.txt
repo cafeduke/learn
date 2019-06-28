@@ -1,0 +1,85 @@
+Derivations
+------------------------------------------
+
+n-1Cr-1 = !n-1      / ( !r-1 . !n-r )
+        = (!n . r)  / ( n . !r . !n-r )
+        = r/n . ( !n  / (!r . !n-r) )
+        = r/n . nCr
+------------------------------------------
+
+n-1Cr   = !n-1   / ( !r . !n-r-1 )
+        = !n . (n-r)    / ( n . !r . !n-r )
+        = (n-r)/n . nCr
+------------------------------------------
+
+0,1,2,3,4
+5C3 = 10
+
+0,1,2   0,1: n=4,r=2, 321=3
+0,1,3       
+0,1,4
+0,2,3   0,2: n=3,r=2, 221=2
+0,2,4
+0,3,4   0,3: n=2,r=2, 121=1
+
+1,2,3
+1,2,4
+1,3,4
+
+2,3,4
+
+------------------------------------------
+How many with a : n-1Cr-1  = 4C2 = (r/n)   * nCr = (3/5)   * 10 = 6
+How many with b : n-2Cr-1  = 3C2 = (n-r)/n * nCr = (4-2)/4 * 6  = 1/2 * 6 = 3
+How many with c : n-3Cr-1  = 2C2 = (n-r)/n * nCr = (3-2)/3 * 3  = 1/3 * 3 = 1 
+
+------------------------------------------
+How many with a,b : n-2Cr-2 = 3C1 = (r/n)   * nCr = (2/4) * 6   = 3
+
+4C2 = 3/5*10
+
+
+
+c,d,e
+
+c,d
+c,e
+
+d,e
+----------------------------------------------
+
+
+nCr
+ | 
+ +-- n-1Cr-1                                                         A  is chosen
+      |
+      +-- n-2Cr-2                                                    A,B are chosen
+      |
+      +-- n-3Cr-2                                                    A,C are chosen         
+      |
+      +-- n-4Cr-2                                                    A,D are chosen         
+      
+ +-- n-2Cr-1                                                         B is chosen
+      |
+      +-- n-3Cr-2                                                    B,C are chosen   
+            |
+            +-- n-4Cr-3                                              B,C,D are chosen
+            |
+            +-- n-5Cr-3                                              B,C,E are chosen
+            |
+            +-- n-6Cr-3                                              B,C,F are chosen      
+
+      +-- n-4Cr-2                                                    B,D are chosen   
+            |
+            +-- n-5Cr-3                                              B,D,E are chosen
+            |
+            +-- n-6Cr-3                                              B,D,F are chosen
+            |
+            +-- n-7Cr-3                                              B,D,G are chosen      
+
+ +-- n-3Cr-1                                                         C is chosen      
+      |
+      +-- n-4Cr-2                                                    C,D are chosen
+      |
+      +-- n-5Cr-2                                                    C,E are chosen
+
