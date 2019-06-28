@@ -5,6 +5,10 @@ from functional import seq
 import maga.ml.lib.tensor.tensor_util as tu
 import pyduke.common.core_util as util
 
+# -----------------------------------------------------------------------------
+# Single Layer Neural Network
+# -----------------------------------------------------------------------------
+
 util.heading("Single NN layer")
 
 # Number of features
@@ -73,3 +77,4 @@ y_pred = curr_w*x  + b
 
 plt.plot(tu.eval(x), tu.eval(y_pred), 'g')
 plt.show()
+
