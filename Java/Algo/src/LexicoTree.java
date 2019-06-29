@@ -37,7 +37,7 @@ public class LexicoTree<I>
       
       heading("Combination");
       tree.useCombination();
-      tree.clearCache();
+      tree.cacheClear();
       tree.traverse();
       
       /** 
@@ -85,7 +85,7 @@ public class LexicoTree<I>
    /**
     * Clear everything stored in cache.
     */
-   public void clearCache ()
+   public void cacheClear ()
    {
       cache.clear();
    }
