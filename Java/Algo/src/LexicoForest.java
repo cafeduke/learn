@@ -6,24 +6,24 @@ public class LexicoForest<I>
 {
    private List<I> listNode;
 
-   private Hashtable<String, Object> cache;
+   private Hashtable<String, Object> cache = new Hashtable<>();
 
    private int r = 0;
    
    private int threadCount = 1;
 
-   private boolean isPermutation;
+   private boolean isPermutation = true;
+   
+   private boolean isRepeatAllowed = false;
 
-   private Callback<I> beforeCallback, afterCallback;
+   private Callback<I> beforeCallback = LexicoForest::handlerPrintItems;
+   
+   private Callback<I> afterCallback = null;
 
    public LexicoForest(List<I> listNode, int r)
    {
       this.listNode = listNode;
-      this.cache = new Hashtable<String, Object>();
-      this.r = r;
-      this.isPermutation = true;
-      this.beforeCallback = LexicoForest::handlerPrintItems;
-      this.afterCallback = null;      
+      this.r = r;  
    }
    
    public LexicoForest(List<I> listNode)
@@ -41,9 +41,16 @@ public class LexicoForest<I>
       forest.traverse();
       
       heading("Combination");
+      forest = new LexicoForest<>(Arrays.asList(11, 12, 13, 14, 15), 3); 
       forest.useCombination();
       forest.cacheClear();
       forest.traverse();
+      
+      heading("Selection With Repeat");
+      forest = new LexicoForest<>(Arrays.asList(11, 12, 13, 14, 15), 3);      
+      forest.setThreadCount(3);
+      forest.setRepeatAllowed(true);
+      forest.traverse();      
       
       /** 
        * Pick numbers from the given set (need not be continuous) to form the largest sub-set possible 
@@ -135,6 +142,11 @@ public class LexicoForest<I>
    {
       this.threadCount = threadCount;
    }
+   
+   public void setRepeatAllowed (boolean isRepeatAllowed)
+   {
+      this.isRepeatAllowed = isRepeatAllowed;
+   }
 
    /**
     * Invoke the registered callback before traversing the children of the node.
@@ -197,24 +209,45 @@ public class LexicoForest<I>
             return;
          
          // Visit each child sub-tree
-         int startIndex = (isPermutation) ? 0 : currIndex + 1;
+         int startIndex = (isRepeatAllowed || isPermutation) ? 0 : currIndex + 1;
          for (int childIndex = startIndex; childIndex < listNode.size(); ++childIndex)
          {
-            if (visited[childIndex])
+            if (isSkipVisit(childIndex, visited))
                continue;
       
-            stack.push(childIndex);
-            visited[childIndex] = true;         
+            beforeChildVisit(childIndex, stack, visited);
             traverse(childIndex, stack, visited);
-            visited[stack.pop()] = false;         
+            afterChildVisit(stack, visited);  
          }
          
          // Invoke handle after visiting all the children
          if (afterCallback != null)
             afterCallback.eval(getItemsInStack(listNode, stack), cache);      
-      }      
-   }
+      }
+      
+      private boolean isSkipVisit (int childIndex, boolean visited[])
+      {
+         if (isRepeatAllowed)
+            return false;
+         return (visited[childIndex]) ? true : false;
+      }
 
+      private void beforeChildVisit (int childIndex, Stack<Integer> stack, boolean visited[])
+      {
+         stack.push(childIndex);
+         if (!isRepeatAllowed)
+            visited[childIndex] = true; 
+      }      
+      
+      private void afterChildVisit (Stack<Integer> stack, boolean visited[])
+      {
+         int childIndex = stack.pop();
+         if (!isRepeatAllowed)
+            visited[childIndex] = false; 
+      }      
+      
+   }
+   
    /**
     * Iterate the stack of index and get the corresponding node from the listNode. Return the list thus obtained.
     * 
