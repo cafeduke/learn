@@ -10,7 +10,7 @@ public class ThreadCoreWaitNotify implements Runnable
    
    private static final SimpleDateFormat TimeStampFormat = new SimpleDateFormat ("EEE, dd-MMM-yyyy HH:mm:ss.SSS z");
    
-   private int id = 1;
+   private int chosenId = 1;
    
    private int threadCount = 3;
    
@@ -34,23 +34,27 @@ public class ThreadCoreWaitNotify implements Runnable
    {
       try
       {
-         while (id <= threadCount)
+         while (chosenId <= threadCount)
          {
             synchronized (getClass())
-            {              
-               if (Thread.currentThread().getName().equals(THREAD_PREFIX + id))
+            {   
+               // Check if the current thread's name matches the chosen thread
+               if (Thread.currentThread().getName().equals(THREAD_PREFIX + chosenId))
                {
-                  Util.threadLog("Hello.  Id=" + id);
-                  id = id % threadCount + 1;
-                  Util.threadLog("Notify. Id=" + id);
+                  // Increment to next thread
+                  Util.threadLog("Hello.  Id=" + chosenId);
+                  chosenId = chosenId % threadCount + 1;
+                  
+                  // Notify all waiting threads.
+                  Util.threadLog("Notify. Id=" + chosenId);
                   getClass().notifyAll();
                   break;
                }
                else
                {
-                  Util.threadLog("Wait. Id=" + id);
+                  Util.threadLog("Wait. Id=" + chosenId);
                   getClass().wait();
-                  Util.threadLog("Awake. Id=" + id);
+                  Util.threadLog("Awake. Id=" + chosenId);
                }
             }
          }
