@@ -13,7 +13,6 @@ public class L06UsingStandardFI
       /**
        * Using Consumer 
        */
-      
       // Lambda
       Consumer<String> doNothing = (s) -> {};
       doNothing.accept("Nothing");
@@ -52,21 +51,6 @@ public class L06UsingStandardFI
       Person p = new Person(39,Gender.MALE);         
       Supplier<Integer> supplier4 = (p::getAge);
       doPrint.accept(supplier3.get());
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
+
    }
 }
