@@ -8,11 +8,13 @@ public class ThreadCoreWaitNotify implements Runnable
 {
    public static final String THREAD_PREFIX = "t";
    
-   private static final SimpleDateFormat TimeStampFormat = new SimpleDateFormat ("EEE, dd-MMM-yyyy HH:mm:ss.SSS z");
+   public static final int MAX_REPEAT_COUNT = 2;
    
    private int chosenId = 1;
    
    private int threadCount = 3;
+   
+   private int repeatCount = 0;
    
    public static void main (String arg[]) throws Exception
    {
@@ -34,7 +36,7 @@ public class ThreadCoreWaitNotify implements Runnable
    {
       try
       {
-         while (chosenId <= threadCount)
+         while (repeatCount < MAX_REPEAT_COUNT)
          {
             synchronized (getClass())
             {   
@@ -42,22 +44,24 @@ public class ThreadCoreWaitNotify implements Runnable
                if (Thread.currentThread().getName().equals(THREAD_PREFIX + chosenId))
                {
                   // Increment to next thread
-                  Util.threadLog("Hello.  Id=" + chosenId);
+                  Util.threadLog("Hello", "Id=" + chosenId, "RepeatCount=" + repeatCount);
+                  if (chosenId % threadCount == 0)
+                     repeatCount++;
                   chosenId = chosenId % threadCount + 1;
                   
                   // Notify all waiting threads.
-                  Util.threadLog("Notify. Id=" + chosenId);
+                  Util.threadLog("Notify", "Id=" + chosenId, "RepeatCount=" + repeatCount);
                   getClass().notifyAll();
-                  break;
                }
                else
                {
-                  Util.threadLog("Wait. Id=" + chosenId);
+                  Util.threadLog("Wait", "Id=" + chosenId, "RepeatCount=" + repeatCount);
                   getClass().wait();
-                  Util.threadLog("Awake. Id=" + chosenId);
+                  Util.threadLog("Awake", "Id=" + chosenId, "RepeatCount=" + repeatCount);
                }
             }
          }
+         Util.threadLog("Done", "Id=" + chosenId, "RepeatCount=" + repeatCount);
       }
       catch (InterruptedException e)
       {
