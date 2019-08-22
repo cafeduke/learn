@@ -6,9 +6,11 @@ import util.Util;
 
 public class ThreadCoreWaitNotify implements Runnable
 {
-   public static final String THREAD_PREFIX = "t";
+   public static final int MAX_THREAD_COUNT = 5;
+
+   public static final int MAX_REPEAT_COUNT = 3;
    
-   public static final int MAX_REPEAT_COUNT = 2;
+   public static final String THREAD_PREFIX = "t";   
    
    private int chosenId = 1;
    
@@ -19,16 +21,17 @@ public class ThreadCoreWaitNotify implements Runnable
    public static void main (String arg[]) throws Exception
    {
       ThreadCoreWaitNotify obj = new ThreadCoreWaitNotify();
-      Thread t1 = new Thread (obj, "t1");
-      Thread t2 = new Thread (obj, "t2");
-      Thread t3 = new Thread (obj, "t3");
+      Thread t[] = new Thread [MAX_THREAD_COUNT];
       
-      t1.start();
-      Util.sleepInMilli(100);      
-      t3.start();
-      Util.sleepInMilli(10);
-      t2.start();
+      int delay[] = new int[] {2, 10, 1, 20, 50};
+      assert delay.length == t.length;
       
+      for (int i = 0; i < t.length; ++i)
+      {
+         t[i] = new Thread (obj, THREAD_PREFIX + (i+1));
+         t[i].start();
+         Util.sleepInMilli(delay[i]);
+      }
    }
    
    @Override
