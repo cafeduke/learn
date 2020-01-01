@@ -1,0 +1,55 @@
+version: "3"
+services:
+
+  database:
+    image: "postgres:latest"
+  
+  cache:
+    image: "redis:latest"
+
+  lb:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./lb
+    ports: 
+      - "8080:80"
+
+  # Static content server    
+  web-server:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./web-server
+    volumes:
+      - /home/app/node_modules
+      - ./web-server:/home/app    
+
+  # Dynamic content server  
+  app-server:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./app-server     
+    volumes:
+      - /home/app/node_modules
+      - ./app-server:/home/app
+    environment: 
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - PGHOST=database
+      - PGUSER=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+    depends_on:
+      - database
+
+  worker:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./worker
+    volumes:
+      - /home/app/node_modules
+      - ./worker:/home/app        
+    environment:
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379

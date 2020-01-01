@@ -4,3 +4,5 @@
 **/*.class
 **/classes/
 **/*.jar
+**/.git/
+**/node_modules/
