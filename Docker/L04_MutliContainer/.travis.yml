@@ -1,0 +1,37 @@
+# Sudo access is required
+sudo: required
+language: generic
+
+# Let Travis know the services that needs to be installed
+#   - We need a copy of docker
+services:
+    - docker
+
+# This section has the commands to be executed before the test run (Similar to @BeforeTest in TestNG)
+#   - The dev image needs to be built before exeucting the tests.
+#   - Note: The context here is "./web-server" (due to position of .travis.yml) as against "." that is typically used.
+#   - Here, we are building and running tests only for the web-server . Similarly, we can have tests for other s as well.
+before_install:
+  - docker build -f ./web-server/Dockerfile.dev -t raghubs81/multi-web-server-dev ./web-server
+
+# This section has the commands to run the test suite. If any command exists with non-zero status, the build is considered broken.
+# By default, "npm run test" is interractive and does not return a prompt, hence "-e CI=true" is required.
+script:
+  - docker run -e CI=true raghubs81/multi-web-server-dev npm run test
+
+after_success:
+  - docker build -t raghubs81/multi-web-server ./web-server
+  - docker build -t raghubs81/multi-app-server ./app-server
+  - docker build -t raghubs81/multi-worker     ./worker
+  - docker build -t raghubs81/multi-lb         ./lb
+
+  # Environment variables DOCKER_ID and DOCKER_PASSWORD are added -- https://travis-ci.com/raghubs81/docker-multi-container/settings
+  # The command "docker login" asks for username/password and associates "docker" client with "docker hub" account. 
+  #   - The following pipe automates the same (without user interaction).
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Now that we are authenticated to docker-hub account, we can push images.
+  - docker push raghubs81/multi-web-server
+  - docker push raghubs81/multi-app-server
+  - docker push raghubs81/multi-worker
+  - docker push raghubs81/multi-lb

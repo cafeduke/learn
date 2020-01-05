@@ -42,7 +42,7 @@ A typical workflow involves incremental and continuous  development, testing and
 
 1. npm run start 
     - Starts a dev server (For DEVELOPMENT only)
-    - Note this brings up a URL using which the app can be accessed.
+    - Note this brings up a URL using which the app can be accessed. By default, the node app starts at port 3000.
 
 2. npm run test --- Runs tests
 ```bash
@@ -138,8 +138,9 @@ services:
     container_name: "docker-react-dev-web"
     
     # <outside world port>:<container port> ==> Map outside world port to container port.
+    # By default, the node app starts at port 3000 in the contianer. This is mapped to port 8080 in the outside world.
     ports: 
-      - "8801:8801"
+      - "8080:3000"
     
     # <outside world path>:<container path> 
     #   - Map outside world path to container. 
@@ -216,7 +217,7 @@ services:
     # <outside world port>:<container port> ==> Map outside world port to container port.
     # We are using nginx as production container which listens on port 80
     ports: 
-      - "8801:80"
+      - "8080:80"
 ```
 
 ### The Dockerfile for production
@@ -248,7 +249,7 @@ COPY . .
 
 # Contianer startup command -- The command followed by options to be invoked by container after startup.
 # Here, we are using "npm run build" which shall create a build dir having production ready files.
-CMD ["npm", "run", "build"]
+RUN npm run build
 
 # -------------------------------------------------------------------------------------------------
 # nginx -- A production web server
