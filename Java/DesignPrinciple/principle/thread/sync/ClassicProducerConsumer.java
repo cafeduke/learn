@@ -16,7 +16,7 @@ class LegacyProducer implements Runnable
    {
       this.buffer = buffer;
       this.sizeLimit = sizeLimit;
-      this.sleepTime = sleepTime;
+      this.sleepTime = sleepTime;      
    }
    
    @Override
