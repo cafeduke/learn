@@ -34,8 +34,8 @@ metadata:
 spec:
   type: NodePort
   
-  # port       : Port exposed for another k8s object insdie our application (Internal listen port, for other k8s objects)
-  # targetPort : The port targeted by this NodePort service (The origin-server port for this service)
+  # port       : Port exposed for another k8s object inside our application (Internal listen port, for other k8s objects)
+  # targetPort : Port targeted by this NodePort service (The origin-server port for this service)
   # nodePort   : Port exposed for outside world (External listen port, for outside world like browser)
   #              If not specified a random port in range 30000-32000 is assigned
   ports: 
