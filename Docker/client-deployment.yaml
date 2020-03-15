@@ -1,0 +1,37 @@
+# The version number the config adheres to. Each version defines a set of k8s objects that are valid for the said version. 
+apiVersion: apps/v1
+
+# The kind of K8s object is 'Deployment'
+kind: Deployment
+
+metadata:
+  name: client-deployment
+
+spec:
+  # Number of identical pods to be maintained (using below template)
+  replicas: 1
+
+  # A Deployment does not create pods by itself -- It informs the k8s master
+  # The master creates the pods, but the Deployment needs a handle on the pods thus created -- Hence the 'selector'
+  # In essence this Deployment manages all objects with label (tag) 'component:web'
+  selector:
+    matchLabels:
+      component: web
+  
+  # The template configuration to be used for every pod created by this deployment
+  #  - The contents of the template section is similar to Pod. (Pod has similar metadata and spec sub sections)
+  # Every pod that is created using this deployment shall have
+  #  - A label (tag) 'component:web' (Label is how pods are picked. Note that a pod can have multiple labels/tags)
+  #  - An image specified by the image attrib
+  template:
+    metadata:
+      labels:
+        component: web
+    
+    spec:
+      containers:
+        - name: client
+          image: raghubs81/multi-web-server
+          ports:
+            - containerPort: 3000
+      

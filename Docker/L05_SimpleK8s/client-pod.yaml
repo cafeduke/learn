@@ -17,7 +17,9 @@ apiVersion: v1
 #   - Ingress
 kind: Pod
 
-# The name of the pod -- Useful during logging
+# The name of the pod 
+#   - A object is identified by its "name" (Eg: kubectl describe <object-kind> <object-name>)
+#   - Useful during logging
 # One or more labels (tags) associated with this pod.
 #   - NOTE: A label is a 'key:value' pair which are arbitrary (Any foo:bar will do). 
 metadata:
@@ -37,5 +39,5 @@ spec:
     - name: client
       image: raghubs81/multi-web-server
       ports: 
-        - containerPort: 3000
+        - containerPort: 3030
                 

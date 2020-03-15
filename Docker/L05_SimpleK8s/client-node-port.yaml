@@ -31,6 +31,7 @@ kind: Service
 
 metadata:
   name: client-node-port
+  
 spec:
   type: NodePort
   
