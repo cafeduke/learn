@@ -1,4 +1,4 @@
-# The version number the config adheres to. Each version defines a set of k8s objects that are valid for the said version. 
+# apiVersion specifies the version number adhered by the config. Each version defines a set of k8s objects that are valid for the said version. 
 apiVersion: apps/v1
 
 # The kind of K8s object is 'Deployment'
@@ -9,7 +9,7 @@ metadata:
 
 spec:
   # Number of identical pods to be maintained (using below template)
-  replicas: 1
+  replicas: 2
 
   # A Deployment does not create pods by itself -- It informs the k8s master
   # The master creates the pods, but the Deployment needs a handle on the pods thus created -- Hence the 'selector'
