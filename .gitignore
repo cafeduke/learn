@@ -6,6 +6,6 @@
 **/*.jar
 **/.git/
 **/.mvn
-**/node_modules/
 **/mvnw
 **/mvnw.cmd
+**/node_modules/
