@@ -1,3 +1,8 @@
+# -----------------------------------------------------------------------------
+# Object Type : Pod
+# Description : 
+# -----------------------------------------------------------------------------
+
 # The version number the config adheres to. Each version defines a set of k8s objects that are valid for the said version. 
 # For example, apiVersion 'v1' allows objects like componentStatus, configMap, Pod, Event, Namespace, etc
 apiVersion: v1
@@ -23,7 +28,7 @@ kind: Pod
 # One or more labels (tags) associated with this pod.
 #   - NOTE: A label is a 'key:value' pair which are arbitrary (Any foo:bar will do). 
 metadata:
-  name: client-pod
+  name: web-server-pod
   labels:
     component: web
 
@@ -36,8 +41,7 @@ metadata:
 #   - containerPort: Port value exposed for external clients (outside the node) like browser.
 spec:
   containers:
-    - name: client
+    - name: web-server
       image: raghubs81/multi-web-server
       ports: 
         - containerPort: 3030
-                

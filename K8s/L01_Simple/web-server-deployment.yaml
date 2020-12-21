@@ -5,7 +5,7 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  name: client-deployment
+  name: web-server-deployment
 
 spec:
   # Number of identical pods to be maintained (using below template)
@@ -30,7 +30,7 @@ spec:
     
     spec:
       containers:
-        - name: client
+        - name: web-server
           image: raghubs81/multi-web-server
           ports:
             - containerPort: 3000

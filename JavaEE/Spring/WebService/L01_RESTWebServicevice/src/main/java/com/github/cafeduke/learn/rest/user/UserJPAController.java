@@ -20,31 +20,34 @@ import com.github.cafeduke.learn.rest.exception.DukeResourceNotFoundException;
 
 import java.net.URI;
 import java.util.*;
+import java.util.function.Supplier;
 
 @RestController
-public class UserController
+public class UserJPAController
 {
+  
   @Autowired
-  private UserService service;
+  private UserJPAService userService;
+
+  @Autowired
+  private PostJPAService postService;
 
   /**
    * Retrieve all users
    * 
    * @return A collection of User objects.
    */
-  @GetMapping(path = "/users")
+  @GetMapping(path="/jpa/users")
   public Collection<UserEntity> getAllUsers()
   {
-    return service.findAll();
+    return userService.findAll();
   }
-
-  @GetMapping(path = "/users/{id}")
+  
+  @GetMapping(path="/jpa/users/{id}")
   public EntityModel<UserEntity> getUserById(@PathVariable int id) throws NoSuchMethodException, SecurityException
   {
     // @PathVariable annotation says -- Convert the {id} segment to parameter id
-    UserEntity user = service.findById(id);
-    if (user == null)
-      throw new DukeResourceNotFoundException(String.format("User with ID=%d not found.", id));
+    UserEntity user = userService.findById(id).orElseThrow(userNotFound(id));
 
     /**
      * HATEOAS -- Give metadata related to a resource
@@ -74,14 +77,10 @@ public class UserController
    * @param id ID of the user to be deleted
    * @return A (204 NO CONTENT) response.
    */
-  @DeleteMapping(path = "/users/{id}")
-  public ResponseEntity<Object> deleteUserById(@PathVariable int id)
+  @DeleteMapping(path="/jpa/users/{id}")
+  public void deleteUserById(@PathVariable int id)
   {
-    UserEntity user = service.deleteById(id);
-    if (user == null)
-      throw new DukeResourceNotFoundException(String.format("Could not delete. User with ID=%d not found.", id));
-
-    return ResponseEntity.noContent().build();
+    userService.deleteById(id);
   }
 
   /**
@@ -92,10 +91,10 @@ public class UserController
    * @param user JSON representation of the User object.
    * @return
    */
-  @PostMapping(path = "/users")
+  @PostMapping(path="/jpa/users")
   public ResponseEntity<Object> createUser(@RequestBody UserEntity user)
   {
-    UserEntity newUser = service.save(user);
+    UserEntity newUser = userService.save(user);
 
     /*
      * When an object is created, we need to
@@ -104,15 +103,54 @@ public class UserController
      */
 
     URI location = ServletUriComponentsBuilder.fromCurrentRequest() // Get the URI from the request instead of hard-coding.
-      .path("{id}") // To the URI obtained above, append path with place holders
-      .buildAndExpand(newUser.getId()).toUri();
+      .path("/{id}")                                                 // To the URI obtained above, append path with place holders
+      .buildAndExpand(newUser.getId())
+      .toUri();
 
     /*
      * ResponseEntity.created takes a URI location
      * - The response code shall be 201 Created
      * - The response header 'Location' shall have the URL to the newly created object.
      */
-    return ResponseEntity.created(location).build();
-
+    return ResponseEntity.created(location).build();  
   }
+  
+  @GetMapping(path="/jpa/users/{id}/posts")
+  public List<PostEntity> getPosts (@PathVariable int id)
+  {
+    UserEntity user = userService.findById(id).orElseThrow(userNotFound(id));
+    return user.getPosts();
+  }
+  
+  private Supplier<RuntimeException> userNotFound (int id)
+  {
+    return () -> new DukeResourceNotFoundException(String.format("User with ID=%d not found.", id));
+  }
+  
+  @PostMapping(path="/jpa/users/{id}/posts")
+  public ResponseEntity<Object> createPost(@PathVariable int id, @RequestBody PostEntity post)
+  {
+    UserEntity user = userService.findById(id).orElseThrow(userNotFound(id));
+    post.setUser(user);
+    PostEntity newPost = postService.save(post);
+    
+    URI location = ServletUriComponentsBuilder.fromCurrentContextPath() // Get the URI from the request instead of hard-coding.
+        .path("/jpa/posts/{id}")                                         // To the URI obtained above, append path with place holders
+        .buildAndExpand(newPost.getId())
+        .toUri();    
+    
+    return ResponseEntity.created(location).build();
+  }  
+  
+  @GetMapping(path="/jpa/posts/{id}")
+  public EntityModel<PostEntity> getPostById (@PathVariable int id)
+  {
+    PostEntity post = postService.findById(id).orElseThrow(postNotFound(id));
+    return EntityModel.of(post);
+  }  
+  
+  private Supplier<RuntimeException> postNotFound (int id)
+  {
+    return () -> new DukeResourceNotFoundException(String.format("Post with ID=%d not found.", id));
+  }  
 }

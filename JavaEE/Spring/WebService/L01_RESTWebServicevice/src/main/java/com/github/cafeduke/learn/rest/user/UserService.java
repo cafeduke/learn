@@ -8,25 +8,28 @@ package com.github.cafeduke.learn.rest.user;
 
 import org.springframework.stereotype.Component;
 import java.util.*;
-
+/**
+ * A service exposes operations on an entity.  
+ * In this case UserService exposes opeartions like findById, save, deleteById on User entity. 
+ */
 @Component
 public class UserService
 {
-   private static Map<Integer,User> mapIdUser = new Hashtable<>();
+   private static Map<Integer,UserEntity> mapIdUser = new Hashtable<>();
    
    static
    {
-      User user[] = new User[] {
-        new User(1, "Raghu", new Date()),
-        new User(2, "Madhu", new Date()),
-        new User(3, "Pavi", new Date())
+      UserEntity user[] = new UserEntity[] {
+        new UserEntity(1, "Raghu", new Date()),
+        new UserEntity(2, "Madhu", new Date()),
+        new UserEntity(3, "Pavi", new Date())
       };
       
-      for (User currUser : user)
+      for (UserEntity currUser : user)
          mapIdUser.put(currUser.getId(), currUser);
    }
    
-   public Collection<User> findAll()
+   public Collection<UserEntity> findAll()
    {
       return mapIdUser.values();
    }
@@ -37,7 +40,7 @@ public class UserService
     * @param id ID of the user
     * @return Returns the User object or null if user with {@code id} not found.
     */
-   public User findById(int id)
+   public UserEntity findById(int id)
    {
       return mapIdUser.get(id);
    }
@@ -48,7 +51,7 @@ public class UserService
     * @param id ID of the user
     * @return Returns the deleted User object or null if user with {@code id} not found.
     */
-   public User deleteById (int id)
+   public UserEntity deleteById (int id)
    {
       return mapIdUser.remove(id);
    }
@@ -59,7 +62,7 @@ public class UserService
     * @param user The user object to be either updated for added.
     * @return The user object post updation or addition.
     */
-   public User save(User user)
+   public UserEntity save(UserEntity user)
    {
       if (user.getId() == null || user.getId() == 0)
          user.setId(mapIdUser.size()+1);
