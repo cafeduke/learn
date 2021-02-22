@@ -40,7 +40,7 @@ An object is created from a k8s configuration file and has a specific purpose. S
 
   - Stateful
   - Replica Controller  
-  - Pod                   : Used to run a container
+  - Pod                 : Used to run a container
   - Service             : Setup networking (Has 4 sub-types)
     - ClusterIP
     - NodePort          : Expose a container to outside world (For dev purpose only)

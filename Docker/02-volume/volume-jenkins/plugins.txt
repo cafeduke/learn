@@ -1,0 +1,5 @@
+ant:latest
+config-file-provider:latest
+credentials-binding:latest
+git:latest
+managed-scripts:latest

@@ -38,16 +38,16 @@ public class UserJPAController
    * @return A collection of User objects.
    */
   @GetMapping(path="/jpa/users")
-  public Collection<UserEntity> getAllUsers()
+  public Collection<User> getAllUsers()
   {
     return userService.findAll();
   }
   
   @GetMapping(path="/jpa/users/{id}")
-  public EntityModel<UserEntity> getUserById(@PathVariable int id) throws NoSuchMethodException, SecurityException
+  public EntityModel<User> getUserById(@PathVariable int id) throws NoSuchMethodException, SecurityException
   {
     // @PathVariable annotation says -- Convert the {id} segment to parameter id
-    UserEntity user = userService.findById(id).orElseThrow(userNotFound(id));
+    User user = userService.findById(id).orElseThrow(userNotFound(id));
 
     /**
      * HATEOAS -- Give metadata related to a resource
@@ -64,7 +64,7 @@ public class UserJPAController
      * The above does not hard code the method name as string. However, we are invoking the function instead of
      * pointing to it (Method object)??
      */
-    EntityModel<UserEntity> resource = EntityModel.of(user);
+    EntityModel<User> resource = EntityModel.of(user);
     Link link = WebMvcLinkBuilder.linkTo(getClass(), getClass().getMethod("getAllUsers")).withRel("all-users");
     resource.add(link);
 
@@ -92,9 +92,9 @@ public class UserJPAController
    * @return
    */
   @PostMapping(path="/jpa/users")
-  public ResponseEntity<Object> createUser(@RequestBody UserEntity user)
+  public ResponseEntity<Object> createUser(@RequestBody User user)
   {
-    UserEntity newUser = userService.save(user);
+    User newUser = userService.save(user);
 
     /*
      * When an object is created, we need to
@@ -116,9 +116,9 @@ public class UserJPAController
   }
   
   @GetMapping(path="/jpa/users/{id}/posts")
-  public List<PostEntity> getPosts (@PathVariable int id)
+  public List<Post> getPosts (@PathVariable int id)
   {
-    UserEntity user = userService.findById(id).orElseThrow(userNotFound(id));
+    User user = userService.findById(id).orElseThrow(userNotFound(id));
     return user.getPosts();
   }
   
@@ -128,11 +128,11 @@ public class UserJPAController
   }
   
   @PostMapping(path="/jpa/users/{id}/posts")
-  public ResponseEntity<Object> createPost(@PathVariable int id, @RequestBody PostEntity post)
+  public ResponseEntity<Object> createPost(@PathVariable int id, @RequestBody Post post)
   {
-    UserEntity user = userService.findById(id).orElseThrow(userNotFound(id));
+    User user = userService.findById(id).orElseThrow(userNotFound(id));
     post.setUser(user);
-    PostEntity newPost = postService.save(post);
+    Post newPost = postService.save(post);
     
     URI location = ServletUriComponentsBuilder.fromCurrentContextPath() // Get the URI from the request instead of hard-coding.
         .path("/jpa/posts/{id}")                                         // To the URI obtained above, append path with place holders
@@ -143,9 +143,9 @@ public class UserJPAController
   }  
   
   @GetMapping(path="/jpa/posts/{id}")
-  public EntityModel<PostEntity> getPostById (@PathVariable int id)
+  public EntityModel<Post> getPostById (@PathVariable int id)
   {
-    PostEntity post = postService.findById(id).orElseThrow(postNotFound(id));
+    Post post = postService.findById(id).orElseThrow(postNotFound(id));
     return EntityModel.of(post);
   }  
   

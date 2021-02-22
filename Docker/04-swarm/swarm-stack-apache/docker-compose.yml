@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+
+  ap_foo:
+    image: hypoport/httpd-cgi
+    ports:
+      - 8801:80
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+    networks:
+      - my_net_foo
+      - my_net
+
+  ap_bar:
+    image: hypoport/httpd-cgi
+    ports:
+      - 8802:80
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      - my_net_bar
+      - my_net
+
+networks:
+  my_net_foo:
+  my_net_bar:
+  my_net:

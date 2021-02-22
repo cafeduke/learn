@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+
+  apache01:
+    image: hypoport/httpd-cgi:latest  
+    ports:
+      - "8801:80"
+    networks:
+      my_net:
+        aliases:
+          - apache.duke.in
+
+  apache02:
+    image: hypoport/httpd-cgi:latest
+    ports:
+      - "8802:80"
+    networks:
+      my_net:
+        aliases:
+          - apache.duke.in
+
+  lb:
+    image: cafeduke/lb:alpine
+    environment: 
+      - ORIGIN_SERVER=apache.duke.in
+    ports:
+      - "8080:80"
+    networks:
+      my_net:
+        aliases:
+          - duke.in
+
+networks:
+  my_net:
+    driver: bridge

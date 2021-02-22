@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+
+  apache:
+    image: hypoport/httpd-cgi:latest  
+    ports:
+      - "8801:80"
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+    networks:
+      front_end:
+
+  lb:
+    image: cafeduke/lb:latest
+    ports:
+      - "8080:80"
+    environment:
+      - ORIGIN_SERVER=apache
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      front_end:
+    depends_on:
+      - apache
+
+networks:
+  front_end:

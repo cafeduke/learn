@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+
+  tomcat:
+    image: cafeduke/tomcat-stack-demo:latest
+    build:
+      context: cafeduke-tomcat
+    ports:
+      - "18801:8080"
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+    networks:
+      back_end:
+
+  apache:
+    image: cafeduke/apache-stack-demo:latest
+    build:
+      context: cafeduke-apache
+    ports:
+      - "8801:80"
+    deploy:
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+    networks:
+      front_end:
+      back_end:
+    depends_on:
+      - tomcat
+
+  lb:
+    image: cafeduke/lb:latest
+    ports:
+      - "8080:80"
+    environment:
+      - ORIGIN_SERVER=apache
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    networks:
+      front_end:
+    depends_on:
+      - apache
+
+networks:
+  front_end:
+  back_end:

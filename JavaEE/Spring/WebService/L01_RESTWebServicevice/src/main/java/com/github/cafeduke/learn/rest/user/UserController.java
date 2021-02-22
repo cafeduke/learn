@@ -33,16 +33,16 @@ public class UserController
    * @return A collection of User objects.
    */
   @GetMapping(path = "/users")
-  public Collection<UserEntity> getAllUsers()
+  public Collection<User> getAllUsers()
   {
     return service.findAll();
   }
 
   @GetMapping(path = "/users/{id}")
-  public EntityModel<UserEntity> getUserById(@PathVariable int id) throws NoSuchMethodException, SecurityException
+  public EntityModel<User> getUserById(@PathVariable int id) throws NoSuchMethodException, SecurityException
   {
     // @PathVariable annotation says -- Convert the {id} segment to parameter id
-    UserEntity user = service.findById(id);
+    User user = service.findById(id);
     if (user == null)
       throw new DukeResourceNotFoundException(String.format("User with ID=%d not found.", id));
 
@@ -61,7 +61,7 @@ public class UserController
      * The above does not hard code the method name as string. However, we are invoking the function instead of
      * pointing to it (Method object)??
      */
-    EntityModel<UserEntity> resource = EntityModel.of(user);
+    EntityModel<User> resource = EntityModel.of(user);
     Link link = WebMvcLinkBuilder.linkTo(getClass(), getClass().getMethod("getAllUsers")).withRel("all-users");
     resource.add(link);
 
@@ -77,7 +77,7 @@ public class UserController
   @DeleteMapping(path = "/users/{id}")
   public ResponseEntity<Object> deleteUserById(@PathVariable int id)
   {
-    UserEntity user = service.deleteById(id);
+    User user = service.deleteById(id);
     if (user == null)
       throw new DukeResourceNotFoundException(String.format("Could not delete. User with ID=%d not found.", id));
 
@@ -93,9 +93,9 @@ public class UserController
    * @return
    */
   @PostMapping(path = "/users")
-  public ResponseEntity<Object> createUser(@RequestBody UserEntity user)
+  public ResponseEntity<Object> createUser(@RequestBody User user)
   {
-    UserEntity newUser = service.save(user);
+    User newUser = service.save(user);
 
     /*
      * When an object is created, we need to

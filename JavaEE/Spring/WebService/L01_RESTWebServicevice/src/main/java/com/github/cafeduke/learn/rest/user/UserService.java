@@ -15,21 +15,21 @@ import java.util.*;
 @Component
 public class UserService
 {
-   private static Map<Integer,UserEntity> mapIdUser = new Hashtable<>();
+   private static Map<Integer,User> mapIdUser = new Hashtable<>();
    
    static
    {
-      UserEntity user[] = new UserEntity[] {
-        new UserEntity(1, "Raghu", new Date()),
-        new UserEntity(2, "Madhu", new Date()),
-        new UserEntity(3, "Pavi", new Date())
+      User user[] = new User[] {
+        new User(1, "Raghu", new Date()),
+        new User(2, "Madhu", new Date()),
+        new User(3, "Pavi", new Date())
       };
       
-      for (UserEntity currUser : user)
+      for (User currUser : user)
          mapIdUser.put(currUser.getId(), currUser);
    }
    
-   public Collection<UserEntity> findAll()
+   public Collection<User> findAll()
    {
       return mapIdUser.values();
    }
@@ -40,7 +40,7 @@ public class UserService
     * @param id ID of the user
     * @return Returns the User object or null if user with {@code id} not found.
     */
-   public UserEntity findById(int id)
+   public User findById(int id)
    {
       return mapIdUser.get(id);
    }
@@ -51,7 +51,7 @@ public class UserService
     * @param id ID of the user
     * @return Returns the deleted User object or null if user with {@code id} not found.
     */
-   public UserEntity deleteById (int id)
+   public User deleteById (int id)
    {
       return mapIdUser.remove(id);
    }
@@ -62,7 +62,7 @@ public class UserService
     * @param user The user object to be either updated for added.
     * @return The user object post updation or addition.
     */
-   public UserEntity save(UserEntity user)
+   public User save(User user)
    {
       if (user.getId() == null || user.getId() == 0)
          user.setId(mapIdUser.size()+1);
