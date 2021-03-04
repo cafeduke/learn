@@ -2,8 +2,6 @@
 
 REpresentation State Transfer (REST) is leveraging HTTP for exposing web services. 
 
-
-
 # HATEOAS
 
 HATEOAS (hay-t-oas) stands for Hypermedia As The Engine Of Application State. The concept of this is to provide additional related meta-data (like links) when a resource is requested. 
@@ -436,11 +434,9 @@ public class FilterController
 
 ```
 
-
-
 # Versioning
 
-
+<TBD>
 
 # Entity
 

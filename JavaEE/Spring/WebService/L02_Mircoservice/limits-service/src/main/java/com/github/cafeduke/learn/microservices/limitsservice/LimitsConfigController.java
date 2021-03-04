@@ -9,10 +9,10 @@ public class LimitsConfigController
 {
   @Autowired
   private LimitsConfigBean config;
-  
+
   @GetMapping("/limits")
-  public LimitsConfigBean getLimitsConfig ()
+  public LimitsConfigBean getLimitsConfig()
   {
-    return new LimitsConfigBean(config.getMinimum(), config.getMaximum());
+    return config;
   }
 }

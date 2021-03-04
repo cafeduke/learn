@@ -5,48 +5,40 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.1</version>
+		<version>2.4.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.github.cafeduke.learn.microservices</groupId>
 	<artifactId>limits-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>limits-service</name>
-	<description>Limits service microservice</description>
-
+	<description>LimitsService for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
-		<spring-cloud.version>2020.0.0-RC1</spring-cloud.version>
+		<spring-cloud.version>2020.0.1</spring-cloud.version>
 	</properties>
-
+  
 	<dependencies>
   
+    <!-- SpringActuator: Monitor and manage applications -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
     
+    <!-- SpringWeb -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
     
+    <!-- ConfigClient: Connect to SpringCloudConfigServer   -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
 
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.fasterxml.jackson.dataformat</groupId>
-          <artifactId>jackson-dataformat-xml</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-
+    <!-- DevTools: LiveReload, Config for enhanced dev -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -60,12 +52,7 @@
 			<scope>test</scope>
 		</dependency>
     
-    <dependency>
-       <groupId>org.springframework.cloud</groupId>
-       <artifactId>spring-cloud-starter-bootstrap</artifactId>
-    </dependency>    
 	</dependencies>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -86,13 +73,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<repositories>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-		</repository>
-	</repositories>
 
 </project>
