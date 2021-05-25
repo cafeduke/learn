@@ -1,0 +1,13 @@
+# CurrencyCalculationService
+json-get http://localhost:8100/currency-calculator/from/USD/to/INR/quantity/3
+
+# CurrencyExchangeService
+json-get http://localhost:8000/currency-exchange/from/USD/to/INR
+json-get http://localhost:8001/currency-exchange/from/USD/to/INR
+
+# Eureka naming server
+http://localhost:8761/
+
+# API Gateway
+ json-get http://localhost:8765/CURRENCY-CALCULATION-SERVICE/currency-calculator/from/USD/to/INR/quantity/3
+ json-get http://localhost:8765/currency-calculator/from/USD/to/INR/quantity/3

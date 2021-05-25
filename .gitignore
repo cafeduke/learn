@@ -9,3 +9,9 @@
 **/mvnw
 **/mvnw.cmd
 **/node_modules/
+**/.project/
+**/.project
+**/.classpath/
+**/.classpath
+**/.settings/
+**/.settings
