@@ -1,4 +1,4 @@
-# apiVersion specifies the version number adhered by the config. Each version defines a set of k8s objects that are valid for the said version. 
+# apiVersion specifies the version number adhered by the config. Each version defines a set of k8s objects that are valid for the said version.
 apiVersion: apps/v1
 
 # The kind of K8s object is 'Deployment'
@@ -17,7 +17,7 @@ spec:
   selector:
     matchLabels:
       component: web
-  
+
   # The template configuration to be used for every pod created by this deployment
   #  - The contents of the template section is similar to Pod. (Pod has similar metadata and spec sub sections)
   # Every pod that is created using this deployment shall have
@@ -27,11 +27,10 @@ spec:
     metadata:
       labels:
         component: web
-    
+
     spec:
       containers:
         - name: web-server
           image: raghubs81/multi-web-server
           ports:
             - containerPort: 3000
-      

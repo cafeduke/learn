@@ -1,0 +1,108 @@
+version: '3.7'
+services:
+
+  currency-exchange:
+    image: raghubs81/learn-currency-exchange-service:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8000:8000"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+      - zipkin-server
+    # Properties configured for currency-exchange-servcie in application.properties are overridden using the following env variable.
+    # The name of the property is in upper-case. 
+    # Note that the value uses the service-name (naming-server) as hostname.      
+    environment:
+      - EUREKA.CLIENT.SERVICEURL.DEFAULTZONE=http://naming-server:8761/eureka
+      - SPRING.ZIPKIN.BASEURL=http://zipkin-server:9411
+      # Inform Zipkin to use rabbit
+      - SPRING_ZIPKIN_SENDER_TYPE=rabbit
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      # Inform Zipkin where to find rabbit
+      # The format is amqp://<user>:<password>@<host>:<port>
+      - RABBIT_URI=amqp://guest:guest@rabbitmq:5672
+
+  currency-calculation:
+    image: raghubs81/learn-currency-calculation-service:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8100:8100"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+      - zipkin-server
+    # Properties configured for currency-calculation-servcie in application.properties are overridden using the following env variable.
+    # The name of the property is in upper-case. 
+    # Note that the value uses the service-name (naming-server) as hostname.      
+    environment:
+      - EUREKA.CLIENT.SERVICEURL.DEFAULTZONE=http://naming-server:8761/eureka
+      - SPRING.ZIPKIN.BASEURL=http://zipkin-server:9411
+      # Inform Zipkin to use rabbit
+      - SPRING_ZIPKIN_SENDER_TYPE=rabbit
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      # Inform Zipkin where to find rabbit
+      # The format is amqp://<user>:<password>@<host>:<port>
+      - RABBIT_URI=amqp://guest:guest@rabbitmq:5672
+
+  naming-server:
+    image: raghubs81/learn-naming-server:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8761:8761"
+    networks:
+      - currency-network
+
+  api-gateway:
+    image: raghubs81/learn-api-gateway:0.0.1-SNAPSHOT
+    mem_limit: 700m
+    ports:
+      - "8765:8765"
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+      - zipkin-server
+    # Properties configured for currency-calculation-servcie in application.properties are overridden using the following env variable.
+    # The name of the property is in upper-case. 
+    # Note that the value uses the service-name (naming-server) as hostname.      
+    environment:
+      - EUREKA.CLIENT.SERVICEURL.DEFAULTZONE=http://naming-server:8761/eureka
+      - SPRING.ZIPKIN.BASEURL=http://zipkin-server:9411
+      # Inform Zipkin to use rabbit
+      - SPRING_ZIPKIN_SENDER_TYPE=rabbit
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      # Inform Zipkin where to find rabbit
+      # The format is amqp://<user>:<password>@<host>:<port>
+      - RABBIT_URI=amqp://guest:guest@rabbitmq:5672
+
+  zipkin-server:
+    image: openzipkin/zipkin:2.23
+    mem_limit: 300m
+    ports:
+      - "9411:9411"
+    networks:
+      - currency-network
+    depends_on:
+      - rabbitmq
+    environment:
+      # The format is amqp://<user>:<password>@<host>:<port>
+      - RABBIT_URI=amqp://guest:guest@rabbitmq:5672
+          
+    #Restart if there is a problem starting up
+    restart: always 
+
+  rabbitmq:
+    image: rabbitmq:3.8.12-management
+    mem_limit: 300m
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - currency-network
+    restart: always 
+      
+networks:
+  currency-network:

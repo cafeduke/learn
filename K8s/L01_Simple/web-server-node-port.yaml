@@ -1,11 +1,11 @@
 # -----------------------------------------------------------------------------
 # Object Type : Service > NodePort
-# Description : A service to expose pods to outside world and/or other pods. 
+# Description : A service to expose pods to outside world and/or other pods.
 #               A NodePort is analogous to site-to-server mapping
 # -----------------------------------------------------------------------------
 
-# The version number the config adheres to. 
-# Each version defines a set of k8s objects that are valid for the said version. 
+# The version number the config adheres to.
+# Each version defines a set of k8s objects that are valid for the said version.
 apiVersion: v1
 
 # The kind (broad classification type) of k8s object we are creating with 'this' configuration file.
@@ -14,7 +14,7 @@ apiVersion: v1
 # Kind of k8s objects:
 # ---------------------
 #  - Stateful
-#  - Replica Controller  
+#  - Replica Controller
 #  - Pod                 : Used to run a container
 #  - Service             : Setup networking (Has 4 sub-types)
 #    - ClusterIP
@@ -30,27 +30,27 @@ apiVersion: v1
 #
 # k8s Service
 # -----------
-#  - A k8s node can run many services (Eg: NodePort service exposes the node of a pod)  
+#  - A k8s node can run many services (Eg: NodePort service exposes the node of a pod)
 #  - The kubeproxy routes the request to the appropriate service.
 #  - A NodePort service directs requests to object(s) (In this case Pod object)
 kind: Service
 
 metadata:
   name: web-server-node-port
-  
+
 spec:
   type: NodePort
-  
+
   # port       : Port exposed for another k8s object inside our application (Internal listen port, for other k8s objects)
   # targetPort : Port targeted by this NodePort service (The origin-server port for this service)
   # nodePort   : Port exposed for outside world (External listen port, for outside world like browser)
   #              If not specified a random port in range 30000-32000 is assigned
-  ports: 
+  ports:
     - port: 3050
       targetPort: 3000
       nodePort: 31515
 
-  # This service is associated with object(s). 
+  # This service is associated with object(s).
   # Which one(es)? -- All those having the key:value pairs 'component:web'
   selector:
     component: web

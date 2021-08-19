@@ -4,7 +4,7 @@ class Animal:
   def __init__(self):
     self.varAnimal = 10
     print("[Animal] Inside Init")
-  
+
   def show(self):
     print("[Animal] varAnimal={}".format(self.varAnimal))
 
@@ -35,7 +35,7 @@ def main():
   print("-------------------------------------------------------------------------------")
   c = Cow()
   # c.show() -- ERROR: AttributeError: 'Cow' object has no attribute 'varAnimal'
-  
+
   print("-------------------------------------------------------------------------------")
   print("Elephant: Explictly call base constructor")
   print("-------------------------------------------------------------------------------")
@@ -49,4 +49,4 @@ def main():
   print(JersyCow.mro())
 
 if __name__ == '__main__':
-    main()      
+    main()

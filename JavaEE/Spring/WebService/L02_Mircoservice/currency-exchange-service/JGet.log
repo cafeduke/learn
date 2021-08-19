@@ -1,0 +1,11 @@
+##
+# [Date][Verbosity][Class][Method][ThreadId]
+# [Message]
+##
+
+[2021-05-28T22:04:45+0530] [INFO] [test.oracle.otd.common.tools.jget.JGet] [sendRequest] [1] 
+Executing JGet: -u http://localhost:8001/currency-exchange/from/USD/to/INR -sh -o /tmp/jget_body.txt -ho /tmp/jget_head.txt -rco /tmp/jget_code.txt
+
+[2021-05-28T22:04:45+0530] [INFO] [test.oracle.otd.common.tools.jget.RequestManager] [logReponseCode] [1] 
+ResponseCode=200
+

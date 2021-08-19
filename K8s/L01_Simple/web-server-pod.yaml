@@ -1,9 +1,9 @@
 # -----------------------------------------------------------------------------
 # Object Type : Pod
-# Description : 
+# Description :
 # -----------------------------------------------------------------------------
 
-# The version number the config adheres to. Each version defines a set of k8s objects that are valid for the said version. 
+# The version number the config adheres to. Each version defines a set of k8s objects that are valid for the said version.
 # For example, apiVersion 'v1' allows objects like componentStatus, configMap, Pod, Event, Namespace, etc
 apiVersion: v1
 
@@ -13,7 +13,7 @@ apiVersion: v1
 # Kind of k8s objects:
 # ---------------------
 # - Stateful
-# - Replica Controller  
+# - Replica Controller
 # - Pod                 : Used to run a container
 # - Service             : Setup networking (Has 4 sub-types)
 #   - ClusterIP
@@ -22,19 +22,19 @@ apiVersion: v1
 #   - Ingress
 kind: Pod
 
-# The name of the pod 
+# The name of the pod
 #   - A object is identified by its "name" (Eg: kubectl describe <object-kind> <object-name>)
 #   - Useful during logging
 # One or more labels (tags) associated with this pod.
-#   - NOTE: A label is a 'key:value' pair which are arbitrary (Any foo:bar will do). 
+#   - NOTE: A label is a 'key:value' pair which are arbitrary (Any foo:bar will do).
 metadata:
   name: web-server-pod
   labels:
     component: web
 
-# The spec (specification) of a Pod defines one or more tightly coupled (close knit) containers. 
-#   - NOTE: Pod should have containers that cannot exist without the other. 
-#     For example, server, backup manager (backup config), logger (backup logs).   
+# The spec (specification) of a Pod defines one or more tightly coupled (close knit) containers.
+#   - NOTE: Pod should have containers that cannot exist without the other.
+#     For example, server, backup manager (backup config), logger (backup logs).
 # The below config specifies an array of containers (Hence a '-' in the yaml). Each container has
 #   - name         : Name of the conatiner. Containers running inside the single pod can use 'name' to reference.
 #   - image        : The image location on docker-hub
@@ -43,5 +43,5 @@ spec:
   containers:
     - name: web-server
       image: raghubs81/multi-web-server
-      ports: 
+      ports:
         - containerPort: 3030
