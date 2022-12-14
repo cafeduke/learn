@@ -1,0 +1,74 @@
+##
+# Deployment
+# ----------
+#   .spec.matchLabels              : Serach components matching labels and link them to the deployment
+#   .spec.template                 : Contains metadata and spec (blueprint) for creating pods
+#   .spec.template.metadata.labels : Create pods as per template and tag given labels to each pod.
+#
+#   .spec.template.spec.containers.env[0].valueFrom.secretKeyRef.name : The name of the secret in mongo-express-secret.yml
+##
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-express
+  labels:
+    app: mongo-express
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-express
+  template:
+    metadata:
+      labels:
+        app: mongo-express
+    spec:
+      containers:
+        - name: mongo-express
+          image: mongo-express
+          ports:
+            - containerPort: 8081
+          env:
+            - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-username
+            - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-password
+            - name: ME_CONFIG_MONGODB_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_url
+
+---
+
+##
+# Service enabled for external clients
+# ------------------------------------
+# sepc.type
+#   - To make the service external service, the type would be 'LoadBalancer'
+#   - If we had ommited this, it would only have InternalIP
+#
+#  spec.ports
+#   - port       : Service InternalIP listen port
+#   - targetPort : Service target origin server pod's listen port (contianerPort of targetPod)
+#   - nodePort   : Service ExternalIP listen port (Should be in range 30000-32767)
+##
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+spec:
+  selector:
+    app: mongo-express
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+      nodePort: 30000

@@ -1,0 +1,83 @@
+##
+# Deployment
+# ----------
+#   .spec.matchLabels              : Serach components matching labels and link them to the deployment
+#   .spec.template                 : Contains metadata and spec (blueprint) for creating pods
+#   .spec.template.metadata.labels : Create pods as per template and tag given labels to each pod.
+##
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd
+  labels:
+    app: httpd
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: httpd
+  template:
+    metadata:
+      labels:
+        app: httpd
+    spec:
+      containers:
+        - name: httpd
+          image: httpd:2.4
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: htdocs-volume
+              mountPath: /usr/local/apache2/htdocs
+            - name: cgibin-volume
+              mountPath: /usr/local/apache2/cgi-bin
+            - name: conf-volume
+              mountPath: /usr/local/apache2/conf
+      volumes:
+        - name: htdocs-volume
+          configMap:
+            name: htdocs-configmap
+        - name: cgibin-volume
+          configMap:
+            name: cgibin-configmap
+            defaultMode: 0755
+        - name: conf-volume
+          configMap:
+            name: conf-configmap
+
+---
+
+##
+# Service
+# -------
+# spec.ports.port
+#   - The port at which the current service is listening.
+#   - Other services have to contact this service at this port
+#   - In essence, it is the listen port for the service
+#
+# spec.ports.targetPort
+#   - This service shall forward any request recived to a target pod
+#   - This service shall expect that the target pod has container listening at targetPort
+#   - In essence, it is the origin server port for the service
+#   - So, the targetPort of service should match the spec.template.spec.containers.containerPort of the pod
+##
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-service
+spec:
+  selector:
+    app: httpd
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80
+      nodePort: 30000
+
+##
+# ConfigMap
+# ---------
+#   - htdocs-configmap : Config map by this name having htdocs entries has to be created externally
+##

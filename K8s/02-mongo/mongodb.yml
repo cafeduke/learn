@@ -1,0 +1,70 @@
+##
+# Deployment
+# ----------
+#   .spec.matchLabels              : Serach components matching labels and link them to the deployment
+#   .spec.template                 : Contains metadata and spec (blueprint) for creating pods
+#   .spec.template.metadata.labels : Create pods as per template and tag given labels to each pod.
+#
+#   .spec.template.spec.containers.env[0].valueFrom.secretKeyRef.name : The name of the secret in mongodb-secret.yml
+##
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+  labels:
+    app: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      labels:
+        app: mongodb
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-password
+
+---
+
+##
+# Service
+# -------
+# spec.ports.port
+#   - The port at which the current service is listening.
+#   - Other services have to contact this service at this port
+#   - In essence, the listen port for the service
+#
+# spec.ports.targetPort
+#   - This service shall forward any request recived to a target pod
+#   - This service shall expect that the target pod has container listening at targetPort, i.e 8080
+#   - In essence, the origin server port for the service
+#   - So, the targetPort of service should match the spec.template.spec.containers.containerPort of the pod
+##
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017

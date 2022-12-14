@@ -1,0 +1,9 @@
+#!/usr/bin/perl
+
+print "Content-type: text/plain\n\n";
+foreach my $var (sort(keys(%ENV))) {
+    my $val = $ENV{$var};
+    $val =~ s|\n|\\n|g;
+    $val =~ s|"|\\"|g;
+    print "${var}=\"${val}\"\n";
+}
