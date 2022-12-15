@@ -13,9 +13,11 @@ This document provides the basic K8s setup using `httpd`  (Apache HTTP Server) c
 ```mermaid
 flowchart TB
   a1[httpd]---a2(Service):::service
-  a1(httpd)---a3(ConfigMap):::service
+  a1(httpd)---a3(ConfigMap):::config
   
-  classDef service fill:#96c8ff;
+  classDef node    fill:#b4dcff,color:black,stroke:#2864dc;
+  classDef service fill:#2864dc,color:white,stroke:#64a0ff;
+  classDef config  fill:#00a078,color:white,stroke:#00c8a0;
 ```
 
 
