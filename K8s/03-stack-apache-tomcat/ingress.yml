@@ -1,0 +1,63 @@
+##
+# Ingress (HTTP Backend)
+#   - An ingress container that can route to HTTP services
+##
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: duke-ingress-backend-plain
+  namespace: default
+  annotations:
+    ingressClassName: "nginx"
+spec:
+  rules:
+    - host: duke.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /hh
+            backend:
+              service:
+                name: apache-service
+                port:
+                  number: 8801
+          - pathType: Prefix
+            path: /hs
+            backend:
+              service:
+                name: apache-service
+                port:
+                  number: 8802
+
+---
+##
+# Ingress (HTTPS Backend)
+#   - An ingress container that can route to HTTPS services
+##
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: duke-ingress-backend-secure
+  namespace: default
+  annotations:
+    ingressClassName: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+spec:
+  rules:
+    - host: duke.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /ss
+            backend:
+              service:
+                name: apache-service
+                port:
+                  number: 7701
+          - pathType: Prefix
+            path: /sh
+            backend:
+              service:
+                name: apache-service
+                port:
+                  number: 7702

@@ -1,0 +1,12 @@
+##
+# [Date][Verbosity][Class][Method][ThreadId]
+# [Message]
+##
+
+[2024-07-04T19:17:03+0530] [INFO] [com.github.cafeduke.jget.JGet] [sendRequest] [1] 
+Executing JGet: -rco /tmp/jget.resp.txt -u https://192.168.49.2:30071/ss/duke/Snoop.jsp
+
+[2024-07-04T19:17:04+0530] [INFO] [com.github.cafeduke.jget.RequestManager] [logReponseCode] [1] 
+ResponseCode=500
+
+
