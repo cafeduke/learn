@@ -85,7 +85,7 @@ cd learn/K8s/03-stack-apache-tomcat
 cd images/cafeduke-tomcat
 build.sh minikube
 
-# Build Apacge
+# Build Apache
 cd images/cafeduke-apache
 build.sh minikube
 
