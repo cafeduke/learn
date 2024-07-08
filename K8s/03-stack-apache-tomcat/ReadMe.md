@@ -1,23 +1,42 @@
+
+**Table Of Contents**
+- [Introduction](#introduction)
+- [Overview](#overview)
+- [Setup Environment](#setup-environment)
+- [Build container images](#build-container-images)
+- [K8s services configuration](#k8s-services-configuration)
+  - [Tomcat](#tomcat)
+  - [Apache](#apache)
+  - [Ingress](#ingress)
+- [K8s objects](#k8s-objects)
+  - [Create K8s cluster](#create-k8s-cluster)
+  - [Monitor K8s objects](#monitor-k8s-objects)
+- [Test](#test)
+  - [Configure DNS lookup](#configure-dns-lookup)
+  - [Request via Ingress](#request-via-ingress)
+  - [Request via service](#request-via-service)
+
+
 # Introduction
 
 This document describes the deployment created by the project
 
 - Tomcat
   - A Tomcat image `cafeduke/tomcat:9` is built  to include a web-app `duke.war`,  JKS and custom container configuration exposing HTTP and HTTPS virtual-hosts (VH)
-  - K8s Deployment creates replicas of Tomcat pods from image `cafeduke/tomcat:9` 
+  - K8s Deployment creates replicas of Tomcat pods from image `cafeduke/tomcat:9`
   - K8s Service `tomcat-service` load-balances Tomcat pods. The service provides HTTP and HTTPS endpoints
-  - An Apache image `cafeduke/apache:latest` is built  to include static files in `htdocs` and certs. 
+  - An Apache image `cafeduke/apache:latest` is built  to include static files in `htdocs` and certs.
 - Apache
   - The Apache image `cafeduke/apache:latest`  has configuration that creates 4 VHs to test all combinations of front-end/back-end HTTP/HTTPS.
-  - The VHs of Apache route the requests to appropriate `tomcat-service` 
+  - The VHs of Apache route the requests to appropriate `tomcat-service`
   - K8s ConfigMap is built to store the Apache configuration in K8s cluster.
-  - K8s Deployment creates replicas of Apache pods from image `cafeduke/apache:latest` 
+  - K8s Deployment creates replicas of Apache pods from image `cafeduke/apache:latest`
   - K8s Service `apache-service` load-balances Apache pods. The service provides 4 endpoints (one for each combination of front-end/back-end HTTP/HTTPS)
 - Ingress
-  - The ingress accepts traffic from the client (browser) and routes them to services based on routing rules 
+  - The ingress accepts traffic from the client (browser) and routes them to services based on routing rules
   - Ingress shall be the single point of entry into the K8s cluster
   - Routing rules are configured in Ingress
-  - An Ingress controller can either serve HTTP backend or HTTPS backend. We have both HTTP and HTTPS Apache services 
+  - An Ingress controller can either serve HTTP backend or HTTPS backend. We have both HTTP and HTTPS Apache services
   - Thus, two Ingress controllers are created.
     - Ingress `duke-ingress-backend-plain` routes to HTTP services
     - Ingress `duke-ingress-backend-secure` routes to HTTPS services
@@ -28,21 +47,21 @@ This document describes the deployment created by the project
 ```mermaid
 flowchart LR
   subgraph k8s-cluster
-    ig(Ingress)    
+    ig(Ingress)
     a1(Apache)
     a2(Service):::service
-    a3(ConfigMap):::config    
-	t1(Tomcat) 
-    t2(Service):::service    
+    a3(ConfigMap):::config
+	t1(Tomcat)
+    t2(Service):::service
   end
-  
+
   b(Browser):::browser--->ig
   ig-.->a2
   a2-.->t2
   t1---t2
-  a1---a2  
-  a1---a3    
-  
+  a1---a2
+  a1---a3
+
 
   classDef node    fill:#b4dcff,color:black,stroke:#2864dc;
   classDef browser fill:#f8cf88,color:black,stroke:#f69f07;
@@ -58,7 +77,7 @@ flowchart LR
 - Start minikube and enable Ingress
 
 ```bash
-# 
+#
 > minikube version
 minikube version: v1.33.1
 commit: 5883c09216182566a63dff4c326a6fc9ed2982ff
@@ -96,11 +115,11 @@ cafeduke/apache                                      latest     b8d0d48383c6   4
 cafeduke/tomcat                                      9          ce152c1f0961   41 hours ago    456MB
 ```
 
-# K8s services configuration 
+# K8s services configuration
 
 ## Tomcat
 
-`Deployment` creates replicas of pods containing stateless container `tomcat`. 
+`Deployment` creates replicas of pods containing stateless container `tomcat`.
 
 ```yaml
 # -------------------------------------------------------------------------------------------------
@@ -167,7 +186,7 @@ spec:
 
 ## Apache
 
-`Deployment` creates replicas of pods containing stateless container `apache`. 
+`Deployment` creates replicas of pods containing stateless container `apache`.
 
 ```yaml
 # -------------------------------------------------------------------------------------------------
@@ -417,7 +436,7 @@ https://duke.com:443/sh/duke/hello.jsp, ResponseCode=200
 https://duke.com:443/ss/duke/hello.jsp, ResponseCode=200
 ```
 
-## Request via service 
+## Request via service
 
 OHS service cannot be accessed from outside the K8s cluster. Ingress is the single point of contact for the outside world. Thus, we need to SSH into the cluster.
 
@@ -429,7 +448,7 @@ OHS service cannot be accessed from outside the K8s cluster. Ingress is the sing
 
 # apache-service IP = 10.103.106.136
 $ curl -I http://10.103.106.136:8801/hh/duke/hello.jsp
-HTTP/1.1 200 
+HTTP/1.1 200
 Date: Fri, 05 Jul 2024 10:51:50 GMT
 Server: Apache/2.4.41 (Unix) OpenSSL/1.1.1d
 Content-Type: text/html;charset=windows-1252
@@ -441,7 +460,7 @@ Set-Cookie: JSESSIONID=DBB21CA5AA8EFE8F29476CDD887A7A8F; Path=/duke; HttpOnly
 
 # tomcat-service IP = 10.110.221.19
 curl -I http://10.110.221.19:18801/duke/hello.jsp
-HTTP/1.1 200 
+HTTP/1.1 200
 Set-Cookie: JSESSIONID=C76E7D2F0C69E28DAAD7F91DC3CA01C8; Path=/duke; HttpOnly
 Content-Type: text/html;charset=windows-1252
 Transfer-Encoding: chunked
