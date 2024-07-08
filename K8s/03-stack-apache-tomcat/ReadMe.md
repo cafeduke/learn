@@ -252,9 +252,8 @@ spec:
 ## Ingress
 
 Ingress has routing rules to services. For the ingress the front-end communication is with the client (browser) and back-end communication is with services.
-
-	- An ingress controller can either handle HTTP services or HTTPS services
-	- Since we have both type of services, create two ingress controllers  -- One configured to route to HTTP services and other to HTTPS services
+- An ingress controller can either handle HTTP services or HTTPS services
+- Since we have both type of services, create two ingress controllers  -- One configured to route to HTTP services and other to HTTPS services
 
 ```yaml
 ##
