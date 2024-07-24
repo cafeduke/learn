@@ -1,5 +1,3 @@
-
-**Table Of Contents**
 - [Introduction](#introduction)
 - [Overview](#overview)
 - [Setup Environment](#setup-environment)
@@ -11,11 +9,15 @@
 - [K8s objects](#k8s-objects)
   - [Create K8s cluster](#create-k8s-cluster)
   - [Monitor K8s objects](#monitor-k8s-objects)
+- [Test Bypassing Ingress](#test-bypassing-ingress)
+  - [Configure Service type as LoadBalancer](#configure-service-type-as-loadbalancer)
+  - [Test using port/nodePort within/outside cluster](#test-using-portnodeport-withinoutside-cluster)
+    - [Port (8801) is NOT accessible OUTSIDE cluster. Use NodePort (30081)](#port-8801-is-not-accessible-outside-cluster-use-nodeport-30081)
+    - [Port (8801) is accessible INSIDE cluster](#port-8801-is-accessible-inside-cluster)
 - [Test](#test)
   - [Configure DNS lookup](#configure-dns-lookup)
   - [Request via Ingress](#request-via-ingress)
   - [Request via service](#request-via-service)
-
 
 # Introduction
 
@@ -403,6 +405,67 @@ grep duke.com /etc/hosts
 
 ```
 
+# Test Bypassing Ingress
+
+## Configure Service type as LoadBalancer
+
+```bash
+kubectl get all
+NAME                          READY   STATUS    RESTARTS      AGE
+pod/apache-794ddc8b5c-lnjqw   1/1     Running   4 (18d ago)   20d
+pod/apache-794ddc8b5c-lwl2b   1/1     Running   4 (18d ago)   20d
+pod/tomcat-696dbc9587-4xx6s   1/1     Running   4 (18d ago)   20d
+pod/tomcat-696dbc9587-jqqkq   1/1     Running   4 (18d ago)   20d
+
+NAME                     TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                                                       AGE
+service/apache-service   LoadBalancer   10.103.106.136   <pending>     8801:30081/TCP,8802:30082/TCP,7701:30071/TCP,7702:30072/TCP   20d
+service/kubernetes       ClusterIP      10.96.0.1        <none>        443/TCP                                                       20d
+service/tomcat-service   ClusterIP      10.110.221.19    <none>        18801/TCP,17701/TCP                                           20d
+
+NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/apache   2/2     2            2           20d
+deployment.apps/tomcat   2/2     2            2           20d
+
+NAME                                DESIRED   CURRENT   READY   AGE
+replicaset.apps/apache-794ddc8b5c   2         2         2       20d
+replicaset.apps/tomcat-696dbc9587   2         2         2       20d
+```
+
+## Test using port/nodePort within/outside cluster
+
+### Port (8801) is NOT accessible OUTSIDE cluster. Use NodePort (30081)
+
+```bash
+> curl --connect-timeout 5 -I http://$(minikube ip):8801/hh/duke/hello.jsp
+curl: (7) Failed to connect to 192.168.49.2 port 8801 after 0 ms: Connection refused
+
+> curl --connect-timeout 5 -I http://$(minikube ip):30081/hh/duke/hello.jsp
+HTTP/1.1 200
+Date: Wed, 24 Jul 2024 23:20:40 GMT
+Server: Apache/2.4.41 (Unix) OpenSSL/1.1.1d
+Content-Type: text/html;charset=windows-1252
+Transfer-Encoding: chunked
+Set-Cookie: JSESSIONID=23CF84AEF37927651A028DC8705AF88E; Path=/duke; HttpOnly
+```
+
+### Port (8801) is accessible INSIDE cluster
+
+```bash
+minikube ssh
+
+> curl --connect-timeout 5 -I http://10.103.106.136:30081/hh/duke/hello.jsp
+curl: (28) Connection timeout after 5001 ms
+
+
+curl --connect-timeout 5 -I http://10.103.106.136:8801/hh/duke/hello.jsp
+HTTP/1.1 200
+Date: Wed, 24 Jul 2024 23:33:22 GMT
+Server: Apache/2.4.41 (Unix) OpenSSL/1.1.1d
+Content-Type: text/html;charset=windows-1252
+Transfer-Encoding: chunked
+Set-Cookie: JSESSIONID=9875BE1ED20A71B12C5F658A7ABACAEC; Path=/duke; HttpOnly
+```
+
 # Test
 
 ## Configure DNS lookup
@@ -467,6 +530,3 @@ Transfer-Encoding: chunked
 Date: Fri, 05 Jul 2024 10:52:25 GMT
 
 ```
-
-
-
