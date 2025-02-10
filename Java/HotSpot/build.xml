@@ -1,0 +1,30 @@
+<project>
+	
+   <target name="GenJar" depends="Compile">
+      <jar destfile="${basedir}/HotSpotDemo.jar">
+         <fileset dir="${dir.classes}" />
+         <manifest>
+            <attribute name="Main-Class" value="HotSpotDemo" />
+         </manifest>
+      </jar>
+   </target>	
+	
+   <target name="Compile"  depends="Properties">
+      <javac srcdir="${basedir}" destdir="${dir.classes}" includes="**/*.java">
+         <classpath>
+            <path refid="classpath" />
+         </classpath>
+      </javac> 
+   </target> 
+	
+   <target name="Properties">
+      
+      <property name="dir.source"  value="${basedir}/src" />
+      <property name="dir.classes"  value="${basedir}/classes" />
+      
+      <path id="classpath">
+         <pathelement location="${dir.classes}" />
+      </path>     
+   </target>  	
+
+</project>
