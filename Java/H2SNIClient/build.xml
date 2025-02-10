@@ -1,0 +1,52 @@
+<project name="H2SNIClient" default="all">
+
+  <target name="all" depends="clean,jar" />
+
+  <target name="jar" depends="compile">
+    <manifestclasspath property="manifest.classpath" jarfile="${jar.h2}">
+      <classpath refid="classpath" />
+    </manifestclasspath>
+
+    <jar destfile="${jar.h2}">
+      <fileset dir="${dir.classes}" />
+      <manifest>
+        <attribute name="Main-Class" value="com.oracle.ohsqa.H2SNIClient" />
+        <attribute name="Class-Path" value="${manifest.classpath}" />
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="compile" depends="properties">
+    <javac srcdir="${basedir}" destdir="${dir.classes}" includes="**/*.java">
+      <classpath>
+        <path refid="classpath" />
+      </classpath>
+    </javac>
+  </target>
+
+  <target name="clean" depends="properties">
+    <delete file="${jar.h2}" />
+    <delete>
+      <fileset dir="${dir.classes}" includes="**/*.class" />
+    </delete>
+    
+  </target>
+
+  <target name="properties">
+    <property name="dir.source" value="${basedir}/src" />
+    <property name="dir.classes" value="${basedir}/classes" />
+    <property name="dir.lib" value="${basedir}/lib" />
+    <property name="jar.h2" value="${basedir}/H2SNIClient.jar"/>
+    
+    <mkdir dir="${dir.lib}"/>
+    <mkdir dir="${dir.classes}"/>
+
+    <path id="classpath">
+      <pathelement location="${dir.classes}" />
+      <path>
+        <fileset dir="${dir.lib}" includes="**/*.jar" />
+      </path>
+    </path>
+  </target>
+
+</project>

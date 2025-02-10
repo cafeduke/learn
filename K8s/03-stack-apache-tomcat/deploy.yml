@@ -53,7 +53,7 @@ metadata:
 spec:
   selector:
     app: apache
-  type: ClusterIP          # Change to 'LoadBalancer' for testing
+  type: LoadBalancer          # Change to 'LoadBalancer' for testing
   ports:
     - name: hh-port
       protocol: TCP
@@ -127,12 +127,12 @@ spec:
       protocol: TCP
       port: 18801
       targetPort: 18801
-      nodePort: 30881
+      #nodePort: 30881
     - name: secure-port
       protocol: TCP
       port: 17701
       targetPort: 17701
-      nodePort: 30771
+      #nodePort: 30771
 ---
 
 
