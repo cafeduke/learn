@@ -1,12 +1,14 @@
 <project name="H2cClient" default="all">
 
+   <target name="all" depends="clean,jar" />
+
    <target name="jar" depends="compile">
-      
-      <manifestclasspath property="manifest.classpath" jarfile="${jar.h2c}">
+
+      <manifestclasspath property="manifest.classpath" jarfile="${path.jar}">
          <classpath refid="classpath" />
       </manifestclasspath>
-      
-      <jar destfile="${jar.h2c}">
+
+      <jar destfile="${path.jar}">
          <fileset dir="${dir.classes}" />
          <manifest>
             <attribute name="Main-Class" value="report.A360ReportManager" />
@@ -22,19 +24,22 @@
          </classpath>
       </javac>
    </target>
-  
-  <target name="clean">
-    <delete file="${jar.h2c}" />
-    <delete>
-      <fileset dir="${dir.classes}" includes="**/*.class" />
-    </delete>
-  </target>
 
-   <target name="Properties">
+   <target name="clean">
+      <delete file="${path.jar}" />
+      <delete failonerror="false">
+         <fileset dir="${dir.classes}" includes="**/*.class" />
+      </delete>
+   </target>
+
+   <target name="properties">
       <property name="dir.source" value="${basedir}/src" />
       <property name="dir.classes" value="${basedir}/classes" />
       <property name="dir.lib" value="${basedir}/lib" />
-      <property name="jar.h2c" value="${basedir}/H2cClient.jar"/>
+      <property name="path.jar" value="${basedir}/H2Client.jar" />
+
+      <mkdir dir="${dir.lib}" />
+      <mkdir dir="${dir.classes}" />
 
       <path id="classpath">
          <pathelement location="${dir.classes}" />
@@ -44,4 +49,4 @@
       </path>
    </target>
 
-</project>                                        
+</project>
