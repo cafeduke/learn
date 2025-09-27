@@ -132,7 +132,7 @@ See [01-helloworld](01-helloworld) to learn about creating a simple angular proj
     ├── node_modules         # Local repo of the node modules 
     ├── src                  # Source dir
     │    ├── app             # Application components, templates, etc
-    │    ├── index.html      # Main launch page 
+    │    ├── index.html      # Main launch page (with core style sheets like Bootstrap)
     │    ├── main.ts
     │    └── styles.css
     │
@@ -165,16 +165,67 @@ Make changes to `src/index.html` (under project root `01-helloworld`) and check 
 
 ![Component Interaction](images/AngularComponentInteraction.jpg)
 
-# Project: Sales
+# Project: Sales v1
 
-See [02-sales](04-sales) to learn about
+See [02-sales](04-sales) `Commit #ba33ebd` to learn about
 
 - Component generation
 - Linking Component to Main
 - Component class generation
-- Loop in template
+- Loop in template -- See [@for documentation](https://angular.dev/api/core/@for)
 
 # Styling with bootstrap 
 
-Fast and response web components with CSS and JS
+Fast and response web components with CSS and JS -- https://getbootstrap.com/
+
+- Update `src/index.html`  with link to bootstrap
+- Add overall container styling to `src/app/app.html`
+- Style individual component template `src/app/sales-person-list/sales-person-list.html`
+
+# Project: Sales v2
+
+See [02-sales](04-sales) `Commit #xxx` to learn about
+
+- Using conditionals -- See [@if documentation](https://angular.dev/api/core/@if)
+
+- Using pipes -- See [pipes documentation](https://angular.dev/guide/templates/pipes)
+
+  - Import `CommonModule` in component TS
+      ```typescript
+      /* To use pipes import and add CommonModule to the corresponding <component>.ts */
+      
+      // sales-person-list.ts
+      ...
+      ...
+      import { CommonModule } from '@angular/common';
+      
+      @Component({
+        ...  
+        imports: [CommonModule],
+      })
+      export class SalesPersonList 
+      {
+        ...
+        ...
+      }
+      ```
+
+  - Update template
+    ```html
+    <!-- Now use the pipe in the template -- Eg: currency formatting -->  
+    <!-- sales-person-list.html  -->
+    <table class="table table-hover">
+          ...
+          <td>{{ currPerson.salesVolume | currency:'USD' }}</td>
+    	  ...	
+    </table>
+    ```
+    
+    
+    
+    
+
+
+
+
 

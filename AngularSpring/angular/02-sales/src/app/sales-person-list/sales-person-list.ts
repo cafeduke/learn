@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { SalesPerson } from './sales-person';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sales-person-list',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './sales-person-list.html',
   styleUrl: './sales-person-list.css'
 })
-export class SalesPersonList {
+export class SalesPersonList
+{
   listSalesPerson: SalesPerson[] =
   [
     new SalesPerson("Raghu", "Nandan", "raghubs81@gmail.com", 50000),
