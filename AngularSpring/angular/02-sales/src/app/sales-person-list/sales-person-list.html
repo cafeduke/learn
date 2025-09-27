@@ -1,0 +1,21 @@
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Sales Volume</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (currPerson of listSalesPerson; track $index)
+    {
+    <tr>
+      <td>{{ currPerson.firstName }}</td>
+      <td>{{ currPerson.lastName }}</td>
+      <td>{{ currPerson.email }}</td>
+      <td>{{ currPerson.salesVolume }}</td>
+    </tr>
+    }
+  </tbody>
+</table>
