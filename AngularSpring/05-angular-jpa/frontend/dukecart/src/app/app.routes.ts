@@ -8,8 +8,9 @@ import { ProductDetails } from './components/product-details/product-details';
  */
 export const routes: Routes =
 [
+  { 'path':'search/:searchKey', component:ProductList },
   { 'path':'products/findByCategoryId/:categoryId', component:ProductList },
-  { 'path':'products/:productId', component:ProductDetails },
+  { 'path':'products/:id', component:ProductDetails },
   { 'path':'products', component:ProductList },
   { 'path':'', redirectTo:'/products', pathMatch:'full' },
   { 'path':'**', redirectTo:'/products', pathMatch:'full' }

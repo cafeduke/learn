@@ -11,25 +11,50 @@ export class ProductService
   constructor (private httpClient: HttpClient)   {  }
 
   /**
+   * Return an Observable array of Products based on search string
+   */
+  searchProducts (searchKey: string): Observable<Product[]>
+  {
+    const url = `${ProductService.BASE_URL}/search/findByNameContaining?name=${searchKey}`;
+    return this.getProductsFromUrl(url);
+  }
+
+  /**
    * Return an Observable array of Product for the given category
    */
-  getProducts (categoryId: number): Observable<Product[]>
+  getProductsByCategoryId (categoryId: number): Observable<Product[]>
   {
     const url = `${ProductService.BASE_URL}/search/findByCategoryId?categoryId=${categoryId}`;
-    return this.httpClient
-      .get<ProductArrayResponse>(url)
-      .pipe(map(response => response._embedded.products));
+    return this.getProductsFromUrl(url);
   }
 
   /**
    * Return an Observable Product given the product id
    */
-  getProduct (productId: number): Observable<Product>
+  getProductById (productId: number): Observable<Product>
   {
     const url = `${ProductService.BASE_URL}/${productId}`;
-    return this.httpClient
-      .get<Product>(url);
+    return this.getProductFromUrl(url);
   }
+
+  /**
+   * ----------------------------------------------------------------------------------------------
+   * Private methods
+   * ----------------------------------------------------------------------------------------------
+   */
+
+  private getProductsFromUrl (url: string): Observable<Product[]>
+  {
+    return this.httpClient
+      .get<ProductArrayResponse>(url)
+      .pipe(map(response => response._embedded.products));
+  }
+
+  private getProductFromUrl (url: string): Observable<Product>
+  {
+    return this.httpClient.get<Product>(url);
+  }
+
 }
 
 // Spring Data REST enforces Hypertext Application Language (HAL) convention -- which structures API responses to include links and embedded resources.

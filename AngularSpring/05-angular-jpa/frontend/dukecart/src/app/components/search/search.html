@@ -1,0 +1,5 @@
+<div class="form-header">
+  <!-- Here #txtSearch is a template reference variable: An angular mechanism to reference DOM -->
+  <input #txtSearch (keyup.enter)="doSearch(txtSearch.value)" class="au-input au-input-xl" type="text" name="search" />
+  <button class="au-btn-submit" (click)="doSearch(txtSearch.value)">Search</button>
+</div>

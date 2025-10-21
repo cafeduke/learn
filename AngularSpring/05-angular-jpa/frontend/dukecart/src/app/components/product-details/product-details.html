@@ -1,24 +1,49 @@
 <div class="main-content">
   <div class="section-content section-content-p30">
     <div class="container-fluid">
-
       <div class="card">
-        <img src="{{ product.imageUrl }}" class="card-img-top img-detail" />
-        <div class="card-body">
-          <h5 class="card-title">{{ product.name }}</h5>
-          <p class="card-text">{{ product.description }}</p>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item text-center">
-            <span class="price-detail badge bg-warning text-dark">{{ product.unitPrice }}</span>
-          </li>
-          <li class="list-group-item text-center">{{ product.sku }}</li>
-        </ul>
-        <div class="card-body text-center">
-          <a href="#" class="primary-btn mb-3">Add to cart</a>
-        </div>
-      </div>
 
+        <div class="card-header">
+          <h3 class="card-title">{{ product.name }}</h3>
+        </div>
+
+        <img src="{{ product.imageUrl }}" class="card-img-top img-detail" />
+
+        <!-- Start of card container -->
+        <div class="card-body container">
+
+          <div class="row">
+            <div class="col-3">&nbsp;</div>
+            <div class="col-3 d-flex justify-content-end align-items-center">
+              <div class="price-detail badge bg-warning text-dark">{{ product.unitPrice | currency:'USD' }}</div>
+            </div>
+            <div class="col-3 d-flex justify-content-start align-items-center">
+              <a href="#" class="primary-btn">Add to cart</a>
+            </div>
+            <div class="col-3">&nbsp;</div>
+          </div>
+
+          <hr />
+
+          <div class="row">
+            <div class="col-12">
+              <h4 class="card-subtitle">Description</h4>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <p class="card-text">{{ product.description }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <a routerLink="/products">Back to product list</a>
+        </div>
+
+      </div>
+      <!-- End of card container -->
     </div>
+    <!-- End of card -->
   </div>
-</div>
