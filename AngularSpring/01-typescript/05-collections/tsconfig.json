@@ -1,0 +1,35 @@
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+
+    // Updated by Raghu
+    "module": "nodenext",
+    "target": "es2024",
+    "types": [],
+    "lib": ["dom", "es2024"],
+
+    // Other Outputs
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // Recommended Options
+    "strict": true,
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true,
+
+    // Added by Raghu
+    "noEmitOnError": true,           // Do not create .js file if there are compilation errors in .ts
+  },
+
+  "files" : [
+    "01-map.ts"
+  ]
+}
