@@ -1,4 +1,4 @@
-import { Injectable, resource } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Product } from '../model/product';
@@ -8,23 +8,26 @@ export class ProductService
 {
   private static readonly BASE_URL = "http://localhost:9090/dukecart/products";
 
-  constructor (private httpClient: HttpClient)   {  }
+  // Dependency injection
+  private httpClient = inject(HttpClient);
+
+  constructor ()   {  }
 
   /**
    * Return an Observable array of Products based on search string
    */
-  searchProducts (searchKey: string): Observable<Product[]>
+  searchProductsPaginate (searchKey: string, pageIndex: number, pageSize: number): Observable<ProductListJSON>
   {
-    const url = `${ProductService.BASE_URL}/search/findByNameContaining?name=${searchKey}`;
+    const url = `${ProductService.BASE_URL}/search/findByNameContaining?name=${searchKey}&page=${pageIndex}&size=${pageSize}`;
     return this.getProductsFromUrl(url);
   }
 
   /**
-   * Return an Observable array of Product for the given category
+   * Return an Observable array of Product for the given category and page details
    */
-  getProductsByCategoryId (categoryId: number): Observable<Product[]>
+  getProductsByCategoryIdPaginate (categoryId: number, pageIndex: number, pageSize: number): Observable<ProductListJSON>
   {
-    const url = `${ProductService.BASE_URL}/search/findByCategoryId?categoryId=${categoryId}`;
+    const url = `${ProductService.BASE_URL}/search/findByCategoryId?categoryId=${categoryId}&page=${pageIndex}&size=${pageSize}`;
     return this.getProductsFromUrl(url);
   }
 
@@ -43,11 +46,11 @@ export class ProductService
    * ----------------------------------------------------------------------------------------------
    */
 
-  private getProductsFromUrl (url: string): Observable<Product[]>
+  private getProductsFromUrl (url: string): Observable<ProductListJSON>
   {
     return this.httpClient
-      .get<ProductArrayResponse>(url)
-      .pipe(map(response => response._embedded.products));
+      .get<ProductListJSON>(url)
+      .pipe(map(response => response));
   }
 
   private getProductFromUrl (url: string): Observable<Product>
@@ -58,10 +61,17 @@ export class ProductService
 }
 
 // Spring Data REST enforces Hypertext Application Language (HAL) convention -- which structures API responses to include links and embedded resources.
-interface ProductArrayResponse
+interface ProductListJSON
 {
   _embedded:
   {
     products: Product[];
+  },
+  page:
+  {
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    number: number;
   }
 }

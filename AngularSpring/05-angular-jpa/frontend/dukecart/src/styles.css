@@ -118,6 +118,7 @@ a, a:hover {
 .main-content {
   padding-top: 116px;
   min-height: 100vh;
+  background-color: rgb(0, 80, 100);
 }
 
 aside.menu-sidebar.d-none.d-lg-block.clr {
@@ -125,6 +126,10 @@ aside.menu-sidebar.d-none.d-lg-block.clr {
   z-index: 99999999;
   height: 75px;
   box-shadow: -2px 0 4px #0000003b
+}
+
+.w-90 {
+  width: 90%;
 }
 
 /*
@@ -756,6 +761,11 @@ table.table.table-bordered th {
   margin-left: 5px
 }
 
+.img-thumbnail {
+  max-width: 150px;
+}
+
+
 /*
  * ---------------------------------------------------------------------------------------------------
  * Product Details
@@ -777,7 +787,16 @@ table.table.table-bordered th {
   margin-top: 60px
 }
 
-/**/
+/*
+ * ---------------------------------------------------------------------------------------------------
+ * Product List
+ * ---------------------------------------------------------------------------------------------------
+ */
+
+#lblPageSize {
+  font-size: smaller;
+  color: darkslategray;
+}
 
 /*
  * ---------------------------------------------------------------------------------------------------
@@ -918,7 +937,7 @@ footer ul li {
 
   .main-content {
     padding-top: 50px;
-    padding-bottom: 100px
+    padding-bottom: 100px;
   }
 
   .cart-area.d-n {

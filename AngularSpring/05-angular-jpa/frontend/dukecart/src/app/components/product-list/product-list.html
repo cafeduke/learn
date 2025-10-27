@@ -1,26 +1,64 @@
 <div class="main-content">
-  <div class="section-content section-content-p30">
-    <div class="container-fluid">
-      <div class="row">
-        @for (product of listProduct; track $index)
-        {
-        <div class="col-md-3 d-flex flex-column align-items-center">
-          <a routerLink="/products/{{ product.id }}" routerLinkActive="active-link">
-            <img src="/{{ product.imageUrl }}" class="img-responsive" />
-          </a>
-          <a routerLink="/products/{{ product.id }}" routerLinkActive="active-link">
-            <h6 class="text-center">{{ product.name }}</h6>
-          </a>
-          <div class="price">{{ product.unitPrice | currency:'USD' }}</div>
-          <a href="#" class="primary-btn mb-3">Add to cart</a>
-        </div>
-        }
+  <div class="card w-90 mx-auto">
 
-        @if (listProduct.length == 0)
-        {
-        <div class="alert alert-warning col-md-12" role="alert"> No products found! </div>
-        }
+    <div class="card-body">
+      <div class="section-content section-content-p30">
+        <div class="container">
+          <div class="row">
+            @for (product of listProduct; track $index)
+            {
+            <div class="col-md-3 d-flex flex-column align-items-center">
+              <a routerLink="/products/{{ product.id }}" routerLinkActive="active-link">
+                <img src="/{{ product.imageUrl }}" class="img-responsive" />
+              </a>
+              <a routerLink="/products/{{ product.id }}" routerLinkActive="active-link">
+                <h6 class="text-center">{{ product.name }}</h6>
+              </a>
+              <div class="price">{{ product.unitPrice | currency:'USD' }}</div>
+              <button (click)="doAddToCart(product)" class="btn btn-primary btn-sm">Add to cart</button>
+            </div>
+            }
+
+            @if (listProduct.length == 0)
+            {
+            <div class="alert alert-warning col-md-12" role="alert"> No products found! </div>
+            }
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Begin card footer with pagination -->
+    <div class="card-footer">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-11">
+            <ngb-pagination class="d-flex justify-content-center"
+                            [(page)]="pageNumber"
+                            [pageSize]="pageSize"
+                            [collectionSize]="totalSize"
+                            [maxSize]="5"
+                            (pageChange)="refreshProductList()" />
+          </div>
+          <div class="col">
+            <select #pickPageSize id="pickPageSize" (change)="doUpdatePageSize(pickPageSize.value)">
+              <option>4</option>
+              <option selected="true">8</option>
+              <option>12</option>
+              <option>16</option>
+              <option>20</option>
+              <option>32</option>
+              <option>40</option>
+              <option>60</option>
+              <option>80</option>
+              <option>100</option>
+            </select>
+            <label for="pickPageSize" id="lblPageSize">Page Size</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End card footer with pagination -->
+
   </div>
 </div>

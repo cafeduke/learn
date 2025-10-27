@@ -1,0 +1,78 @@
+<div class="main-content">
+  <div class="container-fluid">
+
+    <div class="card">
+      @if (mapProductQuantity.size == 0)
+      {
+      <div class="alert alert-warning col-md-12" role="alert"> No products found! </div>
+      }
+      @else
+      {
+
+      <div class="container">
+
+        @for (entry of mapProductQuantity | keyvalue; track entry.key.id)
+        {
+
+        <!-- Product image -->
+        <div class="row border-bottom">
+          <div class="col-2 p-2">
+            <a routerLink="/products/{{ entry.key.id }}" routerLinkActive="active-link">
+              <img src="/{{ entry.key.imageUrl }}" class="img-responsive img-thumbnail" />
+            </a>
+          </div>
+
+          <!-- Product name and unit price -->
+          <div class="col p-2">
+            <div class="container h-100">
+              <div class="row h-50 align-items-end">
+                <div class="col">
+                  <h3 class="card-title">{{ entry.key.name }}</h3>
+                </div>
+              </div>
+              <div class="row h-50 align-items-start">
+                <div class="col">
+                  <div class="price-detail badge bg-warning text-dark">{{ entry.key.unitPrice | currency:'USD' }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quantity increment/decrement and sub-total -->
+          <div class="col-2 p-2">
+            <div class="container h-100">
+
+              <div class="row h-50 align-items-end">
+                <div class="col">
+                  <div class="input-group w-75 mx-auto mb-2">
+                    <button (click)="doRemoveFromCart(entry.key)" class="btn btn-sm btn-danger p-0" type="button"><i class="fa-solid fa-minus"></i></button>
+                    <span class="label flex-grow-1 align-self-center text-center">{{ entry.value }}</span>
+                    <button (click)="doAddToCart(entry.key)" class="btn btn-sm btn-success p-0" type="button"><i class="fa-solid fa-plus"></i></button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row h-50 align-items-start">
+                <div class="col text-center">
+                  <div class="price-detail badge bg-warning text-dark w-75">{{ doCalculateSubTotal(entry.key) | currency:'USD' }}</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Remove product -->
+          <div class="col-1">
+            <div class="d-flex h-100 align-items-center justify-content-center">
+              <button (click)="doRemoveAll(entry.key)" class="btn btn-sm btn-danger" type="button"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+
+      }
+    </div>
+
+  </div>
+</div>

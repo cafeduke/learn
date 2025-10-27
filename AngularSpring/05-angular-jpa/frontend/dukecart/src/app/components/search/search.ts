@@ -12,8 +12,6 @@ export class Search  implements OnInit
   // Dependency injection
   private router = inject(Router);
 
-  // Instance variables
-
   constructor () { }
 
   /**
@@ -21,11 +19,10 @@ export class Search  implements OnInit
    * The subscribe is invoked in async fashion, run in the background.
    * Once the data is available the product array is populated
    */
-  ngOnInit() { }
+  ngOnInit()   {  }
 
   doSearch (searchKey: string)
   {
-    console.log(`[search.ts] Search=${searchKey}`);
     this.router.navigateByUrl(`/search/${searchKey}`);
   }
 }

@@ -3,6 +3,7 @@ import { ProductService } from '../../services/product.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Product } from '../../model/product';
 import { CurrencyPipe } from '@angular/common';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -13,8 +14,9 @@ import { CurrencyPipe } from '@angular/common';
 export class ProductDetails implements OnInit
 {
   // Dependency injection
-  private productService = inject(ProductService);
   private route = inject(ActivatedRoute);
+  private productService = inject(ProductService);
+  private cartService = inject(CartService);
 
   // Instance variables
   id: number = 1;
@@ -36,5 +38,10 @@ export class ProductDetails implements OnInit
     this.productService
       .getProductById(this.id)
       .subscribe (data => this.product = data);
+  }
+
+  doAddToCart(product: Product): void
+  {
+    this.cartService.addToCart(product);
   }
 }
