@@ -765,6 +765,10 @@ table.table.table-bordered th {
   max-width: 150px;
 }
 
+.cart-item-title {
+  font: italic x-large Georgia;
+}
+
 
 /*
  * ---------------------------------------------------------------------------------------------------
@@ -1042,7 +1046,8 @@ footer ul li {
   }
 
   .main-content.page-m {
-    padding: 10% 0 !important
+    /* padding: 10% 0 !important */
+    padding: 10% 30% 10% 5%;
   }
 
   .header-mobile .navbar-mobile {

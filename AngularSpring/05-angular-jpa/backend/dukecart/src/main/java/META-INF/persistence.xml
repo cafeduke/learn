@@ -3,5 +3,7 @@
 	<persistence-unit name="dukecart">
 		<class>io.github.cafeduke.dukecart.entity.Category</class>
 		<class>io.github.cafeduke.dukecart.entity.Product</class>
+		<class>io.github.cafeduke.dukecart.entity.Country</class>
+		<class>io.github.cafeduke.dukecart.entity.State</class>
 	</persistence-unit>
 </persistence>

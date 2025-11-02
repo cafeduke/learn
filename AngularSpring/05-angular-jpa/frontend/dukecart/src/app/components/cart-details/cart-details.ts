@@ -56,6 +56,11 @@ export class CartDetails implements OnInit
     this.cartService.removeAll(product);
   }
 
+  doCheckout()
+  {
+
+  }
+
   private refreshCart (): void
   {
     this.mapProductQuantity = this.cartService.mapProductQuantity;

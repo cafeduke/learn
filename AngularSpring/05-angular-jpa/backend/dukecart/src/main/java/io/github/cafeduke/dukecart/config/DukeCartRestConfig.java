@@ -7,16 +7,19 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import io.github.cafeduke.dukecart.entity.Category;
+import io.github.cafeduke.dukecart.entity.Country;
 import io.github.cafeduke.dukecart.entity.Product;
+import io.github.cafeduke.dukecart.entity.State;
 
 @Configuration
 public class DukeCartRestConfig implements RepositoryRestConfigurer
 {
+    @SuppressWarnings("unused")
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors)
     {
         HttpMethod targetHttpMethod[] = {HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE};
-        Class<?> targetEntityClass[] = {Product.class, Category.class};
+        Class<?> targetEntityClass[] = {Product.class, Category.class, State.class, Country.class};
         
         config.exposeIdsFor(targetEntityClass);
         

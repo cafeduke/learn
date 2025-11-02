@@ -1,0 +1,260 @@
+<div class="main-content">
+
+  <!-- Begin card -->
+  <div class="card w-90 mx-auto" style="background-color: #e5e5e5;">
+
+    <!-- Begin card-body -->
+    <div class="card-body container">
+
+      <form [formGroup]="formCheckout" (ngSubmit)="doPay()">
+
+        <!-- Customer -->
+        <div formGroupName="customer" class="form-area mt-5">
+          <h3>Customer</h3>
+          <div class="row">
+            <div class="col-2">
+              <label>First Name</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="firstName" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>Last Name</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="lastName" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>Email</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="email" type="text" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping address -->
+        <div formGroupName="shippingAddress" class="form-area mt-5">
+          <h3>Shipping Address</h3>
+          <div class="row">
+            <div class="col-2">
+              <label>Street</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="street" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>City</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="city" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>State</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <select formControlName="state" type="text">
+                  @for(state of listStateShipping; track state.id)
+                  {
+                  <!-- Cannot use both value and ngValue for option -->
+                  <option [ngValue]="state">{{ state.name }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class=" row">
+            <div class="col-2">
+              <label>Country</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <select id="selectCountryShipping" formControlName="country" type="text" (change)="doShippingCountryChange()">
+                  @for(country of listCountry; track country.id)
+                  {
+                  <!-- Cannot use both value and ngValue for option -->
+                  <option [ngValue]="country">{{ country.name }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add check box to copy contents from shipping to billing -->
+        <div class="form-check mt-5">
+          <input class="form-check-input" type="checkbox" value="" id="checkCopyAddress" (change)="doCopyShippingAddressToBillingAddress($event)">
+          <label class="form-check-label" for="checkCopyAddress">Billing Address same as shipping address</label>
+        </div>
+
+        <!-- Billing address -->
+        <div formGroupName="billingAddress" class="form-area mt-5">
+          <h3>Billing Address</h3>
+          <div class="row">
+            <div class="col-2">
+              <label>Street</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="street" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>City</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="city" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>State</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <select formControlName="state" type="text">
+                  @for(state of listStateBilling; track state.id)
+                  {
+                  <option [ngValue]="state">{{ state.name }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>Country</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <select id="selectCountryBilling" formControlName="country" type="text" (change)="doBillingCountryChange()">
+                  @for(country of listCountry; track country.id)
+                  {
+                  <option [ngValue]="country">{{ country.name }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Credit card -->
+        <div formGroupName="creditCard" class="form-area mt-5">
+          <h3>Credit Card</h3>
+          <div class="row">
+            <div class="col-2">
+              <label>Card Type</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <select formControlName="cardType" type="text">
+                  <option>Mastercard</option>
+                  <option>Visa</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>Name On Card</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="nameOnCard" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>Card Number</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="cardNumber" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>Security Code</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="securityCode" type="text" />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>Expiration Month</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <select formControlName="expirationMonth" type="text">
+                  @for (currMonth of listExpirationMonth; track $index)
+                  {
+                  <option value="{{ currMonth }}">{{ currMonth | number:'2.0-0' }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-2">
+              <label>Expiration Year</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <select #selectYear formControlName="expirationYear" type="text" (change)="doExpirationYearChange(selectYear.value)">
+                  @for (currYear of listExpirationYear; track $index)
+                  {
+                  <option value="{{ currYear }}">{{ currYear }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-area mt-5">
+          <h3>Order Summary</h3>
+          <p>Total Quantity: {{ totalQuantity }}</p>
+          <p>Total Price: {{ totalPrice | currency:'USD'}}</p>
+        </div>
+
+        <!-- submit -->
+        <div class="text-center">
+          <button type="submit" class="btn btn-success">Pay</button>
+        </div>
+
+      </form>
+    </div>
+    <!-- End card-body -->
+
+  </div>
+  <!-- End card -->
+
+</div>

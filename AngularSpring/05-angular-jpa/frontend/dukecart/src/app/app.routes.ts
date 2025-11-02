@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProductList } from './components/product-list/product-list';
 import { ProductDetails } from './components/product-details/product-details';
 import { CartDetails } from './components/cart-details/cart-details';
+import { Checkout } from './components/checkout/checkout';
 
 /**
  * An empty path means request to the site without any path prefix ('http://<hostname>/')
@@ -9,6 +10,7 @@ import { CartDetails } from './components/cart-details/cart-details';
  */
 export const routes: Routes =
 [
+  { 'path':'checkout', component:Checkout },
   { 'path':'cart-details', component:CartDetails },
   { 'path':'search/:searchKey', component:ProductList },
   { 'path':'products/findByCategoryId/:categoryId', component:ProductList },
