@@ -31,7 +31,7 @@ export class CartDetails implements OnInit
   {
     this.refreshCart();
     this.cartService.subjectCartUpdate.subscribe(data => {
-      console.log("[CartDetails] subscriber notified");
+      console.log("[CartDetails] subscriber notified by CartService");
       this.refreshCart();
     });
   }

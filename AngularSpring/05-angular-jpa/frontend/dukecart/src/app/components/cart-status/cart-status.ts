@@ -23,9 +23,9 @@ export class CartStatus implements OnInit
   ngOnInit(): void
   {
     this.cartService.subjectCartUpdate.subscribe(data => {
-      console.log("[CartStatus] subscriber notified");
       this.totalPrice = this.cartService.totalPrice;
       this.totalQuantity = this.cartService.totalQuantity;
+      console.log("[CartStatus] subscriber notified by CartService totalPrice=" + this.totalPrice + " totalQuantity=" + this.totalQuantity);
     });
   }
 }

@@ -18,6 +18,7 @@
             <div class="col">
               <div class="input-space">
                 <input formControlName="firstName" type="text" />
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'First name', fc:firstName}"></ng-container>
               </div>
             </div>
           </div>
@@ -28,6 +29,7 @@
             <div class="col">
               <div class="input-space">
                 <input formControlName="lastName" type="text" />
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Last name', fc:lastName}"></ng-container>
               </div>
             </div>
           </div>
@@ -38,6 +40,7 @@
             <div class="col">
               <div class="input-space">
                 <input formControlName="email" type="text" />
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Email', fc:email}"></ng-container>
               </div>
             </div>
           </div>
@@ -53,6 +56,7 @@
             <div class="col">
               <div class="input-space">
                 <input formControlName="street" type="text" />
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Street', fc:shippingAddressStreet}"></ng-container>
               </div>
             </div>
           </div>
@@ -63,6 +67,7 @@
             <div class="col">
               <div class="input-space">
                 <input formControlName="city" type="text" />
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'City', fc:shippingAddressCity}"></ng-container>
               </div>
             </div>
           </div>
@@ -79,6 +84,7 @@
                   <option [ngValue]="state">{{ state.name }}</option>
                   }
                 </select>
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'State', fc:shippingAddressState}"></ng-container>
               </div>
             </div>
           </div>
@@ -95,6 +101,18 @@
                   <option [ngValue]="country">{{ country.name }}</option>
                   }
                 </select>
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Country', fc:shippingAddressCountry}"></ng-container>
+              </div>
+            </div>
+          </div>
+          <div class=" row">
+            <div class="col-2">
+              <label>ZipCode</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="zipcode" type="text" />
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Zipcode', fc:shippingAddressZipcode}"></ng-container>
               </div>
             </div>
           </div>
@@ -116,6 +134,7 @@
             <div class="col">
               <div class="input-space">
                 <input formControlName="street" type="text" />
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Street', fc:billingAddressStreet}"></ng-container>
               </div>
             </div>
           </div>
@@ -126,6 +145,7 @@
             <div class="col">
               <div class="input-space">
                 <input formControlName="city" type="text" />
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'City', fc:billingAddressCity}"></ng-container>
               </div>
             </div>
           </div>
@@ -141,6 +161,7 @@
                   <option [ngValue]="state">{{ state.name }}</option>
                   }
                 </select>
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'State', fc:billingAddressState}"></ng-container>
               </div>
             </div>
           </div>
@@ -156,7 +177,19 @@
                   <option [ngValue]="country">{{ country.name }}</option>
                   }
                 </select>
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Country', fc:billingAddressCountry}"></ng-container>
               </div>
+            </div>
+          </div>
+          <div class=" row">
+            <div class="col-2">
+              <label>ZipCode</label>
+            </div>
+            <div class="col">
+              <div class="input-space">
+                <input formControlName="zipcode" type="text" />
+              </div>
+              <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Zipcode', fc:billingAddressZipcode}"></ng-container>
             </div>
           </div>
         </div>
@@ -174,6 +207,7 @@
                   <option>Mastercard</option>
                   <option>Visa</option>
                 </select>
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Card Type', fc:cardType}"></ng-container>
               </div>
             </div>
           </div>
@@ -184,6 +218,7 @@
             <div class="col">
               <div class="input-space">
                 <input formControlName="nameOnCard" type="text" />
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Name on Card', fc:nameOnCard}"></ng-container>
               </div>
             </div>
           </div>
@@ -194,6 +229,7 @@
             <div class="col">
               <div class="input-space">
                 <input formControlName="cardNumber" type="text" />
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Card Number', fc:cardNumber}"></ng-container>
               </div>
             </div>
           </div>
@@ -204,6 +240,7 @@
             <div class="col">
               <div class="input-space">
                 <input formControlName="securityCode" type="text" />
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Security Code', fc:securityCode}"></ng-container>
               </div>
             </div>
           </div>
@@ -219,6 +256,7 @@
                   <option value="{{ currMonth }}">{{ currMonth | number:'2.0-0' }}</option>
                   }
                 </select>
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Expiration Month', fc:expirationMonth}"></ng-container>
               </div>
             </div>
           </div>
@@ -234,6 +272,7 @@
                   <option value="{{ currYear }}">{{ currYear }}</option>
                   }
                 </select>
+                <ng-container *ngTemplateOutlet="tplValidation; context: {fcName:'Expiration Year', fc:expirationYear}"></ng-container>
               </div>
             </div>
           </div>
@@ -258,3 +297,32 @@
   <!-- End card -->
 
 </div>
+
+<!--
+###################################################################################################
+  Templates
+###################################################################################################
+-->
+<ng-template #tplValidation let-fcName="fcName" let-fc="fc">
+
+  @if (fc?.invalid && (fc?.touched || fc?.dirty))
+  {
+  <div class="alert alert-danger mt-1">
+    @if (fc?.errors?.["required"] || fc?.errors?.["notOnlyWhitespace"])
+    {
+    {{ fcName }} is required.<br />
+    }
+
+    @if (fc?.errors?.["minlength"])
+    {
+    {{ fcName }} must be at-least 2 char long.<br />
+    }
+
+    @if (fc?.errors?.["pattern"])
+    {
+    Not valid {{ fcName | lowercase }}.<br />
+    }
+
+  </div>
+  }
+</ng-template>
