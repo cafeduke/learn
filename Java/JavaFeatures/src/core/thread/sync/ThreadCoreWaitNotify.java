@@ -1,7 +1,5 @@
 package core.thread.sync;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import util.Util;
 
 public class ThreadCoreWaitNotify implements Runnable
@@ -12,7 +10,7 @@ public class ThreadCoreWaitNotify implements Runnable
    
    public static final String THREAD_PREFIX = "t";   
    
-   private int chosenId = 1;
+   private int wantedId = 1;
    
    private int threadCount = 3;
    
@@ -44,27 +42,27 @@ public class ThreadCoreWaitNotify implements Runnable
             synchronized (getClass())
             {   
                // Check if the current thread's name matches the chosen thread
-               if (Thread.currentThread().getName().equals(THREAD_PREFIX + chosenId))
+               if (Thread.currentThread().getName().equals(THREAD_PREFIX + wantedId))
                {
                   // Increment to next thread
-                  Util.threadLog("Hello", "Id=" + chosenId, "RepeatCount=" + repeatCount);
-                  if (chosenId % threadCount == 0)
+                  Util.threadLog("Hello", "WantedId=" + wantedId, "RepeatCount=" + repeatCount);
+                  if (wantedId % threadCount == 0)
                      repeatCount++;
-                  chosenId = chosenId % threadCount + 1;
+                  wantedId = wantedId % threadCount + 1;
                   
                   // Notify all waiting threads.
-                  Util.threadLog("Notify", "Id=" + chosenId, "RepeatCount=" + repeatCount);
+                  Util.threadLog("Notify", "WantedId=" + wantedId, "RepeatCount=" + repeatCount);
                   getClass().notifyAll();
                }
                else
                {
-                  Util.threadLog("Wait", "Id=" + chosenId, "RepeatCount=" + repeatCount);
+                  Util.threadLog("Wait", "WantedId=" + wantedId, "RepeatCount=" + repeatCount);
                   getClass().wait();
-                  Util.threadLog("Awake", "Id=" + chosenId, "RepeatCount=" + repeatCount);
+                  Util.threadLog("Awake", "WantedId=" + wantedId, "RepeatCount=" + repeatCount);
                }
             }
          }
-         Util.threadLog("Done", "Id=" + chosenId, "RepeatCount=" + repeatCount);
+         Util.threadLog("Done", "WantedId=" + wantedId, "RepeatCount=" + repeatCount);
       }
       catch (InterruptedException e)
       {

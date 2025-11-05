@@ -41,7 +41,7 @@ class Animal
       if (this == obj)
          return true;      
       
-      if (this.getClass() != obj.getClass())
+      if (!(obj instanceof Animal))
          return false;
       
       Animal currA = (Animal)obj;
@@ -68,8 +68,8 @@ class Herbivorus extends Animal
       if (this == obj)
          return true;      
       
-      if (this.getClass() != obj.getClass())
-         return false;
+      if (!(obj instanceof Herbivorus))
+          return false;
       
       return y == ((Herbivorus)obj).y;
    }
@@ -94,8 +94,8 @@ class Cow extends Herbivorus
       if (this == obj)
          return true;      
       
-      if (this.getClass() != obj.getClass())
-         return false;
+      if (!(obj instanceof Cow))
+          return false;
       
       return z == ((Cow)obj).z;
    }   

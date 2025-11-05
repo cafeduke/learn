@@ -14,7 +14,22 @@ import java.util.*;
  *    - If two objects are equal according to the equals(Object) method, 
  *      then calling the hashCode method on each of the two objects must produce the same integer result. 
  * 
- *
+ * Analogy
+ * -------
+ * Twins have similar mannerisms. 
+ *  - Two people with similar mannerisms are not necessarily twins
+ *  - Two people with different mannerisms are definitely not twins
+ *  
+ * Equal objects have same hashCode
+ *  - Objects with same hashCode are not necessarily equal  
+ *  - Objects with different hashCode are definitely unequal
+ *  
+ * Note
+ * ----
+ * When an iterator has to loop through a collection and compare a given object (x) with current collection object (curr)
+ *  - if x.hashCode() != curr.hasCode() ==> These objects are unequal, move on to check the object in collection
+ *  - The above comparison is inexpensive as x.equals(curr) is expensive. Thus used by collection packages like HashSet
+ *  - Hence hashCode() needs to be overridden if equals is overridden  
  * </pre>
  */
 public class WhyToOverrideEqualsHashCode
