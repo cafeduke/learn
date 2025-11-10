@@ -1,5 +1,7 @@
 package lambda.basic;
 
+import java.util.*;
+
 public class L05MethodReference
 {
    public static class Lemon
@@ -10,7 +12,7 @@ public class L05MethodReference
       }
    }
    
-   public static class Sugar    
+   public static class Sugar
    {
       public Lemonade getLemonade (Lemon lemon)
       {
@@ -48,6 +50,7 @@ public class L05MethodReference
       
       CoolRefresher refresher = null;
       refresher = (l,s) -> l.getLemonade(s);
+      refresher.make(lemon, sugar);
       
       /**
        * Reference to a Static Method
@@ -87,7 +90,6 @@ public class L05MethodReference
        * --------------------------------------------------------------------------- 
        *    - Instance Method   : Lemon's getLemonade
        *    - Arbitrary Object  : Arbitrary Lemon Object ( not known during assignment )
-       *    -
        * 
        * Here,
        *  - CoolRefresher requires a method body to accept Lemon,Sugar and returns Lemonade.
@@ -96,9 +98,5 @@ public class L05MethodReference
        */
       refresher = Lemon::getLemonade;
       refresher.make(lemon, sugar);
-      
-
    }
-   
-
 }

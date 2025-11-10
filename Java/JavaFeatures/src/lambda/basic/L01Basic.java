@@ -66,6 +66,7 @@ public class L01Basic
        */
       Util.printHeading("Lambda - Comparator");      
       String names[] = new String[] {"apple", "zebra", "cat", "elephant", "dog", "ball"};
+      
       Comparator <String> comparatorLen = (s1, s2) -> s1.length () - s2.length ();
       Arrays.sort(names, comparatorLen);
       System.out.println(Arrays.asList(names));

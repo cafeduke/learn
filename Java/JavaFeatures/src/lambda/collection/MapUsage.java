@@ -20,24 +20,19 @@ public class MapUsage
       Util.printHeading ("Modify values for key=2 and key=11");
       map.compute(2, (key, val) -> "Two");
       map.compute(11, (key, val) -> "Eleven");
-      System.out.println("2->" + map.get(2));
-      System.out.println("11->" + map.get(11));      
+      map.forEach( (key,val) -> System.out.println (key + " -> " + val));
       
-      // Compute
+      // Compute, if null is returned the mapping is removed
       Util.printHeading ("Remove key=5");
-      map.compute(5, (key, val) -> "Key="+ key + ",Value=" + val);
-      System.out.println("5->" + map.get(5));      
-
+      map.compute(5, (key, val) -> null);
+      map.forEach( (key,val) -> System.out.println (key + " -> " + val));
       
       Util.printHeading ("Modify 12 if present");
       map.computeIfPresent(12, (key, val) -> "Twelve");
-      System.out.println("12->" + map.get(12));
       map.forEach( (key,val) -> System.out.println (key + " -> " + val));
       
       Util.printHeading ("Modify 13 if absent");
-      map.computeIfAbsent (13, (key) -> null);
-      System.out.println ("13->" + map.get(13));
-      
+      map.computeIfAbsent (13, (key) -> "Thirteen");
       map.forEach( (key,val) -> System.out.println (key + " -> " + val));
    }
 }

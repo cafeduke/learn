@@ -42,6 +42,6 @@ export class ProductDetails implements OnInit
 
   doAddToCart(product: Product): void
   {
-    this.cartService.addToCart(product);
+    this.cartService.addToCart(this.cartService.convertProductToCartItem(product));
   }
 }

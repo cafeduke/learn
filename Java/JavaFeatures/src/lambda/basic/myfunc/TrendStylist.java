@@ -10,5 +10,4 @@ public interface TrendStylist
    {
       return getLeftStyle() + mesg + getRightStyle ();
    }
-
 }

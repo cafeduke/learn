@@ -2,7 +2,7 @@ package lambda.basic.myfunc;
 
 @FunctionalInterface
 public interface Formula
-{
+{   
    public abstract int random (int a);
 
    // Extension Method
@@ -15,6 +15,5 @@ public interface Formula
    default double forthroot (double a)
    {
       return sqrt(sqrt (a));
-   }
-   
+   }   
 }

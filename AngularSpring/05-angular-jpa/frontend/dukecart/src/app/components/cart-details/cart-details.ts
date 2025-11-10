@@ -1,12 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { Product } from '../../model/product';
-import { CurrencyPipe, KeyValuePipe } from '@angular/common';
+import { CurrencyPipe} from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { CartItem } from '../../model/cart-item';
 
 @Component({
   selector: 'app-cart-details',
-  imports: [KeyValuePipe, RouterLink, CurrencyPipe],
+  imports: [RouterLink, CurrencyPipe],
   templateUrl: './cart-details.html',
   styleUrl: './cart-details.css'
 })
@@ -14,7 +15,7 @@ export class CartDetails implements OnInit
 {
   // Instance variables
   // ------------------
-  mapProductQuantity: Map<Product,number> ;
+  listCartItem: CartItem[] = [];
   totalPrice: number = 0.0;
   totalQuantity: number = 0;
 
@@ -24,7 +25,6 @@ export class CartDetails implements OnInit
 
   constructor ()
   {
-    this.mapProductQuantity = new Map<Product, number>();
   }
 
   ngOnInit(): void
@@ -36,24 +36,24 @@ export class CartDetails implements OnInit
     });
   }
 
-  doCalculateSubTotal (product: Product)
+  doCalculateSubTotal (item: CartItem)
   {
-    return product.unitPrice * (this.mapProductQuantity.get(product) || 0);
+    return item.unitPrice * item.quantity;
   }
 
-  doAddToCart (product: Product)
+  doAddToCart (item: CartItem)
   {
-    this.cartService.addToCart(product);
+    this.cartService.addToCart(item);
   }
 
-  doRemoveFromCart (product: Product)
+  doRemoveFromCart (item: CartItem)
   {
-    this.cartService.removeFromCart(product);
+    this.cartService.removeFromCart(item);
   }
 
-  doRemoveAll(product: Product)
+  doRemoveAll(item: CartItem)
   {
-    this.cartService.removeAll(product);
+    this.cartService.removeAll(item);
   }
 
   doCheckout()
@@ -63,7 +63,7 @@ export class CartDetails implements OnInit
 
   private refreshCart (): void
   {
-    this.mapProductQuantity = this.cartService.mapProductQuantity;
+    this.listCartItem = this.cartService.listCartItem;
     this.totalPrice = this.cartService.totalPrice;
     this.totalQuantity = this.cartService.totalQuantity;
   }

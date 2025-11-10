@@ -5,5 +5,9 @@
 		<class>io.github.cafeduke.dukecart.entity.Product</class>
 		<class>io.github.cafeduke.dukecart.entity.Country</class>
 		<class>io.github.cafeduke.dukecart.entity.State</class>
+		<class>io.github.cafeduke.dukecart.entity.Address</class>
+		<class>io.github.cafeduke.dukecart.entity.Customer</class>
+		<class>io.github.cafeduke.dukecart.entity.OrderItem</class>
+		<class>io.github.cafeduke.dukecart.entity.PurchaseOrder</class>
 	</persistence-unit>
 </persistence>

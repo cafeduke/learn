@@ -13,7 +13,7 @@ public class ListUsage
    public static void main (String arg[])
    {
       String name[] = new String [] {"orange", "apple", "chikko", "jackfruit", "mango", "lychee", "papaya", "banana"};
-      Consumer<String> doDisplay = (s) -> System.out.println(s);     
+      Consumer<String> doDisplay = (s) -> System.out.println(s);
            
       // Print contents of array/List
       Util.printHeading("forEach");
@@ -21,7 +21,7 @@ public class ListUsage
       
       // Sort an array/List
       Util.printHeading("sort");
-      List<String> list = Arrays.asList(name);
+      List<String> list = new ArrayList<String>(Arrays.asList(name));
       list.sort((sA, sB) -> sA.compareTo(sB));
       list.forEach(doDisplay);
       
@@ -36,8 +36,6 @@ public class ListUsage
       list = Arrays.asList(name);
       list.replaceAll((s) -> s.substring(0, 1).toUpperCase() + s.substring(1));
       list.forEach(doDisplay);
-      
-      
    }
    
    static void aFun(String str) throws Exception{

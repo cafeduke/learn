@@ -6,20 +6,20 @@
     <!-- Begin card-body -->
     <div class="card-body container">
 
-      @if (mapProductQuantity.size == 0)
+      @if (listCartItem.length == 0)
       {
       <div class="alert alert-warning col-md-12" role="alert"> No products found! </div>
       }
       @else
       {
 
-      @for (entry of mapProductQuantity | keyvalue; track entry.key.id)
+      @for (cartItem of listCartItem; track cartItem.productId)
       {
       <!-- Product image -->
       <div class="row border-bottom">
         <div class="col-2 p-2">
-          <a routerLink="/products/{{ entry.key.id }}" routerLinkActive="active-link">
-            <img src="/{{ entry.key.imageUrl }}" class="img-responsive img-thumbnail" />
+          <a routerLink="/products/{{ cartItem.productId }}" routerLinkActive="active-link">
+            <img src="/{{ cartItem.imageUrl }}" class="img-responsive img-thumbnail" />
           </a>
         </div>
 
@@ -28,12 +28,12 @@
           <div class="container h-100">
             <div class="row h-50 align-items-end">
               <div class="col">
-                <div class="card-title cart-item-title">{{ entry.key.name }}</div>
+                <div class="card-title cart-item-title">{{ cartItem.name }}</div>
               </div>
             </div>
             <div class="row h-50 align-items-start">
               <div class="col">
-                <div class="price-detail badge bg-warning text-dark">{{ entry.key.unitPrice | currency:'USD' }}</div>
+                <div class="price-detail badge bg-warning text-dark">{{ cartItem.unitPrice | currency:'USD' }}</div>
               </div>
             </div>
           </div>
@@ -46,16 +46,16 @@
             <div class="row h-50 align-items-end">
               <div class="col">
                 <div class="input-group w-75 mx-auto mb-2">
-                  <button (click)="doRemoveFromCart(entry.key)" class="btn btn-sm btn-danger p-0" type="button"><i class="fa-solid fa-minus"></i></button>
-                  <span class="label flex-grow-1 align-self-center text-center">{{ entry.value }}</span>
-                  <button (click)="doAddToCart(entry.key)" class="btn btn-sm btn-success p-0" type="button"><i class="fa-solid fa-plus"></i></button>
+                  <button (click)="doRemoveFromCart(cartItem)" class="btn btn-sm btn-danger p-0" type="button"><i class="fa-solid fa-minus"></i></button>
+                  <span class="label flex-grow-1 align-self-center text-center">{{ cartItem.quantity }}</span>
+                  <button (click)="doAddToCart(cartItem)" class="btn btn-sm btn-success p-0" type="button"><i class="fa-solid fa-plus"></i></button>
                 </div>
               </div>
             </div>
 
             <div class="row h-50 align-items-start">
               <div class="col text-center">
-                <div class="price-detail badge bg-warning text-dark w-75">{{ doCalculateSubTotal(entry.key) | currency:'USD' }}</div>
+                <div class="price-detail badge bg-warning text-dark w-75">{{ doCalculateSubTotal(cartItem) | currency:'USD' }}</div>
               </div>
             </div>
 
@@ -65,7 +65,7 @@
         <!-- Remove product -->
         <div class="col-1 p-2">
           <div class="d-flex h-100 align-items-center justify-content-center">
-            <button (click)="doRemoveAll(entry.key)" class="btn btn-sm btn-danger" type="button"><i class="fa-solid fa-trash"></i></button>
+            <button (click)="doRemoveAll(cartItem)" class="btn btn-sm btn-danger" type="button"><i class="fa-solid fa-trash"></i></button>
           </div>
         </div>
       </div>

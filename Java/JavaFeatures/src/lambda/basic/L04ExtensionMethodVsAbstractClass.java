@@ -15,7 +15,7 @@ public class L04ExtensionMethodVsAbstractClass
        * Works: The default method in interface is visible
        */
       MyFormulaA fA = new MyFormulaA ();
-      System.out.println(fA.sqrt(5));   
+      System.out.println(fA.sqrt(5));
       
       /**
        * Error: The default method in abstract class is not visible

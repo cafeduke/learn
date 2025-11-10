@@ -4,8 +4,15 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { LovService } from '../../services/lov.service';
 import { Country } from '../../model/country';
 import { State } from '../../model/state';
+import { PurchaseOrder } from '../../model/purchase-order';
 import { DukeValidatorUtil } from '../../shared/util/form.util';
 import { CartService } from '../../services/cart.service';
+import { CheckoutService } from '../../services/checkout.service';
+import { OrderItem } from '../../model/order-item';
+import { Address } from '../../model/address';
+import { Customer } from '../../model/customer';
+import { Purchase } from '../../model/purchase';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -21,6 +28,8 @@ export class Checkout implements OnInit
   // ---------------------
   private lovService = inject(LovService);
   private cartService = inject(CartService);
+  private checkoutService = inject(CheckoutService);
+  private router = inject(Router)
 
   // FromBuilder is used to build a FromGroup
   formBuilder = inject(FormBuilder);
@@ -220,8 +229,17 @@ export class Checkout implements OnInit
    * The following object shall have the JSON data populated
    * this.formCheckout.get("customer").value
    *
-   * An individual field can be obtained as follows
-   * this.formCheckout.get("customer").value.email
+   * An individual field can be obtained as follows:
+   *  - Get the customer email from form      ==> this.formCheckout.get("customer").value.email
+   *  - Get the customer email from getter    ==> this.customer?.value.email
+   *  - Get the shipping address using getter ==> this.shippingAddressState?.value.name
+   *
+   * The shipping address in the form can be converted JSON as follows
+   *  - JSON.stringify(this.formCheckout.get("shippingAddress")?.value))
+   *  - Issue:
+   *    - State and Country are objects (as indicated by state.ts and country.ts) and shall be expanded int JSON objects
+   *    - For storing the address in database (address.ts) state and country are strings
+   *
    */
   doPay(): void
   {
@@ -230,12 +248,67 @@ export class Checkout implements OnInit
     {
       // Mark all elements as modfied to trigger validation
       this.formCheckout.markAllAsTouched();
+      return;
     }
-    console.log("customer.email=" + this.formCheckout.get("customer")!.value.email);
-    console.log("shippingAddress.country=" + this.formCheckout.get("shippingAddress")!.value.country.name);
-    console.log("shippingAddress.state=" + this.formCheckout.get("shippingAddress")!.value.state.name);
-    console.log("billingAddress.country=" + this.formCheckout.get("billingAddress")!.value.country.name);
-    console.log("billingAddress.state=" + this.formCheckout.get("billingAddress")!.value.state.name);
 
+    // Populate the purchase object
+    // ----------------------------
+
+    // Create PurchaseOrder object
+    let purchaseOrder :PurchaseOrder = { totalQuantity: this.totalQuantity, totalPrice: this.totalPrice };
+
+    // Create OrderItem[]  objects
+    let orderItems :OrderItem[] = this.cartService.listCartItem.map(cartItem => this.checkoutService.convertCartItemToOrderItem(cartItem));
+
+    // Create Customer object
+    let customer :Customer = this.formCheckout.controls['customer'].value;
+
+    // Create shippingAddress Address object
+    let shippingAddress: Address = this.formCheckout.controls['shippingAddress'].value;
+    shippingAddress.state = this.shippingAddressState?.value.name;
+    shippingAddress.country = this.shippingAddressCountry?.value.name;
+
+    // Create billingAddress Address object
+    let billingAddress: Address = this.formCheckout.controls['billingAddress'].value;
+    billingAddress.state = this.billingAddressState?.value.name;
+    billingAddress.country = this.billingAddressCountry?.value.name;
+
+    // Create Purchase object
+    let purchase :Purchase =
+    {
+      customer: customer,
+      shippingAddress: shippingAddress,
+      billingAddress: billingAddress,
+      purchaseOrder: purchaseOrder,
+      orderItems: orderItems
+    };
+
+    this.checkoutService.placeOrder(purchase).subscribe (
+    {
+      next: response =>
+      {
+        alert(`Order placed successfully. OrderTrackingNumber=${response.orderTrackingNumber}`);
+
+        // reset the cart
+        this.resetCart();
+      },
+      error: err =>
+      {
+        alert(`Error placing order Error=${err.message}`);
+      }
+    });
   }
+
+  private resetCart ()
+  {
+    // reset cart data
+    this.cartService.emptyCart();
+
+    // reset checkout form
+    this.formCheckout.reset();
+
+    // navigate back to products page
+    this.router.navigateByUrl("/products");
+  }
+
 }

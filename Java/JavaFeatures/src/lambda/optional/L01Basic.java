@@ -40,6 +40,7 @@ public class L01Basic
       // Optional flatMap : Converting one Optional to another
       Util.printHeading("flatMap : Converting One Optional to another");
       Optional<String>  opStr = Optional.of("123");
+//      Optional<Double>  opDouble = opStr.flatMap( (s) -> Optional.of(Double.valueOf(s)));      
       Optional<Integer> opInt = opStr.flatMap((s) -> Optional.of(Integer.valueOf(s))); 
      
    }

@@ -16,7 +16,7 @@ public class L02Scope
        */
       Util.printHeading("Variable Inside Lambda");
       // Access final variables
-      String localVar = "-)";
+      final String localVar = "-)";
       Stylist stylistC = (mesg) ->  mesg + localVar;
       System.out.println(stylistC.doStyle(":"));
       
