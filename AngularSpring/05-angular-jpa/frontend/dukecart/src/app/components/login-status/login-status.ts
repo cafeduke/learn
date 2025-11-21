@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { KEYCLOAK_AUTH_CONFIG } from '../../auth.config';
+import KeycloakService from 'keycloak-js';
 
 @Component({
   selector: 'app-login-status',
@@ -12,28 +11,15 @@ export class LoginStatus
 {
   // Dependency injection
   // --------------------
-  // private authService = inject(OAuthService);
+  private readonly keycloakService = inject(KeycloakService);
 
-  constructor (private authService: OAuthService)
+  doLogin()
   {
-    this.configure();
+    this.keycloakService.login({ redirectUri: "http://localhost:8080/dukecart" });
   }
 
-  private configure ()
+  doLogout()
   {
-    // this.authService.configure(KEYCLOAK_AUTH_CONFIG);
-
-    // // Make a call to the issuer URI (KEYCLOAK_AUTH_CONFIG > issuer) and get all necessary endpoints required to trigger the login flow
-    // this.authService.loadDiscoveryDocumentAndTryLogin();
-  }
-
-  doLogin ()
-  {
-    // this.authService.initCodeFlow();
-  }
-
-  doLogout ()
-  {
-    // this.authService.logOut();
+    this.keycloakService.logout({ redirectUri: "http://localhost:8080/dukecart" });
   }
 }

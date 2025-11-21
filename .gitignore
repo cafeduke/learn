@@ -3,6 +3,7 @@
 **/classes/
 **/*.class
 **/classes/
+**/*.log
 **/*.jar
 **/.git/
 **/.mvn
