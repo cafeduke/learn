@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import KeycloakService from 'keycloak-js';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-login-status',
@@ -12,6 +13,7 @@ export class LoginStatus
   // Dependency injection
   // --------------------
   private readonly keycloakService = inject(KeycloakService);
+  private cartService = inject(CartService);
 
   doLogin()
   {
@@ -20,6 +22,7 @@ export class LoginStatus
 
   doLogout()
   {
+    this.cartService.emptyCart();
     this.keycloakService.logout({ redirectUri: "http://localhost:8080/dukecart" });
   }
 }

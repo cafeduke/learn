@@ -12,6 +12,12 @@ export class CartService
   // ------------------
 
   /**
+   * A key to store items in local storage
+   * A user should be able to browse and add items to cart without login.
+   */
+   private readonly CART_KEY:string = "shopping_cart";
+
+  /**
    * NOTE: Need for Item
    * -------------------
    * We are using an item array rather than mapProductQuantity (map of product to quantity) for the following reason.
@@ -26,7 +32,6 @@ export class CartService
    *  - The issue here is we should not reference the order_item with product-id (like b1, b2)
    *  - Instead the order_item must be as follows: order_item1=(o1, BookA, 10$, 2) order_item2=(o1, BookB, 20$, 1)
    */
-  // mapProductQuantity: Map<Product,number>;
   listCartItem: CartItem[] = [];
   totalQuantity:number = 0;
   totalPrice:number = 0.0;
@@ -38,10 +43,11 @@ export class CartService
 
   constructor ()
   {
+    this.fillCart();
   }
 
   /**
-   * Add the product to cart thus incrementing quantity and total price.
+   * Add the item to cart thus incrementing quantity and total price.
    */
   addToCart (cartItem: CartItem) :void
   {
@@ -58,7 +64,7 @@ export class CartService
   }
 
   /**
-   * Remove product from cart thus decremeting quantity and total price.
+   * Remove the item from cart thus decremeting quantity and total price.
    */
   removeFromCart (cartItem: CartItem) :void
   {
@@ -80,7 +86,7 @@ export class CartService
   }
 
   /**
-   * Remove all product entirely from cart. This is equivalent to quantity reduced to zero.
+   * Remove this item entirely from cart. This is equivalent to quantity reduced to zero.
    */
   removeAll (cartItem: CartItem) :void
   {
@@ -99,17 +105,26 @@ export class CartService
     this.publishCartUpdated ();
   }
 
+  fillCart (): void
+  {
+    this.restoreCartFromLocalStorage();
+    this.totalQuantity = this.listCartItem.reduce((sum, item) => sum + item.quantity, 0);
+    this.totalPrice = this.listCartItem.reduce((sum, item) => sum + (item.unitPrice*item.quantity), 0);
+    console.log("[CartService] fillCart. totalPrice=" + this.totalPrice + " totalQuantity=" + this.totalQuantity);
+    this.publishCartUpdated();
+  }
+
+  /**
+   * Empty the cart entirely of all items
+   */
   emptyCart () :void
   {
     this.listCartItem = [];
     this.totalQuantity = 0;
     this.totalPrice = 0.0;
+    this.removeCartFromLocalStorage();
+    console.log("[CartService] emptyCart. totalPrice=" + this.totalPrice + " totalQuantity=" + this.totalQuantity);
     this.publishCartUpdated ();
-  }
-
-  publishCartUpdated () :void
-  {
-    this.subjectCartUpdate.next();
   }
 
   convertProductToCartItem (product: Product) :CartItem
@@ -123,5 +138,33 @@ export class CartService
       quantity: 0
     };
     return cartItem;
+  }
+
+  // Private Methods
+  // ---------------
+
+  private restoreCartFromLocalStorage (): void
+  {
+    const storedCart = localStorage.getItem(this.CART_KEY);
+    this.listCartItem = storedCart ? JSON.parse(storedCart) : [];
+  }
+
+  private saveCartToLocalStorage(): void
+  {
+    localStorage.setItem(this.CART_KEY, JSON.stringify(this.listCartItem));
+  }
+
+  private removeCartFromLocalStorage (): void
+  {
+    localStorage.removeItem(this.CART_KEY);
+  }
+
+  /**
+   * Publish to subscribers that the cart is now updated
+   */
+  private publishCartUpdated () :void
+  {
+    this.saveCartToLocalStorage();
+    this.subjectCartUpdate.next();
   }
 }

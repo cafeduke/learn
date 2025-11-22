@@ -66,5 +66,6 @@ export class CartDetails implements OnInit
     this.listCartItem = this.cartService.listCartItem;
     this.totalPrice = this.cartService.totalPrice;
     this.totalQuantity = this.cartService.totalQuantity;
+    console.log("[CartDetails] Refreshed totalPrice=" + this.totalPrice + " totalQuantity=" + this.totalQuantity);
   }
 }
