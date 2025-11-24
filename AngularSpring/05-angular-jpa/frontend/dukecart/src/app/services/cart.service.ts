@@ -3,9 +3,7 @@ import { map, Observable, Subject } from 'rxjs';
 import { Product } from '../model/product';
 import { CartItem } from '../model/cart-item';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CartService
 {
   // Instance variables

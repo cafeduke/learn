@@ -3,6 +3,7 @@ import { provideRouter } from "@angular/router";
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { routes } from "./app.routes";
 import { createInterceptorCondition, INCLUDE_BEARER_TOKEN_INTERCEPTOR_CONFIG, IncludeBearerTokenCondition, includeBearerTokenInterceptor, provideKeycloak } from "keycloak-angular";
+import { KeycloakOnLoad } from "keycloak-js";
 
 /**
  * Define the URL patterns where the bearer token should be included
@@ -38,9 +39,9 @@ export const appConfig: ApplicationConfig =
       },
       initOptions:
       {
-        onLoad: undefined
-        // onLoad: "check-sso",
-        // silentCheckSsoRedirectUri: window.location.origin + "dukecart/silent-check-sso.html"
+        // onLoad: undefined
+        onLoad: "check-sso" as KeycloakOnLoad,
+        silentCheckSsoRedirectUri: window.location.origin + "dukecart/silent-check-sso.html"
       }
     }),
 

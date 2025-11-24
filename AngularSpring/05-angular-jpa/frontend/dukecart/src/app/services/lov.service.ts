@@ -4,9 +4,7 @@ import { Country } from '../model/country';
 import { State } from '../model/state';
 import { map, Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class LovService
 {
   private static readonly BASE_URL_COUNTRIES = "http://localhost:9090/dukecart/countries";
