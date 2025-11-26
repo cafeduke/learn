@@ -1,8 +1,9 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType } from 'keycloak-angular';
-import KeycloakService from 'keycloak-js';
+import KeycloakService, { KeycloakProfile } from 'keycloak-js';
 import Keycloak from 'keycloak-js';
 import { DUKE_HOME } from '../app.const';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService
@@ -12,12 +13,19 @@ export class AuthService
   private readonly keycloakService = inject(KeycloakService);
   private readonly keycloakEventSignal = inject(KEYCLOAK_EVENT_SIGNAL);
 
-  // Instance variable
-  private authSignal = signal(false);
+  // Private Instance variables
+  // --------------------------
+  private authenticationSignal = signal(false);
+
+  // Public instance variables
+  // --------------------------
+  hasLoggedIn:boolean = false;
+  username:string = "Guest";
+  subjectAuthUpdate: Subject<void> = new Subject<void>();
 
   constructor ()
   {
-    console.log(`[AuthService] constructor Auth=${this.authSignal()}`);
+    console.log(`[AuthService] constructor Auth=${this.authenticationSignal()}`);
     // Effect: An operation that runs whenever one or more signal values change
     // See: https://www.npmjs.com/package/keycloak-angular
     effect(async () =>
@@ -26,28 +34,30 @@ export class AuthService
       switch (keycloakEvent.type)
       {
         case KeycloakEventType.Ready:
-          this.authSignal.set(this.keycloakService.authenticated);
+          this.authenticationSignal.set(this.keycloakService.authenticated);
           break;
 
         case KeycloakEventType.AuthSuccess:
         case KeycloakEventType.AuthRefreshSuccess:
-          this.authSignal.set(true);
+          this.authenticationSignal.set(true);
           break;
 
         case KeycloakEventType.AuthLogout:
         case KeycloakEventType.AuthRefreshError:
         case KeycloakEventType.AuthError:
-          this.authSignal.set(false);
+          this.authenticationSignal.set(false);
           break;
       }
-      console.log(`[AuthService] effect KeycloakEvent=${KeycloakEventType[keycloakEvent.type]} Auth=${this.authSignal()}`);
+
+      this.hasLoggedIn = this.authenticationSignal();
+
+      const userProfile: KeycloakProfile = await this.keycloakService.loadUserProfile();
+      this.username = userProfile.username ?? "Guest";
+      console.log(`[AuthService] effect KeycloakEvent=${KeycloakEventType[keycloakEvent.type]} Auth=${this.hasLoggedIn} Username=${this.username}`);
+      this.subjectAuthUpdate.next();
     });
   }
 
-  hasLoggedIn (): boolean
-  {
-    return this.authSignal();
-  }
 
   login(): void
   {
@@ -58,4 +68,5 @@ export class AuthService
   {
     this.keycloakService.logout({ redirectUri: DUKE_HOME });
   }
+
 }

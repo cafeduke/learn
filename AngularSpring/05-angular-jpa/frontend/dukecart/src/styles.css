@@ -312,6 +312,12 @@ input.au-input.au-input-xl {
   transform: translate(-50%, -50%)
 }
 
+span.user-welcome
+{
+  color: Navy;
+  font: italic bold 13px "Georgia";
+}
+
 /*
  * ---------------------------------------------------------------------------------------------------
  * Left Menu Bar

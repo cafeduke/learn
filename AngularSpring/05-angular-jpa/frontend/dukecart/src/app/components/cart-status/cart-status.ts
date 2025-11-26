@@ -23,7 +23,8 @@ export class CartStatus implements OnInit
   ngOnInit(): void
   {
     this.refreshCart();
-    this.cartService.subjectCartUpdate.subscribe(data => {
+    this.cartService.subjectCartUpdate.subscribe(data =>
+    {
       console.log("[CartStatus] subscriber notified by CartService");
       this.refreshCart();
     });

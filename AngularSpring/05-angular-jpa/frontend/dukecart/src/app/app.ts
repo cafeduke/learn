@@ -3,13 +3,13 @@ import { Router, RouterOutlet } from '@angular/router';
 import { CategoryList } from './components/category-list/category-list';
 import { Search } from './components/search/search';
 import { CartStatus } from './components/cart-status/cart-status';
-import { UserAction } from './components/user-action/user-action';
+import { UserProfile } from './components/user-profile/user-profile';
 import { AuthService } from './services/auth.service';
 import { DUKE_APP_NAME } from './app.const';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CategoryList, Search, CartStatus, UserAction],
+  imports: [RouterOutlet, CategoryList, Search, CartStatus, UserProfile],
   templateUrl: './app.html',
   styleUrl: './app.css',
   standalone: true,

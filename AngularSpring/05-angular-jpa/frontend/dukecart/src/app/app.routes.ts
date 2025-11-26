@@ -3,7 +3,7 @@ import { ProductList } from './components/product-list/product-list';
 import { ProductDetails } from './components/product-details/product-details';
 import { CartDetails } from './components/cart-details/cart-details';
 import { Checkout } from './components/checkout/checkout';
-import { UserAction } from './components/user-action/user-action';
+import { UserProfile } from './components/user-profile/user-profile';
 
 /**
  * An empty path means request to the site without any path prefix ('http://<hostname>/')
@@ -11,9 +11,9 @@ import { UserAction } from './components/user-action/user-action';
  */
 export const routes: Routes =
 [
-  { 'path':'login', component:UserAction },
-  { 'path':'logout', component:UserAction },
-  { 'path':'register', component:UserAction },
+  { 'path':'login', component:UserProfile },
+  { 'path':'logout', component:UserProfile },
+  { 'path':'register', component:UserProfile },
   { 'path':'checkout', component:Checkout },
   { 'path':'cart-details', component:CartDetails },
   { 'path':'search/:searchKey', component:ProductList },
