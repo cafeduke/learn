@@ -1,7 +1,6 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType } from 'keycloak-angular';
 import KeycloakService, { KeycloakProfile } from 'keycloak-js';
-import Keycloak from 'keycloak-js';
 import { DUKE_HOME } from '../app.const';
 import { Subject } from 'rxjs';
 
@@ -19,8 +18,8 @@ export class AuthService
 
   // Public instance variables
   // --------------------------
-  hasLoggedIn:boolean = false;
-  username:string = "Guest";
+  hasLoggedIn: boolean = false;
+  username: string = "Guest";
   subjectAuthUpdate: Subject<void> = new Subject<void>();
 
   constructor ()
@@ -67,6 +66,24 @@ export class AuthService
   logout(): void
   {
     this.keycloakService.logout({ redirectUri: DUKE_HOME });
+  }
+
+  /**
+   * Return true only if the current logged-in user has all the {requiredRoles}.
+   * Fetch the roles (say userRoles) of the current logged-in user. Ensure {requiredRoles} is a subset of userRoles
+   */
+  isUserAuthorized(requiredRoles: string[]): boolean
+  {
+    if (!this.hasLoggedIn || !requiredRoles || requiredRoles.length == 0)
+      return false;
+
+    /**
+     * Check roles using the base library function
+     *  - We are iterating through the requiredRoles. The current logged in user (or just user) MUST have all these roles.
+     *  - keycloakService.hasRealmRole(role)                             : Check if the 'user' has REALM 'role' (REALM roles are applicable across applications)
+     *  - keycloakService.hasResourceRole(role, keycloakService.clientId): Check if 'user' has client role for current clientId
+     */
+    return requiredRoles.some(role => this.keycloakService.hasRealmRole(role) || this.keycloakService.hasResourceRole(role, this.keycloakService.clientId))
   }
 
 }

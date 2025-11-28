@@ -1,9 +1,13 @@
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 import { ProductList } from './components/product-list/product-list';
 import { ProductDetails } from './components/product-details/product-details';
 import { CartDetails } from './components/cart-details/cart-details';
 import { Checkout } from './components/checkout/checkout';
 import { UserProfile } from './components/user-profile/user-profile';
+import { AuthGuard } from './guards/auth.guards';
+import { ErrorPage } from './components/error-page/error-page';
+
+export const ADMIN_ROLE = {roles: ['admin']};
 
 /**
  * An empty path means request to the site without any path prefix ('http://<hostname>/')
@@ -11,10 +15,11 @@ import { UserProfile } from './components/user-profile/user-profile';
  */
 export const routes: Routes =
 [
+  { 'path':'error', component:ErrorPage },
   { 'path':'login', component:UserProfile },
   { 'path':'logout', component:UserProfile },
   { 'path':'register', component:UserProfile },
-  { 'path':'checkout', component:Checkout },
+  { 'path':'checkout', component:Checkout , canActivate: [AuthGuard], data: ADMIN_ROLE},
   { 'path':'cart-details', component:CartDetails },
   { 'path':'search/:searchKey', component:ProductList },
   { 'path':'products/findByCategoryId/:categoryId', component:ProductList },
