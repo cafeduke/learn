@@ -63,3 +63,7 @@ See [dukecart](dukecart) to learn about
 - Remove getters and setters and instead use `@Getters` and `@Setters` from Lombok
 - Use DAO (Data Access Object) design patter to create Repository interfaces extending the `org.springframework.data.repository.CrudRepository` interface
 - Create config classes overriding methods in `org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer` to restrict access to certain certain HTTP methods.
+
+
+
+# Authentication and Authorisation using Keycloak

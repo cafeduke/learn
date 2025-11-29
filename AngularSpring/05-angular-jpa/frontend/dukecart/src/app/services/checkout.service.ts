@@ -5,9 +5,7 @@ import { Purchase } from '../model/purchase';
 import { CartItem } from '../model/cart-item';
 import { OrderItem } from '../model/order-item';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CheckoutService
 {
   private static readonly BASE_URL = "http://localhost:9090/dukecart/checkout";

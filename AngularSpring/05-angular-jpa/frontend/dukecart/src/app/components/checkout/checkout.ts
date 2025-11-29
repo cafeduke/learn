@@ -248,7 +248,7 @@ export class Checkout implements OnInit
     {
       // Mark all elements as modfied to trigger validation
       this.formCheckout.markAllAsTouched();
-      return;
+      // return;
     }
 
     // Populate the purchase object

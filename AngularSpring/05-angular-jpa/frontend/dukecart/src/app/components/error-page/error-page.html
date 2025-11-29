@@ -1,0 +1,45 @@
+<div class="main-content">
+
+  <!-- Begin card -->
+  <div class="card w-90 mx-auto">
+
+    <!-- card-header -->
+    <div class="card-header">
+      <h3>ErrorCode # {{ code }}</h3>
+      {{ summary }}
+    </div>
+
+    <!-- Begin card-body -->
+    <div class="card-body container">
+      <div class="card-text">
+
+        <div class="alert alert-danger" role="alert">
+          {{ detail }}
+        </div>
+
+        <table class="table table-bordered mt-2">
+          <tbody>
+            @for (prop of mapProperties | keyvalue; track prop.key)
+            {
+            <tr>
+              <th>{{ prop.key }}</th>
+              <td>{{ prop.value }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+    <!-- End card-body -->
+
+    <!-- Begin card-footer -->
+    <div class="card-footer">
+      <a routerLink="/products">Back to product list</a>
+    </div>
+    <!-- End1 card-footer -->
+
+  </div>
+  <!-- End card -->
+
+</div>
