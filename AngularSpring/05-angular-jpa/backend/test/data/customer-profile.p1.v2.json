@@ -1,0 +1,26 @@
+{
+  "customer": {
+    "username": "dukeapple",
+    "firstName": "Duke",
+    "lastName": "Apples",
+    "email": "duke.apples@gomail.com"
+  },
+  "addresses": [
+    {
+      "id": 1,
+      "street": "4/5 3rd cross",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "country": "India",
+      "zipCode": "560011"
+    },
+    {
+      "id": 3,
+      "street": "555, Dukes Avenue",
+      "city": "Cafeville",
+      "state": "Acre",
+      "country": "Brazil",
+      "zipCode": "169691"
+    }
+  ]
+}

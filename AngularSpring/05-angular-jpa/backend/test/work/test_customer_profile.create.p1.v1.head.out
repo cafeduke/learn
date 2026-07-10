@@ -1,0 +1,11 @@
+Status: HTTP/1.1 200 OK
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+content-type: application/json
+date: Tue, 09 Dec 2025 04:38:11 GMT
+expires: 0
+pragma: no-cache
+transfer-encoding: chunked
+vary: Origin,Access-Control-Request-Method,Access-Control-Request-Headers
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-xss-protection: 0

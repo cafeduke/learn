@@ -1,0 +1,26 @@
+{
+  "customer":
+  {
+    "username":"dukeapple",
+    "firstName":"Duke",
+    "lastName":"Apple",
+    "email":"duke.apple@gomail.com"
+  },
+  "addresses": 
+  [
+    {
+      "street":"3/5 2nd Cross",
+      "city":"Bangalore",
+      "state":"Karnataka",
+      "country":"India",
+      "zipCode":"560011"
+    },    
+    {
+      "street":"345, Duke Avenue",
+      "city":"Bookville",
+      "state":"Acre",
+      "country":"Brazil",
+      "zipCode":"19111"
+    }
+  ]
+}
