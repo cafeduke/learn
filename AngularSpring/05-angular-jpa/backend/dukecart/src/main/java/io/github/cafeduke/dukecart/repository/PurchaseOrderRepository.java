@@ -1,4 +1,4 @@
-package io.github.cafeduke.dukecart.dao;
+package io.github.cafeduke.dukecart.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

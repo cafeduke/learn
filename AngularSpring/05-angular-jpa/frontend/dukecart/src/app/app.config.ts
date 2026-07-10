@@ -41,7 +41,8 @@ export const appConfig: ApplicationConfig =
       {
         // onLoad: undefined
         onLoad: "check-sso" as KeycloakOnLoad,
-        silentCheckSsoRedirectUri: window.location.origin + "dukecart/silent-check-sso.html"
+        silentCheckSsoRedirectUri: window.location.origin + "dukecart/silent-check-sso.html",
+        pkceMethod: "S256"
       }
     }),
 

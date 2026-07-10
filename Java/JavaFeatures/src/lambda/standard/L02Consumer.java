@@ -2,6 +2,8 @@ package lambda.standard;
 
 import java.util.Date;
 import java.util.function.*;
+import java.util.stream.Stream;
+
 import util.Person;
 import util.Person.Gender;
 import util.Util;
@@ -14,38 +16,40 @@ import util.Util;
  */
 public class L02Consumer
 {
-   public static void main (String arg[])
+   public static void main(String arg[])
    {
       /* Basic Usage */
-      
-      Util.printHeading ("Consumer Greeting");
-      Consumer<String> consumerGreeting = (s) -> System.out.println ("Hello, " + s);
-      consumerGreeting.accept ("Lambda");
 
-      Util.printHeading ("Consumer Log");
-      Consumer<String> logMesg = (s) -> System.out.println("[" + new Date () + "] " + s);
+      Util.printHeading("Consumer Greeting");
+      Consumer<String> consumerGreeting = (s) -> System.out.println("Hello, " + s);
+      consumerGreeting.accept("Lambda");
+
+      Util.printHeading("Consumer Log");
+      Consumer<String> logMesg = (s) -> System.out.println("[" + new Date() + "] " + s);
       logMesg.accept("Finished");
-      
-      Util.printHeading ("Consumer Noop");
-      Consumer<String> consumerNoop = (s) -> {};
-      
-      Util.printHeading ("IntConsumer");
-      IntConsumer consumerCount = (num) -> System.out.println ("We have " + num + " votes.");
+
+      Util.printHeading("Consumer Noop");
+      Consumer<String> consumerNoop = (s) -> {
+      };
+
+      Util.printHeading("IntConsumer");
+      IntConsumer consumerCount = (num) -> System.out.println("We have " + num + " votes.");
       consumerCount.accept(3245);
-      
+
       /* Method Reference */
-      
-      Util.printHeading ("Method Reference - Instance method of a particular object");
-      Person p = new Person (50, Gender.MALE);      
+
+      Util.printHeading("Method Reference - Instance method of a particular object");
+      Person p = new Person(50, Gender.MALE);
       IntConsumer personAgeSetter = p::setAge;
       personAgeSetter.accept(18);
       System.out.println("Person=" + p);
-      
+
       Consumer<Gender> personGenderSetter = p::setGender;
-      personGenderSetter.accept (Gender.FEMALE);  
-      
-      Util.printHeading ("Consumer Log");
-      
+      personGenderSetter.accept(Gender.FEMALE);
+
+      Util.printHeading("All person");
       /* Basic Usage */
+      Stream.of(Person.getPersons())
+         .forEach(System.out::println);
    }
 }

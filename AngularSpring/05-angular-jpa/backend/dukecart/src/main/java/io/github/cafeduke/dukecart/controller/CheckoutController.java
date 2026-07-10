@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.cafeduke.dukecart.dto.PurchaseDTO;
-import io.github.cafeduke.dukecart.dto.PurchaseResult;
+import io.github.cafeduke.dukecart.dto.PurchaseResultDTO;
 import io.github.cafeduke.dukecart.service.CheckoutService;
 import lombok.RequiredArgsConstructor;
 
@@ -26,26 +26,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CheckoutController
 {
-    // Dependency Injection -- The injected object should be marked final to make it immutable.
-    // ----------------------------------------------------------------------------------------
-    public final CheckoutService checkoutService;
+  // Dependency Injection -- The injected object should be marked final to make it immutable.
+  // ----------------------------------------------------------------------------------------
+  public final CheckoutService checkoutService;
 
-    @PostMapping("/purchase")
-    public PurchaseResult placeOrder(@RequestBody PurchaseDTO purchase)
-    {
-        System.out.println("[RBSESHAD CheckoutController] Inside getRoles");
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+  @PostMapping("/purchase")
+  public PurchaseResultDTO placeOrder(@RequestBody PurchaseDTO purchase)
+  {
+    System.out.println("[CAFEDUKE CheckoutController] Inside placeOrder");
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication != null && authentication.isAuthenticated()) {
-            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-            // Extract role names (e.g., "ROLE_ADMIN", "ROLE_USER")
-            Collection<String> roles = authorities.stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
-            System.out.println("[RBSESHAD CheckoutController] User roles: " + roles);
-        }  
-        
-        return checkoutService.placeOrder(purchase);
-    }
+    if (authentication == null || !authentication.isAuthenticated())
+      throw new IllegalStateException ("User not authenticated");
+
+    // Debug activity: Extract role names (e.g., "ROLE_ADMIN", "ROLE_USER")
+    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+    Collection<String> roles = authorities.stream()
+      .map(GrantedAuthority::getAuthority)
+      .collect(Collectors.toList());
+    System.out.println("[CAFEDUKE CheckoutController] User roles: " + roles);
+
+    return checkoutService.placeOrder(purchase);
+  }
 
 }

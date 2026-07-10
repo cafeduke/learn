@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class PurchaseResult
+public class PurchaseResultDTO
 {
     private final String orderTrackingNumber;
 }

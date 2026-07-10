@@ -4,15 +4,15 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import io.github.cafeduke.dukecart.dao.AddressRepository;
-import io.github.cafeduke.dukecart.dao.CustomerRepository;
-import io.github.cafeduke.dukecart.dao.OrderItemRepository;
-import io.github.cafeduke.dukecart.dao.PurchaseOrderRepository;
 import io.github.cafeduke.dukecart.dto.PurchaseDTO;
-import io.github.cafeduke.dukecart.dto.PurchaseResult;
+import io.github.cafeduke.dukecart.dto.PurchaseResultDTO;
 import io.github.cafeduke.dukecart.entity.Address;
 import io.github.cafeduke.dukecart.entity.Customer;
 import io.github.cafeduke.dukecart.entity.PurchaseOrder;
+import io.github.cafeduke.dukecart.repository.AddressRepository;
+import io.github.cafeduke.dukecart.repository.CustomerRepository;
+import io.github.cafeduke.dukecart.repository.OrderItemRepository;
+import io.github.cafeduke.dukecart.repository.PurchaseOrderRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -42,7 +42,7 @@ public class CheckoutServiceImpl implements CheckoutService
     
     @Transactional
     @Override
-    public PurchaseResult placeOrder(PurchaseDTO purchase)
+    public PurchaseResultDTO placeOrder(PurchaseDTO purchase)
     {
         // Retrieve the purchase-order from the DTO
         PurchaseOrder purchaseOrder = purchase.getPurchaseOrder();
@@ -68,7 +68,7 @@ public class CheckoutServiceImpl implements CheckoutService
         });
         
         // return a PurchaseResult with order-tracking-number
-        return new PurchaseResult(orderTrackingNumber);
+        return new PurchaseResultDTO(orderTrackingNumber);
     }
 
     private String generateOrderTrackingNumber()

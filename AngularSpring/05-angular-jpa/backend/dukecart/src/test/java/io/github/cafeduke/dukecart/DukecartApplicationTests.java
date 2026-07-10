@@ -1,13 +1,12 @@
 package io.github.cafeduke.dukecart;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.testng.annotations.Test;
 
-@SpringBootTest
-class DukecartApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
+class DukecartFunctionalTests
+{
+  @Test
+  void contextLoads()
+  {
+  }
 
 }

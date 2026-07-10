@@ -1,9 +1,9 @@
 package io.github.cafeduke.dukecart.service;
 
 import io.github.cafeduke.dukecart.dto.PurchaseDTO;
-import io.github.cafeduke.dukecart.dto.PurchaseResult;
+import io.github.cafeduke.dukecart.dto.PurchaseResultDTO;
 
 public interface CheckoutService
 {
-    PurchaseResult placeOrder (PurchaseDTO purchase);
+    PurchaseResultDTO placeOrder (PurchaseDTO purchase);
 }

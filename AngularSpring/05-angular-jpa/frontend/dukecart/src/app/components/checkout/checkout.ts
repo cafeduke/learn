@@ -68,39 +68,39 @@ export class Checkout implements OnInit
 
     // Provide the JSON structure to build a FromGroup object
     this.formCheckout = this.formBuilder.group
-      ({
-        customer: this.formBuilder.group
-          ({
-            firstName: DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
-            lastName:  DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
-            email:     DukeValidatorUtil.get({"regex":"[a-z0-9_.-]+@[a-z0-9_-]+\.[a-z]{2,4}"}),
-          }),
-        shippingAddress: this.formBuilder.group
-          ({
-            street:  DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
-            city:    DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
-            state:   DukeValidatorUtil.get({}),
-            country: DukeValidatorUtil.get({}),
-            zipcode: DukeValidatorUtil.get({"regex":"[0-9]{6}"})
-          }),
-        billingAddress: this.formBuilder.group
-          ({
-            street:  DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
-            city:    DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
-            state:   DukeValidatorUtil.get({}),
-            country: DukeValidatorUtil.get({}),
-            zipcode: DukeValidatorUtil.get({"regex":"[0-9]{6}"})
-          }),
-        creditCard: this.formBuilder.group
-          ({
-            cardType:        DukeValidatorUtil.get({}),
-            nameOnCard:      DukeValidatorUtil.get({"regex":"[a-zA-Z. ]{2,}", "notOnlyWhitespace":true}),
-            cardNumber:      DukeValidatorUtil.get({"regex":"[0-9]{16}"}),
-            securityCode:    DukeValidatorUtil.get({"regex":"[0-9]{3}"}),
-            expirationMonth: DukeValidatorUtil.get({}),
-            expirationYear:  DukeValidatorUtil.get({})
-          }),
-      });
+    ({
+      customer: this.formBuilder.group
+        ({
+          firstName: DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
+          lastName:  DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
+          email:     DukeValidatorUtil.get({"regex":"[a-z0-9_.-]+@[a-z0-9_-]+\.[a-z]{2,4}"}),
+        }),
+      shippingAddress: this.formBuilder.group
+        ({
+          street:  DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
+          city:    DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
+          state:   DukeValidatorUtil.get({}),
+          country: DukeValidatorUtil.get({}),
+          zipcode: DukeValidatorUtil.get({"regex":"[0-9]{6}"})
+        }),
+      billingAddress: this.formBuilder.group
+        ({
+          street:  DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
+          city:    DukeValidatorUtil.get({"minLength":2, "notOnlyWhitespace":true}),
+          state:   DukeValidatorUtil.get({}),
+          country: DukeValidatorUtil.get({}),
+          zipcode: DukeValidatorUtil.get({"regex":"[0-9]{6}"})
+        }),
+      creditCard: this.formBuilder.group
+        ({
+          cardType:        DukeValidatorUtil.get({}),
+          nameOnCard:      DukeValidatorUtil.get({"regex":"[a-zA-Z. ]{2,}", "notOnlyWhitespace":true}),
+          cardNumber:      DukeValidatorUtil.get({"regex":"[0-9]{16}"}),
+          securityCode:    DukeValidatorUtil.get({"regex":"[0-9]{3}"}),
+          expirationMonth: DukeValidatorUtil.get({}),
+          expirationYear:  DukeValidatorUtil.get({})
+        }),
+    });
   }
 
   ngOnInit(): void

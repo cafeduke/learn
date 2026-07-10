@@ -65,19 +65,19 @@ public class L05MethodReference
       refresher.make(lemon, sugar);
       
       /**
-       * Reference to an Instance Method of a Particular Object
-       * ------------------------------------------------------
+       * Reference to an Instance Method of an arbitrary (unrelated/random) object
+       * -------------------------------------------------------------------------
        *    - Instance Method   : JuiceJunction's prepareLemonade
        *    - Particular Object : jjJayanagar
        *    
        * Note: 
        *  - JuiceJunction's prepareLemonade method accepts Lemon,Sugar and returns Lemonade.
        *  - JuiceJunction's prepareLemonade is an INSTANCE method.
-       *  - CoolRefresher is assigned the PARTICULAR JuiceJunction's object 'jjJayanagar' to be used to call the INSTANCE method.  
+       *  - CoolRefresher is assigned the ARBITRARY JuiceJunction's object 'jjJayanagar' to be used to call the INSTANCE method.  
        *  - refresher.make(lemon, sugar) is equivalent of invoking "jJayanagar.prepareLemonade (lemon,sugar)"
        * 
-       * Here, we are asking Java to use the particular object "jjJayanagar" to invoke a function "prepareLemonade"
-       * which has the same arguments and return type as "make".
+       * Here, we are asking Java to use the arbitrary object "jjJayanagar" to invoke a function "prepareLemonade"
+       * which has the same signature as "make".
        * 
        */
       JuiceJunction jjJayanagar = new JuiceJunction ();
@@ -86,10 +86,10 @@ public class L05MethodReference
       
       
       /**
-       * Reference to an Instance Method of an Arbitrary Object of a Particular Type
-       * --------------------------------------------------------------------------- 
+       * Reference to an Instance Method of a particular class
+       * ----------------------------------------------------- 
        *    - Instance Method   : Lemon's getLemonade
-       *    - Arbitrary Object  : Arbitrary Lemon Object ( not known during assignment )
+       *    - Particular class  : Lemon class -- the class of the first argument
        * 
        * Here,
        *  - CoolRefresher requires a method body to accept Lemon,Sugar and returns Lemonade.

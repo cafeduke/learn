@@ -1,25 +1,29 @@
 package io.github.cafeduke.dukecart.entity;
 
 import java.io.Serializable;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * The persistent class for the customer database table.
+ * This annotation prevents infinite circular referencing during JSON serialization.
+ * For example Customer has several Address. Each Address belongs to a Customer.
  */
 @Entity
 @Table(name = "customer")
 @Getter
 @Setter
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Customer implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -29,7 +33,7 @@ public class Customer implements Serializable
     private long id;
 
     @Column
-    private String email;
+    private String username;
 
     @Column(name = "first_name")
     private String firstName;
@@ -37,12 +41,10 @@ public class Customer implements Serializable
     @Column(name = "last_name")
     private String lastName;
 
-    // bi-directional many-to-one association to PurchaseOrder
-    @OneToMany(mappedBy = "customer")
-    private List<PurchaseOrder> purchaseOrders;
+    @Column
+    private String email;
 
     public Customer()
     {
     }
-
 }

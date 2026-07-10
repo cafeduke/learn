@@ -31,7 +31,7 @@ public class DukeJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collec
             // Use JsonPath to navigate the nested JSON structure
             List<String> listRole = JsonPath.read(jwt.getClaims(), authoritiesJsonPath);
             
-            System.out.println("[RBSESHAD DukeJwtGrantedAuthoritiesConverter] Role=" + listRole);
+            System.out.println("[CAFEDUKE DukeJwtGrantedAuthoritiesConverter] Role=" + listRole);
             
             return listRole.stream()
                 .map(role -> new SimpleGrantedAuthority(authorityPrefix + role))

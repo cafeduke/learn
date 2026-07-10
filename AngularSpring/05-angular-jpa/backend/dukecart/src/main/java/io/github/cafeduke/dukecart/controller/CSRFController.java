@@ -29,7 +29,7 @@ public class CSRFController
     @GetMapping("/roles")
     public String getRoles ()
     {
-        System.out.println("[RBSESHAD] Inside getRoles");
+        System.out.println("[CAFEDUKE] Inside getRoles");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
         Collection<String> roles = null;        
@@ -39,7 +39,7 @@ public class CSRFController
             roles = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-            System.out.println("[RBSESHAD] User roles: " + roles);
+            System.out.println("[CAFEDUKE] User roles: " + roles);
         }        
         return roles.toString();
     }
