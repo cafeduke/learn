@@ -1,0 +1,17 @@
+<!doctype html>
+<!-- DaisyUI theme -->
+<html xmlns:th="http://thymeleaf.org" data-theme="emerald">
+  <head>
+    <meta charset="UTF-8">
+    <title>Spring Boot + daisyUI</title>
+    <!-- HTMX -->
+    <script th:src="@{/js/htmx.min.js}"></script>
+    <!-- DaisyUI and tailwind CSS -->
+    <link rel="stylesheet" th:href="@{/css/tailwind.css}">
+  </head>
+  <body>
+    <div id="content-page" class="w-10/12 m-auto">
+      <div th:replace="~{/fragments/core :: fragTodoList}"></div>
+    </div>
+  </body>
+</html>

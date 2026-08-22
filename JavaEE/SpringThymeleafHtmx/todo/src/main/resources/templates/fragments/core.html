@@ -1,0 +1,57 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div id="todo-container" class="card card-border shadow-sm" th:fragment="fragTodoList">
+      <div class="card-body">
+        <span class="card-title font-italianno text-4xl">My List</span>
+        <!--
+          Todo items list
+          ###############
+         -->
+        <ul class="list bg-blue-100 rounded-box shadow-md">
+          <li class="list-row" th:each="item : ${page.content}" th:with="itemCount= ${page.number} * ${page.size} + ${itemStat.count}">
+            <div class="text-4xl font-thin opacity-30 tabular-nums" th:text="${itemCount}">Sl</div>
+            <div class="list-col-grow">
+              <div class="text-2xl font-magnolia mt-2" th:text="${item.title}">Checklist item</div>
+            </div>
+            <div class="text-xs font-semibold opacity-60" th:text="${item.completed} ? 'COMPLETED' : 'PENDING'">STATUS</div>
+          </li>
+        </ul>
+        <!--
+          Pagination
+          ##########
+         -->
+        <div class="card-actions justify-center">
+          <div class="join">
+            <!-- Previous Button -->
+            <button
+              th:disabled="${!page.hasPrevious()}"
+              th:hx-get="@{/home(pageNumber=${page.number - 1})}"
+              hx-target="#todo-container"
+              hx-swap="outerHTML"
+              class="join-item btn btn-secondary btn-sm"
+            >Previous</button>
+            <!-- Page Numbers -->
+            <span th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+              <button
+                th:text="${i + 1}"
+                th:hx-get="@{/home(pageNumber=${i})}"
+                hx-target="#todo-container"
+                hx-swap="outerHTML"
+                th:classappend="${page.number == i} ? 'btn-info btn-active' : 'btn-secondary'"
+                class="join-item btn-sm btn"
+              ></button>
+            </span>
+            <!-- Next Button -->
+            <button
+              th:disabled="${!page.hasNext()}"
+              th:hx-get="@{/home(pageNumber=${page.number + 1})}"
+              hx-target="#todo-container"
+              hx-swap="outerHTML"
+              class="join-item btn btn-secondary btn-sm"
+            >Next</button>
+          </div>
+        </div>
+      </div>
+    </body>
+  </html>
