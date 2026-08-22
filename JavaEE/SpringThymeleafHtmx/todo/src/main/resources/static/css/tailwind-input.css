@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* Exclude the downloaded script from content scanning to prevent build loops */
+@source not "./daisyui.mjs";
+
+/* Inject daisyUI using Tailwind v4 native local plugin mapping */
+@plugin "./daisyui.mjs" {
+  themes: light --default, dark --prefersdark, emerald;
+}
+
+@font-face {
+    font-family: 'Magnolia';
+    src: url('/fonts/Magnolia.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Italianno';
+    src: url('/fonts/Italianno.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+/* Register custom font in Tailwind */
+@theme {
+    --font-magnolia: 'Magnolia', sans-serif;
+    --font-italianno: 'Italianno', sans-serif;
+}
