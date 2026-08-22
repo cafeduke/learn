@@ -1,0 +1,91 @@
+#!/bin/bash -e
+
+# -------------------------------------------------------------------------------------------------
+# Functions
+# -------------------------------------------------------------------------------------------------
+BASEDIR=$(dirname $(readlink -f ${0}))
+BASENAME=$(basename ${0})
+
+function usage {
+  echo "Start/Stop springboot using maven"
+  echo "Usage: ${BASENAME} <start|stop>"
+}
+
+function dieUsage {
+  local mesg=${1}
+  echo "Error: ${1}"
+  usage
+  exit 1
+}
+
+function heading {
+  echo ""
+  echo "---------------------------------------------------------------------------------------------------"
+  for mesg in "$@"
+  do
+    echo "${mesg}"
+  done
+  echo "---------------------------------------------------------------------------------------------------"
+}
+
+function pollForMesg {
+  local mesg="$1"
+  local file="$2"
+  local timeoutSec="${3:-10}"
+  local i status=1
+  for (( i = 0; i < timeoutSec; ++i ))
+  do
+    status=$(grep -q "$mesg" "$file")
+    if [[ $status -eq 0 ]]
+    then
+      break
+    fi
+    sleep 1
+  done
+
+  if [[ $status -ne 0 ]]
+  then
+    dieUsage "Tomcat failed to start"
+  fi
+}
+
+function log {
+  local mesg="$1"
+  echo "["$(date)"] $mesg"
+}
+
+# -------------------------------------------------------------------------------------------------
+# Parse Arg
+# -------------------------------------------------------------------------------------------------
+if [[ ${#} -eq 1 && ("${1}" == "--help" || "${1}" == "-h") ]]
+then
+  usage
+  exit 0
+fi
+
+if [[ ${#} -ne 1 ]]
+then
+  dieUsage "Incorrect argument count"
+fi
+
+op=${1}
+
+# -------------------------------------------------------------------------------------------------
+# Main
+# -------------------------------------------------------------------------------------------------
+cd ${BASEDIR}
+if [[ ${op} == "start" ]]
+then
+  heading "Starting server"
+  mvn clean compile spring-boot:start
+  log "Waiting for Tomcat to start"
+  pollForMesg "Tomcat started on port" "${BASEDIR}/target/logs/app.log"
+  grep "Tomcat started on port" "${BASEDIR}/target/logs/app.log"
+  log "Logfile: ${BASEDIR}/target/logs/app.log"
+elif [[ ${op} == "stop" ]]
+then
+  heading "Stopping server"
+  mvn spring-boot:stop
+else
+  dieUsage "Unknown option ${op}"
+fi
