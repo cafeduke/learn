@@ -1,0 +1,82 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <!--
+    Fragment: Pagination (hxGetURI, hxTarget)
+    ################################################################################
+      - Pagination invokes URL       : <hxGetURI>?pageIndex=<page-index>
+      - Pagesize updation invokes URL: <hxGetURI>?pageSize=<new-page-size>
+      - The resultant HTML from the above response will be swapped with target <hxTarget> using 'outerHTML' swap mechansim.
+
+      Dependent model attributes
+        - page          : org.springframework.data.domain.Page object
+        - pageSizeArray : An array having various page sizes. The page size determines the number items to be displayed in one page.
+    -->
+    <div th:fragment="fragPagination(hxGetURI,hxTarget)" class="flex w-full">
+      <div class="flex grow-11 justify-center">
+        <div class="join">
+          <!-- Previous Button -->
+          <button
+            th:disabled="${!page.hasPrevious()}"
+            hx:get="@{${hxGetURI}(pageIndex=${page.number - 1})}"
+            hx:target="|${hxTarget}|"
+            hx:swap="outerHTML"
+            class="join-item btn btn-sm btn-secondary">
+            Previous
+          </button>
+          <!-- Page Numbers -->
+          <span th:each="i : ${#numbers.sequence(pageStartIndex, pageEndIndex)}">
+            <button
+              th:text="${i + 1}"
+              hx:get="@{${hxGetURI}(pageIndex=${i})}"
+              hx:target="|${hxTarget}|"
+              hx:swap="outerHTML"
+              th:classappend="${page.number == i} ? 'btn-info btn-active' : 'btn-secondary'"
+              class="join-item btn btn-sm">
+              00
+            </button>
+          </span>
+
+          <th:block th:if="${pageLastIndex > pageEndIndex + 1}">
+            <button class="join-item btn btn-sm bg-neutral/80 text-secondary-content cursor-default">
+              <span class="material-icons">more_horiz</span>
+            </button>
+            <button
+              th:text="${pageLastIndex+1}"
+              hx:get="@{${hxGetURI}(pageIndex=${pageLastIndex})}"
+              hx:target="|${hxTarget}|"
+              hx:swap="outerHTML"
+              class="join-item btn btn-sm btn-secondary">
+              00
+            </button>
+          </th:block>
+
+          <!-- Next Button -->
+          <button
+            th:disabled="${!page.hasNext()}"
+            hx:get="@{${hxGetURI}(pageIndex=${page.number + 1})}"
+            hx:target="|${hxTarget}|"
+            hx:swap="outerHTML"
+            class="join-item btn btn-sm btn-secondary">
+            Next
+          </button>
+        </div>
+      </div>
+
+      <div class="divider divider-horizontal grow-0"></div>
+
+      <div class="flex grow-1 justify-center">
+        <select
+          name="pageSize"
+          hx:get="@{${hxGetURI}}"
+          hx:target="|${hxTarget}|"
+          hx:swap="outerHTML"
+          class="select select-sm select-secondary w-fit bg-secondary text-secondary-content font-bold">
+          <th:block th:each="i : ${pageSizeArray}">
+            <option th:selected="${i == page.size}" th:text="${i}"></option>
+          </th:block>
+        </select>
+      </div>
+    </div>
+  </body>
+</html>

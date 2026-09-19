@@ -1,0 +1,59 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <!--
+    Fragment: Todo list item
+    ################################################################################
+      - The fragment identified by th:fragment as fragTodoListItem
+      - Any th:<attribute-name>="value" is processed by Thymeleaf, variable shall be resolved and attribute-name="value" shall be generated
+        - Eg: The th:id="|<string>|" format is called 'literal substitutions' where ${...} variables are replaced by value
+        - The resultant attribute th:id="|item-id-${item.id}|" shall be something like id="item-id-5" for the 5th row
+    -->
+    <li
+      th:fragment="fragTodoListItem"
+      th:id="|item-id-${item.id}|"
+      th:classappend="${item.completed ? 'bg-green-100' : 'bg-blue-100'}"
+      class="list-row items-center">
+      <!-- Serial number -->
+      <div class="text-4xl font-thin opacity-30 tabular-nums" th:text="${#numbers.formatInteger(itemCount,2)}">00</div>
+
+      <!-- Status icon -->
+      <div>
+        <span
+          class="material-icons !text-2xl"
+          th:classappend="${item.completed ? 'text-success' : 'text-secondary'}"
+          th:text="${item.completed ? 'done' : 'pending_actions'}">
+          done
+        </span>
+      </div>
+
+      <!-- Title -->
+      <div class="list-col-grow">
+        <a href="#" hx:get="@{/todos/{id}(id=${item.id})}" hx:target="|#todo-container|" hx:swap="outerHTML">
+          <div th:text="${item.title}" class="text-2xl font-magnolia">title</div>
+        </a>
+      </div>
+
+      <!-- Toggle -->
+      <input
+        type="checkbox"
+        hx:post="@{/todos/{id}/toggle(id=${item.id},itemCount=${itemCount})}"
+        hx:target="|#item-id-${item.id}|"
+        hx:swap="outerHTML"
+        hx:trigger="change"
+        th:checked="${item.completed}"
+        th:classappend="${item.completed ? 'toggle-success' : 'toggle-secondary text-secondary'}"
+        class="toggle" />
+
+      <!-- Delete -->
+      <button
+        hx:delete="@{/todos/{id}/delete(id=${item.id})}"
+        hx:target="|#todo-container|"
+        hx:swap="outerHTML"
+        hx:confirm="|Confirm deleting todo item '${item.title}' ?|"
+        class="btn btn-square btn-ghost btn-error hover:text-secondary-content">
+        <span class="material-icons">delete</span>
+      </button>
+    </li>
+  </body>
+</html>

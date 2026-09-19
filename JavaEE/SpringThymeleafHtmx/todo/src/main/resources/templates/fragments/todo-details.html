@@ -1,0 +1,67 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div id="todo-container" th:fragment="fragTodoDetails" class="card card-border shadow-sm">
+      <div class="card" th:object="${item}">
+        <div class="card-body">
+          <!-- Card title -->
+          <div class="card-title">
+            <span class="font-italianno text-4xl">Todo task details</span>
+          </div>
+
+          <!-- Card actions on top -->
+          <div class="card-actions justify-end">
+            <div class="join">
+              <button
+                hx:get="@{/todos/{id}/update(id=${item.id})}"
+                hx:target="|#todo-container|"
+                hx:swap="outerHTML"
+                class="btn btn-active btn-square btn-secondary join-item">
+                <span class="material-icons text-base-200">edit</span>
+              </button>
+              <button
+                hx:delete="@{/todos/{id}/delete(id=${item.id})}"
+                hx:target="|#todo-container|"
+                hx:swap="outerHTML"
+                hx:confirm="|Confirm deleting todo item '${item.title}' ?|"
+                class="btn btn-active btn-square btn-error join-item">
+                <span class="material-icons text-base-200">delete</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Todo item details -->
+          <ul class="list rounded-box shadow-md" th:classappend="${item.completed ? 'bg-green-100' : 'bg-blue-100'}">
+            <li class="list-row">
+              <div class="list-col-grow">
+                <div class="text-xs uppercase text-primary-content/70 font-semibold">Todo item ID</div>
+                <div class="text-4xl font-thin tabular-nums" th:text="${item.id}">1</div>
+              </div>
+            </li>
+
+            <li class="list-row">
+              <div class="list-col-grow">
+                <div class="text-xs uppercase text-primary-content/70 font-semibold">Title</div>
+                <div th:text="${item.title}" class="text-2xl font-magnolia mt-2">title</div>
+              </div>
+            </li>
+
+            <li class="list-row">
+              <div class="list-col-grow">
+                <div class="text-xs uppercase text-primary-content/70 font-semibold">Status</div>
+                <div th:text="${item.completed} ? 'COMPLETED' : 'PENDING'" class="text-xl uppercase">title</div>
+              </div>
+            </li>
+          </ul>
+
+          <!-- Card actions on bottom -->
+          <div class="card-actions justify-end">
+            <button hx:get="@{/todos}" hx:target="|#todo-container|" hx:swap="outerHTML" class="btn btn-secondary">
+              Ok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

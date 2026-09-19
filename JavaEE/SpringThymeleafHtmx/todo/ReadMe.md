@@ -56,10 +56,10 @@ The following VS code extensions needs to be installed
 Go to [Spring Initializr](https://start.spring.io/) and select the following dependencies
 - SQLite driver
 - Spring boot data JPA
+- Spring boot valiation
+- Spring boot dev tools
 - Spring boot WebMVC
 - Spring boot thymeleaf
-- Spring boot dev tools
-- Spring boot valiation
 - Spring security
 - Lombok
 

@@ -6,14 +6,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class TodoSecurityConfig {
+public class TodoSecurityConfig
+{
   @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
+  {
 
     http.authorizeHttpRequests(auth -> auth
-        .requestMatchers("/css/**", "/js/**", "/fonts/**", "/images/**", "/*")
-        .permitAll())
-        .csrf(csrf -> csrf.disable());
+      // .requestMatchers("/css/**", "/js/**", "/fonts/**", "/images/**", "/*")
+      .anyRequest()
+      .permitAll())
+      .csrf(csrf -> csrf.disable());
     return http.build();
   }
 }

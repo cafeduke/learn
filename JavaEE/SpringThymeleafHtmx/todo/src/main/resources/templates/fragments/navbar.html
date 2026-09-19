@@ -1,0 +1,17 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div class="navbar bg-purple-900 shadow-sm" th:fragment="fragNavBar">
+      <span class="font-italianno text-4xl font-bold text-secondary-content">
+        <a href="/home">Duke Todos</a>
+      </span>
+
+      <span class="flex flex-row-reverse flex-grow">
+        <!-- Timestamp -->
+        <span class="text-sm text-secondary-content" hx:get="@{/timestamp}" hx-trigger="load" hx-swap="innerHTML">
+          Loading time...
+        </span>
+      </span>
+    </div>
+  </body>
+</html>
