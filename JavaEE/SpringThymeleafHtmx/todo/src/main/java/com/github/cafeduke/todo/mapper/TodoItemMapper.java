@@ -1,15 +1,22 @@
 package com.github.cafeduke.todo.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
+import org.springframework.stereotype.Component;
 
 import com.github.cafeduke.todo.dto.TodoItemDto;
 import com.github.cafeduke.todo.entity.TodoItem;
 
-// MapStruct automatically maps identical field names
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface TodoItemMapper {
-  TodoItemDto toDto(TodoItem entity);
+@Component
+public class TodoItemMapper implements Mapper<TodoItem, TodoItemDto>
+{
+  @Override
+  public TodoItem toEntity(TodoItemDto dto)
+  {
+    return new TodoItem(dto.id(), dto.title(), dto.completed());
+  }
 
-  TodoItem toEntity(TodoItemDto dto);
+  @Override
+  public TodoItemDto toDto(TodoItem entity)
+  {
+    return new TodoItemDto(entity.getId(), entity.getTitle(), entity.isCompleted());
+  }
 }

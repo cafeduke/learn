@@ -5,10 +5,11 @@
 # -------------------------------------------------------------------------------------------------
 BASEDIR=$(dirname $(readlink -f ${0}))
 BASENAME=$(basename ${0})
+TOMCAT_LOGFILE="${BASEDIR}/logs/app.log"
 
 function usage {
   echo "Start/Stop springboot using maven"
-  echo "Usage: ${BASENAME} <start|stop>"
+  echo "Usage: ${BASENAME} <start|stop|restart>"
 }
 
 function dieUsage {
@@ -54,6 +55,31 @@ function log {
   echo "["$(date)"] $mesg"
 }
 
+function springStart {
+  heading "Starting server"
+  rm -f "${TOMCAT_LOGFILE}"
+  mvn clean compile spring-boot:start
+  log "Waiting for Tomcat to start"
+  pollForMesg "Tomcat started on port" "TOMCAT_LOGFILE"
+  grep "Tomcat started on port" "${TOMCAT_LOGFILE}"
+  log "Logfile: ${TOMCAT_LOGFILE}"
+}
+
+function springStop {
+  local pid
+
+  heading "Stopping server"
+  set +e
+  mvn spring-boot:stop
+  pid=$(ps -ef | grep SpringApplication | grep -v grep | awk '{print $2}')
+  if [[ ! -z "${pid}" ]]
+  then
+    echo "Killing spring processes"
+    kill -9 ${pid}
+  fi
+  set -e
+}
+
 # -------------------------------------------------------------------------------------------------
 # Parse Arg
 # -------------------------------------------------------------------------------------------------
@@ -76,16 +102,14 @@ op=${1}
 cd ${BASEDIR}
 if [[ ${op} == "start" ]]
 then
-  heading "Starting server"
-  mvn clean compile spring-boot:start
-  log "Waiting for Tomcat to start"
-  pollForMesg "Tomcat started on port" "${BASEDIR}/target/logs/app.log"
-  grep "Tomcat started on port" "${BASEDIR}/target/logs/app.log"
-  log "Logfile: ${BASEDIR}/target/logs/app.log"
+  springStart
 elif [[ ${op} == "stop" ]]
 then
-  heading "Stopping server"
-  mvn spring-boot:stop
+  springStop
+elif [[ ${op} == "restart" ]]
+then
+  springStop
+  springStart
 else
   dieUsage "Unknown option ${op}"
 fi

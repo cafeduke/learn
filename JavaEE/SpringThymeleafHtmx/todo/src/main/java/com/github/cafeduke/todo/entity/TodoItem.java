@@ -15,8 +15,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodoItem {
-
+public class TodoItem
+{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -26,4 +26,11 @@ public class TodoItem {
 
   @Column
   private boolean completed;
+
+  /* Business Logic Methods */
+
+  public void toggleStatus()
+  {
+    this.completed = !this.completed;
+  }
 }

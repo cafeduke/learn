@@ -1,0 +1,51 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <div id="todo-container" th:fragment="fragTodoCreate" class="card card-border shadow-sm">
+      <div class="card-body">
+        <!-- Card title -->
+        <div class="card-title">
+          <span class="font-italianno text-4xl">New Todo</span>
+        </div>
+
+        <!-- Todo item create form -->
+        <form hx:post="@{/todos/create}" th:object="${item}" hx:target="|#todo-container|" hx:swap="outerHTML">
+          <fieldset class="fieldset p-4 gap-4">
+            <label
+              th:classappend="${#fields.hasErrors('title') ? 'input-error' : 'input-secondary'}"
+              class="input w-full bg-blue-100 h-20">
+              <span class="label text-secondary font-bold">Title</span>
+              <input
+                required
+                type="text"
+                class="input text-2xl font-magnolia bg-secondary-content"
+                placeholder="Enter the task todo"
+                th:field="*{title}" />
+            </label>
+            <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="label font-bold text-error"></span>
+
+            <label class="label">
+              <span class="label font-bold text-secondary">Completion status</span>
+              <input type="checkbox" class="toggle toggle-info" th:field="*{completed}" />
+            </label>
+          </fieldset>
+
+          <div class="divider"></div>
+
+          <!-- Card actions on bottom -->
+          <div class="card-actions justify-end">
+            <button
+              type="button"
+              class="btn btn-accent"
+              hx:get="@{/todos}"
+              hx:target="|#todo-container|"
+              hx:swap="outerHTML">
+              Cancel
+            </button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

@@ -5,24 +5,38 @@
 
 /* Inject daisyUI using Tailwind v4 native local plugin mapping */
 @plugin "./daisyui.mjs" {
-  themes: light --default, dark --prefersdark, emerald;
+  themes:
+    light --default,
+    dark --prefersdark,
+    emerald;
+}
+
+/**
+ * Custom Fonts
+ * ------------
+ */
+
+@font-face {
+  font-family: "Magnolia";
+  src: url("/fonts/Magnolia.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'Magnolia';
-    src: url('/fonts/Magnolia.otf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Italianno";
+  src: url("/fonts/Italianno.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
 
-@font-face {
-    font-family: 'Italianno';
-    src: url('/fonts/Italianno.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-/* Register custom font in Tailwind */
 @theme {
-    --font-magnolia: 'Magnolia', sans-serif;
-    --font-italianno: 'Italianno', sans-serif;
+  --font-magnolia: "Magnolia", sans-serif;
+  --font-italianno: "Italianno", sans-serif;
 }
+
+/**
+ * Custom CSS Classes
+ * ------------------
+ */
+
