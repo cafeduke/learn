@@ -5,10 +5,19 @@
       <div class="card-body">
         <!-- Card Title -->
         <div class="card-title">
-          <span class="font-italianno text-4xl">My List</span>
+          <span class="font-italianno text-purple-900 text-4xl">My List</span>
           <div class="card-actions justify-end flex-grow">
             <!-- Search Fragment -->
             <div th:replace="~{/fragments/todo-list-search :: fragTodoListSearch}"></div>
+            <!-- New item -->
+            <button
+              hx:get="@{/todos/create}"
+              hx:target="|#todo-container|"
+              hx:swap="outerHTML"
+              class="btn btn-secondary btn-sm">
+              <span class="material-icons">add</span>
+              New
+            </button>
             <!-- Settings Fragment -->
             <div th:replace="~{/fragments/todo-list-settings :: fragTodoListSettings}"></div>
           </div>

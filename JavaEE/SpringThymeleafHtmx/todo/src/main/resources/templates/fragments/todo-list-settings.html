@@ -3,58 +3,74 @@
   <body>
     <th:block th:fragment="fragTodoListSettings">
       <!-- Settings Icon -->
-      <button
-        hx:get="@{/todos/create}"
-        hx:target="|#todo-container|"
-        hx:swap="outerHTML"
-        class="btn btn-secondary btn-sm">
-        <span class="material-icons">add</span>
-        New
-      </button>
-      <!-- Settings Menu -->
       <button class="btn btn-sm btn-secondary btn-square" popovertarget="popover-settings">
         <span class="material-icons">more_vert</span>
       </button>
-      <form
-        th:object="${settingsDto}"
-        hx:get="@{/todos/filter/settings}"
-        hx:target="|#todo-container|"
-        hx:swap="outerHTML">
-        <ul class="dropdown menu menu-sm rounded-box bg-blue-100 shadow-sm" popover id="popover-settings">
-          <li class="menu-title">
-            <label class="label text-xs uppercase text-secondary font-semibold">
-              Settings
-              <button
-                hx:get="@{/todos/filter/settings-reset}"
-                hx:target="|#todo-container|"
-                hx:swap="outerHTML"
-                type="button"
-                title="Reset"
-                class="btn btn-sm btn-square btn-ghost btn-accent hover:text-secondary-content">
-                <span class="material-icons">settings_backup_restore</span>
-              </button>
-            </label>
-          </li>
 
-          <li class="menu-title">
-            <label class="label text-xs uppercase text-secondary font-semibold">Status Filter</label>
-          </li>
-          <li th:each="option : ${statusOptions}">
-            <label class="label">
-              <input
-                type="radio"
-                th:field="*{filterByStatus}"
-                th:value="${option.name}"
-                class="radio radio-secondary"
-                th:checked="${filterByStatus == 'option.name'}" />
-              <span th:text="${option}"></span>
-            </label>
-          </li>
-          <li>
-            <button type="submit" class="btn btn-sm btn-success text-secondary-content">Save</button>
-          </li>
-        </ul>
-      </form>
+      <!-- Settings Menu -->
+      <div popover class="card card-border dropdown bg-base-100 shadow-sm px-2 w-fit" id="popover-settings">
+        <form
+          th:object="${settingsDto}"
+          hx:get="@{/todos/filter/settings}"
+          hx:target="|#todo-container|"
+          hx:swap="outerHTML">
+          <div class="card-body px-0">
+            <div class="card-title">
+              <span class="font-italianno text-3xl text-purple-900">Settings</span>
+              <div class="card-actions justify-end flex-grow">
+                <button
+                  hx:get="@{/todos/filter/settings-reset}"
+                  hx:target="|#todo-container|"
+                  hx:swap="outerHTML"
+                  type="button"
+                  title="Reset"
+                  class="btn btn-sm btn-square btn-ghost btn-accent hover:text-secondary-content">
+                  <span class="material-icons">settings_backup_restore</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="collapse collapse-arrow bg-blue-100 border border-blue-300">
+              <input type="radio" name="collapse-settings" value="filter" checked="checked" />
+              <div class="collapse-title font-semibold text-secondary">Filter Status</div>
+              <div class="collapse-content grid grid-cols-1 gap-2">
+                <th:block th:each="option : ${statusOptions}">
+                  <label class="label">
+                    <input
+                      type="radio"
+                      th:field="*{filterByStatus}"
+                      th:value="${option.name}"
+                      class="radio radio-secondary"
+                      th:checked="${filterByStatus == 'option.name'}" />
+                    <span th:text="${option}"></span>
+                  </label>
+                </th:block>
+              </div>
+            </div>
+            <div class="collapse collapse-arrow bg-blue-100 border border-blue-300">
+              <input type="radio" name="collapse-settings" value="sort" />
+              <div class="collapse-title font-semibold text-secondary">Sort</div>
+              <div class="collapse-content grid grid-cols-1 gap-2">
+                <th:block th:each="option : ${sortOptions}">
+                  <label class="label">
+                    <input
+                      type="radio"
+                      th:field="*{sortByOption}"
+                      th:value="${option.name}"
+                      class="radio radio-secondary"
+                      th:checked="${sortByOption == 'option.name'}" />
+                    <span th:text="${option}"></span>
+                  </label>
+                </th:block>
+              </div>
+            </div>
+
+            <div class="card-actions justify-center flex-grow">
+              <button type="submit" class="btn btn-sm btn-success text-secondary-content w-full">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </th:block>
   </body>
 </html>
