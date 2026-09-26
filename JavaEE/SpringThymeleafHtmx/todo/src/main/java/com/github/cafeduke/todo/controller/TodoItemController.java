@@ -122,8 +122,11 @@ public class TodoItemController
     PageInfo pageInfo = PaginationManager.getPageInfo(session, SESSION_KEY_PAGINATION, pageIndex, pageSize, totalItems, gotoLastPage);
     log.info("[doList] Determined completed={} title={} PageInfo={}", completed, title, pageInfo);
 
+    // Get the sort field (if any)
+    String sortField = settingsDto.sortByOption().getFieldName();
+
     // Get page having items
-    Page<TodoItemDto> page = service.filter(completed, title, pageInfo.pageIndex(), pageInfo.pageSize());
+    Page<TodoItemDto> page = service.filter(completed, title, pageInfo.pageIndex(), pageInfo.pageSize(), sortField);
 
     // Update Model
     PaginationManager.addPaginationDetails(page, model);
@@ -131,6 +134,7 @@ public class TodoItemController
     model.addAttribute("settingsDto", settingsDto);
     model.addAttribute("statusOptions", StatusOption.values());
     model.addAttribute("isSearchQueryEmpty", Util.isEmpty(searchDto.filterByTitle()));
+    model.addAttribute("sortOptions", SortOption.values());
     return FRAGMENT_TODO_LIST;
   }
 
@@ -315,16 +319,16 @@ public class TodoItemController
     }
   }
 
-  public static record SettingsDto(StatusOption filterByStatus)
+  public static record SettingsDto(StatusOption filterByStatus, SortOption sortByOption)
   {
-    public SettingsDto(String filterByStatus)
+    public SettingsDto(String filterByStatus, String sortByOption)
     {
-      this(StatusOption.valueOf(filterByStatus.toUpperCase()));
+      this(StatusOption.valueOf(filterByStatus.toUpperCase()), SortOption.valueOf(sortByOption.toUpperCase()));
     }
 
     public static SettingsDto getDefaultInstance()
     {
-      return new SettingsDto(StatusOption.ALL);
+      return new SettingsDto(StatusOption.ALL, SortOption.CREATION_DATE);
     }
 
     public static SettingsDto getInstance(HttpSession session)
@@ -336,7 +340,7 @@ public class TodoItemController
 
   public enum SortOption
   {
-    TITLE, STATUS, CREATION_DATE;
+    CREATION_DATE, TITLE, STATUS;
 
     @Override
     public String toString()
@@ -344,6 +348,21 @@ public class TodoItemController
       char ch[] = this.name().replace('_', ' ').toLowerCase().toCharArray();
       ch[0] = Character.toUpperCase(ch[0]);
       return String.valueOf(ch);
+    }
+
+    public String getFieldName()
+    {
+      switch (this)
+      {
+        case CREATION_DATE:
+          return null;
+        case TITLE:
+          return "title";
+        case STATUS:
+          return "completed";
+        default:
+          return null;
+      }
     }
   }
 

@@ -71,6 +71,11 @@ public class TodoItemService
     return filter(compeleted, title, pageIndex, pageSize, null, null);
   }
 
+  public Page<TodoItemDto> filter(Boolean compeleted, String title, int pageIndex, int pageSize, String sortField)
+  {
+    return filter(compeleted, title, pageIndex, pageSize, sortField, (sortField == null) ? null : Sort.Direction.ASC.name());
+  }
+
   public Page<TodoItemDto> filter(Boolean compeleted, String title, int pageIndex, int pageSize, String sortField, String sortDirection)
   {
     Pageable pageable = getPageable(pageIndex, pageSize, sortField, sortDirection);
@@ -86,6 +91,7 @@ public class TodoItemService
     if (sortField != null && sortDirection != null)
     {
       Sort.Direction order = Sort.Direction.valueOf(sortDirection);
+      sortField = sortField.toLowerCase();
       sort = (order == Sort.Direction.ASC) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
     }
     return (sort == null) ? PageRequest.of(pageIndex, pageSize) : PageRequest.of(pageIndex, pageSize, sort);

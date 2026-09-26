@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- DaisyUI theme -->
-<html xmlns:th="http://thymeleaf.org" data-theme="emerald">
+<html xmlns:th="http://thymeleaf.org" data-theme="emerald" style="background-color: darkgray">
   <head>
     <meta charset="UTF-8" />
     <title>Spring Boot + daisyUI</title>
@@ -13,7 +13,7 @@
   <body>
     <div th:replace="~{/fragments/navbar :: fragNavBar}"></div>
 
-    <div id="section-main" class="w-10/12 m-auto mt-5">
+    <div id="section-main" class="w-10/12 m-auto mt-5 bg-base-100 rounded-box">
       <div hx:get="@{/todos}" hx:trigger="load" hx:target="this" hx:swap="outerHTML">Loading your todos...</div>
     </div>
   </body>
