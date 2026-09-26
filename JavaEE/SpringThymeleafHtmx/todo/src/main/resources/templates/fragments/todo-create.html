@@ -9,7 +9,7 @@
         </div>
 
         <!-- Todo item create form -->
-        <form hx:post="@{/todos/create}" th:object="${item}" hx:target="|#todo-container|" hx:swap="outerHTML">
+        <form th:object="${item}" hx:post="@{/todos/create}" hx:target="|#todo-container|" hx:swap="outerHTML">
           <fieldset class="fieldset p-4 gap-4">
             <label
               th:classappend="${#fields.hasErrors('title') ? 'input-error' : 'input-secondary'}"

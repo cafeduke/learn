@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.github.cafeduke.todo.controller.PaginationManager.PageInfo;
 import com.github.cafeduke.todo.dto.TodoItemDto;
 import com.github.cafeduke.todo.service.TodoItemService;
+import com.github.cafeduke.todo.util.Util;
 
 import io.github.wimdeblauwe.htmx.spring.boot.mvc.HxRequest;
 import jakarta.servlet.http.HttpSession;
@@ -37,13 +38,26 @@ public class TodoItemController
 
   private static final String FRAGMENT_TODO_LIST_ITEM = "fragments/todo-list-item :: fragTodoListItem";
 
+  private static final String FRAGMENT_TODO_LIST_SEARCH_CLEAR = "fragments/todo-list-search :: fragTodoListSearchClear";
+
   private static final String FRAGMENT_TODO_DETAILS = "fragments/todo-details :: fragTodoDetails";
 
   private static final String FRAGMENT_TODO_CREATE = "fragments/todo-create :: fragTodoCreate";
 
   private static final String FRAGMENT_TODO_UPDATE = "fragments/todo-update :: fragTodoUpdate";
 
+  private static final String SESSION_KEY_PAGINATION = "todos.pagination";
+
+  public static final String SESSION_KEY_SEARCH = "todos.search";
+
+  public static final String SESSION_KEY_SETTINGS = "todos.settings";
+
   private static final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd-MMM-yyyy HH:mm:ss.SSS");
+
+  public static void main(String arg[])
+  {
+
+  }
 
   @GetMapping(
   {
@@ -55,8 +69,9 @@ public class TodoItemController
   }
 
   @GetMapping("/work")
-  public String work()
+  public String work(Model model)
   {
+    model.addAttribute("statusOptions", StatusOption.values());
     return "work";
   }
 
@@ -86,35 +101,83 @@ public class TodoItemController
   @GetMapping("/todos")
   public String doList(@RequestParam(defaultValue = "-1") int pageIndex, @RequestParam(defaultValue = "-1") int pageSize, @RequestParam(defaultValue = "false") boolean gotoLastPage, Model model, HttpSession session)
   {
-    int totalItems = (int) service.count();
-    PageInfo pageInfo = PaginationManager.getPageInfo(session, "todos", pageIndex, pageSize, totalItems, gotoLastPage);
-    log.info("Determined PageInfo={}", pageInfo);
+    // Note: A filter parameter (Eg: completed or title) will be null when there is no need to filter. In essence, it does not add to the WHERE clause of the SQL Query
 
-    Page<TodoItemDto> page = service.findAll(pageInfo.pageIndex(), pageInfo.pageSize());
+    // Get the DTOs
+    SearchDto searchDto = SearchDto.getInstance(session);
+    SettingsDto settingsDto = SettingsDto.getInstance(session);
+    log.info("[doList] searchDto={} settingsDto={}", searchDto, settingsDto);
+
+    // If filterByStatus==ALL then there is no need to filter by status. Otherwise, completed=true if status==COMPLETED and false if status==PENDING
+    Boolean completed = (settingsDto.filterByStatus() == StatusOption.ALL) ? null : (settingsDto.filterByStatus() == StatusOption.COMPLETED);
+
+    // If title==null|"" then there is no need to filter by title.
+    String title = searchDto.filterByTitle();
+    title = (title == null || title.isEmpty()) ? null : title;
+
+    // Determine the total number of items after applying all filters
+    int totalItems = (int) service.count(completed, title);
+
+    // Get updated pagination information by analysing request-params, HTTP session and default values
+    PageInfo pageInfo = PaginationManager.getPageInfo(session, SESSION_KEY_PAGINATION, pageIndex, pageSize, totalItems, gotoLastPage);
+    log.info("[doList] Determined completed={} title={} PageInfo={}", completed, title, pageInfo);
+
+    // Get page having items
+    Page<TodoItemDto> page = service.filter(completed, title, pageInfo.pageIndex(), pageInfo.pageSize());
+
+    // Update Model
     PaginationManager.addPaginationDetails(page, model);
+    model.addAttribute("searchDto", searchDto);
+    model.addAttribute("settingsDto", settingsDto);
+    model.addAttribute("statusOptions", StatusOption.values());
+    model.addAttribute("isSearchQueryEmpty", Util.isEmpty(searchDto.filterByTitle()));
     return FRAGMENT_TODO_LIST;
   }
 
   @HxRequest
-  @GetMapping("/todos/pending")
-  public String doListPending(@RequestParam(defaultValue = "-1") int pageIndex, @RequestParam(defaultValue = "-1") int pageSize, Model model, HttpSession session)
+  @GetMapping("/todos/search-query-update")
+  public String doSearchQueryUpdate(@RequestParam String filterByTitle, Model model)
   {
-    int totalItems = (int) service.count();
-    PageInfo pageInfo = PaginationManager.getPageInfo(session, "todos.pending", pageIndex, pageSize, totalItems, false);
-    log.info("Determined PageInfo={}", pageInfo);
-
-    return filterByCompeted(false, pageIndex, pageSize, model);
+    model.addAttribute("isSearchQueryEmpty", Util.isEmpty(filterByTitle));
+    return FRAGMENT_TODO_LIST_SEARCH_CLEAR;
   }
 
   @HxRequest
-  @GetMapping("/todos/completed")
-  public String doListCompleted(@RequestParam(defaultValue = "-1") int pageIndex, @RequestParam(defaultValue = "-1") int pageSize, Model model, HttpSession session)
+  @GetMapping("/todos/filter/search")
+  public String doFilterByTitleSearch(@ModelAttribute("searchDto") SearchDto searchDto, HttpSession session, Model model)
   {
-    int totalItems = (int) service.count();
-    PageInfo pageInfo = PaginationManager.getPageInfo(session, "todos.compeleted", pageIndex, pageSize, totalItems, false);
-    log.info("Determined PageInfo={}", pageInfo);
+    log.info("[doFilterByTitleSearch] key={} dto={}", SESSION_KEY_SEARCH, searchDto);
+    session.setAttribute(SESSION_KEY_SEARCH, searchDto);
+    PaginationManager.resetPageIndex(session, SESSION_KEY_PAGINATION);
+    return doList(model, session);
+  }
 
-    return filterByCompeted(true, pageIndex, pageSize, model);
+  @HxRequest
+  @GetMapping("/todos/filter/search-reset")
+  public String doFilterByTitleSearchReset(HttpSession session, Model model)
+  {
+    session.setAttribute(SESSION_KEY_SEARCH, SearchDto.getDefaultInstance());
+    PaginationManager.resetPageIndex(session, SESSION_KEY_PAGINATION);
+    return doList(model, session);
+  }
+
+  @HxRequest
+  @GetMapping("/todos/filter/settings")
+  public String doFilterBySettings(@ModelAttribute("settingsDto") SettingsDto settingsDto, HttpSession session, Model model)
+  {
+    log.info("[doFilterBySettings] key={} dto={}", SESSION_KEY_SETTINGS, settingsDto);
+    session.setAttribute(SESSION_KEY_SETTINGS, settingsDto);
+    PaginationManager.resetPageIndex(session, SESSION_KEY_PAGINATION);
+    return doList(model, session);
+  }
+
+  @HxRequest
+  @GetMapping("/todos/filter/settings-reset")
+  public String doFilterBySettingsReset(HttpSession session, Model model)
+  {
+    session.setAttribute(SESSION_KEY_SETTINGS, SettingsDto.getDefaultInstance());
+    PaginationManager.resetPageIndex(session, SESSION_KEY_PAGINATION);
+    return doList(model, session);
   }
 
   /*
@@ -125,7 +188,7 @@ public class TodoItemController
 
   @HxRequest
   @GetMapping("/todos/{id}")
-  public String doItemDetails(@PathVariable("id") Long id, Model model)
+  public String doShowDetails(@PathVariable("id") Long id, Model model)
   {
     TodoItemDto item = service.findById(id);
     model.addAttribute("item", item);
@@ -238,15 +301,62 @@ public class TodoItemController
    * ----------------------------------------------------------------------------------------------------
    */
 
-  private String filterByCompeted(boolean completed, int pageIndex, int pageSize, Model model)
+  public static record SearchDto(String filterByTitle)
   {
-    Page<TodoItemDto> page = service.findByCompleted(completed, pageIndex, pageSize);
-    PaginationManager.addPaginationDetails(page, model);
-    return FRAGMENT_TODO_LIST;
+    public static SearchDto getDefaultInstance()
+    {
+      return new SearchDto(null);
+    }
+
+    public static SearchDto getInstance(HttpSession session)
+    {
+      Object obj = session.getAttribute(SESSION_KEY_SEARCH);
+      return (obj == null) ? getDefaultInstance() : (SearchDto) obj;
+    }
   }
 
-  public enum ListFilter
+  public static record SettingsDto(StatusOption filterByStatus)
   {
-    ALL, ACTIVE, COMPLETED
+    public SettingsDto(String filterByStatus)
+    {
+      this(StatusOption.valueOf(filterByStatus.toUpperCase()));
+    }
+
+    public static SettingsDto getDefaultInstance()
+    {
+      return new SettingsDto(StatusOption.ALL);
+    }
+
+    public static SettingsDto getInstance(HttpSession session)
+    {
+      Object obj = session.getAttribute(SESSION_KEY_SETTINGS);
+      return (obj == null) ? getDefaultInstance() : (SettingsDto) obj;
+    }
+  }
+
+  public enum SortOption
+  {
+    TITLE, STATUS, CREATION_DATE;
+
+    @Override
+    public String toString()
+    {
+      char ch[] = this.name().replace('_', ' ').toLowerCase().toCharArray();
+      ch[0] = Character.toUpperCase(ch[0]);
+      return String.valueOf(ch);
+    }
+  }
+
+  public enum StatusOption
+  {
+    ALL, PENDING, COMPLETED;
+
+    @Override
+    public String toString()
+    {
+      char ch[] = this.name().replace('_', ' ').toLowerCase().toCharArray();
+      ch[0] = Character.toUpperCase(ch[0]);
+      return String.valueOf(ch);
+    }
   }
 }

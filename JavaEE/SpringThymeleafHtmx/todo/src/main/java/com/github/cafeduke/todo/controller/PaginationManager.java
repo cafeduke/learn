@@ -21,6 +21,12 @@ public class PaginationManager
   {
   }
 
+  public static void resetPageIndex(HttpSession session, String keyPrefix)
+  {
+    // pageIndex in session is reset sending reqParamValue=0
+    getSessionAttribute(session, keyPrefix + "page.index", 0, PAGINATION_DEFAULT_PAGE_INDEX);
+  }
+
   /**
    * Set record PageInfo with correct value of pageIndex and pageSize after considering the following:
    * <ol>

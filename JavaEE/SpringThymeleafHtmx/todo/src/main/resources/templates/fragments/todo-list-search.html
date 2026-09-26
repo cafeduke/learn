@@ -1,0 +1,35 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <th:block th:fragment="fragTodoListSearch">
+      <form th:object="${searchDto}" hx:get="@{/todos/filter/search}" hx:target="|#todo-container|" hx:swap="outerHTML">
+        <div class="join">
+          <label class="join-item input input-sm w-md pr-0">
+            <input
+              type="text"
+              placeholder="Search..."
+              th:field="*{filterByTitle}"
+              hx:get="@{/todos/search-query-update}"
+              hx:trigger="|keyup changed delay:500ms|"
+              hx:target="|#search-clear-container|"
+              hx:swap="outerHTML" />
+            <span id="search-clear-container" th:fragment="fragTodoListSearchClear">
+              <button
+                th:if="${!isSearchQueryEmpty}"
+                hx:get="@{/todos/filter/search-reset}"
+                hx:target="|#todo-container|"
+                hx:swap="outerHTML"
+                type="button"
+                class="btn btn-sm btn-square btn-ghost btn-accent hover:text-secondary-content">
+                <span class="material-icons">highlight_off</span>
+              </button>
+            </span>
+          </label>
+          <button type="submit" class="join-item btn btn-sm btn-secondary">
+            <span class="material-icons">search</span>
+          </button>
+        </div>
+      </form>
+    </th:block>
+  </body>
+</html>
