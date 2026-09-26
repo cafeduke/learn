@@ -3,23 +3,19 @@
   <body>
     <div id="todo-container" th:fragment="fragTodoList" class="card card-border shadow-sm">
       <div class="card-body">
+        <!-- Card Title -->
         <div class="card-title">
           <span class="font-italianno text-4xl">My List</span>
           <div class="card-actions justify-end flex-grow">
-            <button
-              hx:get="@{/todos/create}"
-              hx:target="|#todo-container|"
-              hx:swap="outerHTML"
-              class="btn btn-success btn-sm text-secondary-content">
-              <span class="material-icons">add</span>
-              New
-            </button>
+            <!-- Search Fragment -->
+            <div th:replace="~{/fragments/todo-list-search :: fragTodoListSearch}"></div>
+            <!-- Settings Fragment -->
+            <div th:replace="~{/fragments/todo-list-settings :: fragTodoListSettings}"></div>
           </div>
         </div>
 
         <!--
         Todo items list
-        ################################################################################
           - The th:block is a dummy block used only for the iteration, but shall not have any HTML residue
           - It is required in this case because the th:replace and th:each cannot both be in the same element say (li)
           - If we did that then we shall be replacing the element while looping through it
@@ -32,10 +28,7 @@
           </th:block>
         </ul>
 
-        <!--
-        Pagination
-        ################################################################################
-        -->
+        <!-- Pagination -->
         <div class="card-actions">
           <div
             th:replace="~{fragments/pagination :: fragPagination(hxGetURI='/todos',hxTarget='#todo-container')}"></div>

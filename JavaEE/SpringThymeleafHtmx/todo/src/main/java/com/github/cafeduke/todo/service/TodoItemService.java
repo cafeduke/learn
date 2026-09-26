@@ -28,7 +28,7 @@ public class TodoItemService
 
   private final TodoItemMapper mapper;
 
-  /*
+  /**
    * Read
    * ----
    */
@@ -40,51 +40,55 @@ public class TodoItemService
       .orElseThrow(() -> new TodoItemNotFoundException(id));
   }
 
-  public List<TodoItemDto> findAll()
+  public Page<TodoItemDto> findAll(int pageIndex, int pageSize)
   {
-    return repository.findAll()
-      .stream()
-      .map(mapper::toDto)
-      .toList();
+    return findAll(pageIndex, pageSize, null, null);
+  }
+
+  public Page<TodoItemDto> findAll(int pageIndex, int pageSize, String sortField, String sortDirection)
+  {
+    Pageable pageable = getPageable(pageIndex, pageSize, sortField, sortDirection);
+    return this.repository
+      .findAll(pageable)
+      .map(entity -> mapper.toDto(entity));
   }
 
   /**
-   * @return Returns the number of entities available.
+   * @return Returns the total number of entities available.
    */
   public long count()
   {
     return repository.count();
   }
 
-  public long countByCompleted(boolean completed)
+  public long count(Boolean compeleted, String title)
   {
-    return repository.countByCompleted(completed);
+    return repository.count(compeleted, title);
   }
 
-  public Page<TodoItemDto> findAll(int pageIndex, int pageSize)
+  public Page<TodoItemDto> filter(Boolean compeleted, String title, int pageIndex, int pageSize)
   {
-    Pageable pageable = PageRequest.of(pageIndex, pageSize);
+    return filter(compeleted, title, pageIndex, pageSize, null, null);
+  }
+
+  public Page<TodoItemDto> filter(Boolean compeleted, String title, int pageIndex, int pageSize, String sortField, String sortDirection)
+  {
+    Pageable pageable = getPageable(pageIndex, pageSize, sortField, sortDirection);
+
     return this.repository
-      .findAll(pageable)
+      .filter(compeleted, title, pageable)
       .map(mapper::toDto);
   }
 
-  public Page<TodoItemDto> findByCompleted(boolean completed, int pageIndex, int pageSize)
+  private Pageable getPageable(int pageIndex, int pageSize, String sortField, String sortDirection)
   {
-    Pageable pageable = PageRequest.of(pageIndex, pageSize);
-    return this.repository
-      .findByCompleted(completed, pageable)
-      .map(mapper::toDto);
-  }
-
-  public Page<TodoItemDto> findAll(int pageIndex, int pageSize, String sortField, String sortDirection)
-  {
-    Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
-
-    Pageable pageable = PageRequest.of(pageIndex, pageSize, sort);
-    return this.repository
-      .findAll(pageable)
-      .map(entity -> mapper.toDto(entity));
+    Sort sort = null;
+    if (sortField != null && sortDirection != null)
+    {
+      Sort.Direction order = Sort.Direction.valueOf(sortDirection);
+      sort = (order == Sort.Direction.ASC) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+    }
+    return (sort == null) ? PageRequest.of(pageIndex, pageSize) : PageRequest.of(pageIndex, pageSize, sort);
   }
 
   /**
