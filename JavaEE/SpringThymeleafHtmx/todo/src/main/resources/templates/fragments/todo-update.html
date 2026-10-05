@@ -6,7 +6,7 @@
         <div class="card-body">
           <!-- Card title -->
           <div class="card-title">
-            <span class="font-italianno text-4xl">Todo task edit</span>
+            <span class="font-italianno text-4xl duke-fg-title">Todo task edit</span>
           </div>
 
           <!-- Todo item edit form -->
@@ -17,13 +17,13 @@
 
               <!-- Title -->
               <label
-                th:classappend="${#fields.hasErrors('title') ? 'input-error' : 'input-secondary'}"
-                class="input w-full bg-blue-100 h-20">
-                <span class="label text-secondary font-bold">Title</span>
+                th:classappend="${#fields.hasErrors('title') ? 'input-error' : 'input-primary'}"
+                class="input w-full bg-base-100 h-20">
+                <span class="label font-bold duke-fg-label">Title</span>
                 <input
                   required
                   type="text"
-                  class="input text-2xl font-magnolia bg-secondary-content"
+                  class="input text-2xl font-magnolia"
                   placeholder="Enter the task todo"
                   th:field="*{title}" />
               </label>
@@ -34,12 +34,12 @@
 
               <!-- Toggle -->
               <label class="label">
-                <span class="label font-bold text-secondary">Completion status</span>
+                <span class="label font-bold duke-fg-label">Completion status</span>
                 <input
                   type="checkbox"
                   th:field="*{completed}"
                   th:checked="${item.completed}"
-                  th:classappend="${item.completed ? 'toggle-success' : 'toggle-secondary text-secondary'}"
+                  th:classappend="${item.completed ? 'toggle-success' : 'toggle-primary text-primary'}"
                   class="toggle" />
               </label>
             </fieldset>
@@ -50,7 +50,7 @@
             <div class="card-actions justify-end">
               <button
                 type="button"
-                class="btn btn-accent"
+                class="btn btn-warning"
                 hx:get="@{/todos}"
                 hx:target="|#todo-container|"
                 hx:swap="outerHTML">

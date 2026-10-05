@@ -7,7 +7,9 @@
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
+    --color-lime-800: oklch(45.3% 0.124 130.933);
     --color-green-100: oklch(96.2% 0.044 156.743);
+    --color-sky-800: oklch(44.3% 0.11 240.79);
     --color-blue-100: oklch(93.2% 0.032 255.585);
     --color-blue-300: oklch(80.9% 0.105 251.813);
     --color-blue-700: oklch(48.8% 0.243 264.376);
@@ -281,232 +283,6 @@
       pointer-events: none;
       opacity: 40%;
     }
-    .menu {
-      display: flex;
-      width: fit-content;
-      flex-direction: column;
-      flex-wrap: wrap;
-      padding: calc(0.25rem * 2);
-      --menu-active-fg: var(--color-neutral-content);
-      --menu-active-bg: var(--color-neutral);
-      font-size: 0.875rem;
-    }
-    .menu :where(li ul, li menu) {
-      position: relative;
-      margin-inline-start: calc(0.25rem * 4);
-      padding-inline-start: calc(0.25rem * 2);
-      white-space: nowrap;
-    }
-    .menu :where(li ul, li menu):before {
-      position: absolute;
-      inset-inline-start: calc(0.25rem * 0);
-      top: calc(0.25rem * 3);
-      bottom: calc(0.25rem * 3);
-      background-color: var(--color-base-content);
-      opacity: 10%;
-      width: var(--border);
-      content: "";
-    }
-    .menu :where(li > .menu-dropdown:not(.menu-dropdown-show)) {
-      display: none;
-    }
-    .menu :where(li:not(.menu-title) > :not(ul, menu, details, .menu-title, .btn)) {
-      display: grid;
-      grid-auto-flow: column;
-      align-content: flex-start;
-      align-items: center;
-      gap: calc(0.25rem * 2);
-      border-radius: var(--radius-field);
-      padding-inline: calc(0.25rem * 3);
-      padding-block: calc(0.25rem * 1.5);
-      text-align: start;
-      transition-property: color, background-color, box-shadow;
-      transition-duration: 0.2s;
-      transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-      grid-auto-columns: minmax(auto, max-content) auto max-content;
-      user-select: none;
-    }
-    .menu :where(li:not(.menu-title) > details > summary:not(.menu-title)) {
-      display: grid;
-      grid-auto-flow: column;
-      align-content: flex-start;
-      align-items: center;
-      gap: calc(0.25rem * 2);
-      border-radius: var(--radius-field);
-      padding-inline: calc(0.25rem * 3);
-      padding-block: calc(0.25rem * 1.5);
-      text-align: start;
-      transition-property: color, background-color, box-shadow;
-      transition-duration: 0.2s;
-      transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-      grid-auto-columns: minmax(auto, max-content) auto max-content;
-      user-select: none;
-    }
-    .menu :where(li > details > summary) {
-      --tw-outline-style: none;
-      outline-style: none;
-    }
-    @media (forced-colors: active) {
-      .menu :where(li > details > summary) {
-        outline: 2px solid transparent;
-        outline-offset: 2px;
-      }
-    }
-    .menu :where(li > details > summary)::-webkit-details-marker {
-      display: none;
-    }
-    :is(.menu :where(li > details > summary), .menu :where(li > .menu-dropdown-toggle)):after {
-      justify-self: flex-end;
-      display: block;
-      height: 0.375rem;
-      width: 0.375rem;
-      rotate: -135deg;
-      translate: 0 -1px;
-      transition-property: rotate, translate;
-      transition-duration: 0.2s;
-      content: "";
-      transform-origin: 50% 50%;
-      box-shadow: 2px 2px inset;
-      pointer-events: none;
-    }
-    .menu details {
-      overflow: hidden;
-      interpolate-size: allow-keywords;
-    }
-    .menu details::details-content {
-      block-size: 0;
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .menu details::details-content {
-        transition-behavior: allow-discrete;
-        transition-property: block-size, content-visibility;
-        transition-duration: 0.2s;
-        transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-      }
-    }
-    .menu details[open]::details-content {
-      block-size: auto;
-    }
-    .menu :where(li > details[open] > summary):after {
-      rotate: 45deg;
-      translate: 0 1px;
-    }
-    .menu :where(li > .menu-dropdown-toggle.menu-dropdown-show):after {
-      rotate: 45deg;
-      translate: 0 1px;
-    }
-    .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title), li:not(.menu-title, .disabled) > details > summary:not(.menu-title) ):not(.menu-active, :active, .btn).menu-focus {
-      cursor: pointer;
-      background-color: var(--color-base-content);
-    }
-    @supports (color: color-mix(in lab, red, red)) {
-      .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title), li:not(.menu-title, .disabled) > details > summary:not(.menu-title) ):not(.menu-active, :active, .btn).menu-focus {
-        background-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
-      }
-    }
-    .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title), li:not(.menu-title, .disabled) > details > summary:not(.menu-title) ):not(.menu-active, :active, .btn).menu-focus {
-      color: var(--color-base-content);
-      --tw-outline-style: none;
-      outline-style: none;
-    }
-    @media (forced-colors: active) {
-      .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title), li:not(.menu-title, .disabled) > details > summary:not(.menu-title) ):not(.menu-active, :active, .btn).menu-focus {
-        outline: 2px solid transparent;
-        outline-offset: 2px;
-      }
-    }
-    .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title), li:not(.menu-title, .disabled) > details > summary:not(.menu-title) ):not(.menu-active, :active, .btn):focus-visible {
-      cursor: pointer;
-      background-color: var(--color-base-content);
-    }
-    @supports (color: color-mix(in lab, red, red)) {
-      .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title), li:not(.menu-title, .disabled) > details > summary:not(.menu-title) ):not(.menu-active, :active, .btn):focus-visible {
-        background-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
-      }
-    }
-    .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title), li:not(.menu-title, .disabled) > details > summary:not(.menu-title) ):not(.menu-active, :active, .btn):focus-visible {
-      color: var(--color-base-content);
-      --tw-outline-style: none;
-      outline-style: none;
-    }
-    @media (forced-colors: active) {
-      .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title), li:not(.menu-title, .disabled) > details > summary:not(.menu-title) ):not(.menu-active, :active, .btn):focus-visible {
-        outline: 2px solid transparent;
-        outline-offset: 2px;
-      }
-    }
-    .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title):not(.menu-active, :active, .btn):hover, li:not(.menu-title, .disabled) > details > summary:not(.menu-title):not(.menu-active, :active, .btn):hover ) {
-      cursor: pointer;
-      background-color: var(--color-base-content);
-    }
-    @supports (color: color-mix(in lab, red, red)) {
-      .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title):not(.menu-active, :active, .btn):hover, li:not(.menu-title, .disabled) > details > summary:not(.menu-title):not(.menu-active, :active, .btn):hover ) {
-        background-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
-      }
-    }
-    .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title):not(.menu-active, :active, .btn):hover, li:not(.menu-title, .disabled) > details > summary:not(.menu-title):not(.menu-active, :active, .btn):hover ) {
-      --tw-outline-style: none;
-      outline-style: none;
-    }
-    @media (forced-colors: active) {
-      .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title):not(.menu-active, :active, .btn):hover, li:not(.menu-title, .disabled) > details > summary:not(.menu-title):not(.menu-active, :active, .btn):hover ) {
-        outline: 2px solid transparent;
-        outline-offset: 2px;
-      }
-    }
-    .menu :where(li:not(.menu-title, .disabled) > :not(ul, menu, details, .menu-title):not(.menu-active, :active, .btn):hover, li:not(.menu-title, .disabled) > details > summary:not(.menu-title):not(.menu-active, :active, .btn):hover ) {
-      box-shadow: 0 1px oklch(0% 0 0 / 0.01) inset, 0 -1px oklch(100% 0 0 / 0.01) inset;
-    }
-    .menu :where(li:empty) {
-      background-color: var(--color-base-content);
-      opacity: 10%;
-      margin: 0.5rem 1rem;
-      height: 1px;
-    }
-    .menu :where(li) {
-      position: relative;
-      display: flex;
-      flex-shrink: 0;
-      flex-direction: column;
-      flex-wrap: wrap;
-      align-items: stretch;
-    }
-    .menu :where(li) .badge {
-      justify-self: flex-end;
-    }
-    .menu :where(li) > :not(ul, menu, .menu-title, details, .btn):active, .menu :where(li) > :not(ul, menu, .menu-title, details, .btn).menu-active, .menu :where(li) > details > summary:active {
-      --tw-outline-style: none;
-      outline-style: none;
-      @media (forced-colors: active) {
-        outline: 2px solid transparent;
-        outline-offset: 2px;
-      }
-      color: var(--menu-active-fg);
-      background-color: var(--menu-active-bg);
-      background-size: auto, calc(var(--noise) * 100%);
-      background-image: none, var(--fx-noise);
-      &:not(&:active) {
-        box-shadow: 0 2px calc(var(--depth) * 3px) -2px var(--menu-active-bg);
-      }
-    }
-    .menu :where(li).menu-disabled, .menu :where(li)  [disabled] {
-      pointer-events: none;
-      color: var(--color-base-content);
-      @supports (color: color-mix(in lab, red, red)) {
-        color: color-mix(in oklab, var(--color-base-content) 20%, transparent);
-      }
-    }
-    .menu .dropdown:focus-within .menu-dropdown-toggle:after {
-      rotate: 45deg;
-      translate: 0 1px;
-    }
-    .menu .dropdown-content {
-      margin-top: calc(0.25rem * 2);
-      padding: calc(0.25rem * 2);
-    }
-    .menu .dropdown-content:before {
-      display: none;
-    }
     .collapse-title {
       grid-column-start: 1;
       grid-row-start: 1;
@@ -588,7 +364,7 @@
     .dropdown {
       position: relative;
       display: inline-block;
-      position-area: var(--anchor-v, bottom) var(--anchor-h, span-right);
+      position-area: var(--anchor-v, block-end) var(--anchor-h, span-inline-end);
     }
     .dropdown > :not(:has( ~ [class*="dropdown-content"])):focus {
       --tw-outline-style: none;
@@ -776,15 +552,15 @@
       --tw-content: attr(aria-label);
       content: var(--tw-content);
     }
+    .btn:where(:checked:not(.filter [type="radio"].btn)) {
+      --btn-color: var(--color-primary);
+      --btn-fg: var(--color-primary-content);
+    }
   }
   .prose :where(a.btn:not(.btn-link)):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
     text-decoration-line: none;
   }
   @layer daisyui.l1 {
-    .btn:where(:checked:not(.filter [type="radio"].btn)) {
-      --btn-color: var(--color-primary);
-      --btn-fg: var(--color-primary-content);
-    }
     @media (hover: hover) {
       .btn:hover {
         --btn-bg: var(--btn-color, var(--color-base-200));
@@ -816,25 +592,25 @@
         }
       }
     }
-    .btn:active:not(.btn-active) {
+    .btn:active:not(.btn-active, [aria-pressed="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"], [aria-current=""]) ) {
       translate: 0 0.5px;
       --btn-bg: var(--btn-color, var(--color-base-200));
     }
     @supports (color: color-mix(in lab, red, red)) {
-      .btn:active:not(.btn-active) {
+      .btn:active:not(.btn-active, [aria-pressed="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"], [aria-current=""]) ) {
         --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 5%);
       }
     }
-    .btn:active:not(.btn-active) {
+    .btn:active:not(.btn-active, [aria-pressed="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"], [aria-current=""]) ) {
       color: var(--btn-fg, var(--color-base-content));
       --btn-border: var(--btn-color, var(--color-base-200));
     }
     @supports (color: color-mix(in lab, red, red)) {
-      .btn:active:not(.btn-active) {
+      .btn:active:not(.btn-active, [aria-pressed="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"], [aria-current=""]) ) {
         --btn-border: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%);
       }
     }
-    .btn:active:not(.btn-active) {
+    .btn:active:not(.btn-active, [aria-pressed="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"], [aria-current=""]) ) {
       --btn-border-style: solid;
       --btn-inset: 0 0 0 0 oklch(0% 0 0/0);
       --btn-shadow: 0 0 0 0 oklch(0% 0 0/0);
@@ -872,6 +648,31 @@
     .btn:has(:focus-visible) {
       outline-width: 2px;
       outline-style: solid;
+      isolation: isolate;
+    }
+  }
+  @layer daisyui.l1.l2 {
+    .btn:is([aria-pressed="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"], [aria-current=""]) ) {
+      --btn-bg: var(--btn-color, var(--color-base-200));
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .btn:is([aria-pressed="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"], [aria-current=""]) ) {
+        --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 5%);
+      }
+    }
+    .btn:is([aria-pressed="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"], [aria-current=""]) ) {
+      color: var(--btn-fg, var(--color-base-content));
+      --btn-border: var(--btn-color, var(--color-base-200));
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .btn:is([aria-pressed="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"], [aria-current=""]) ) {
+        --btn-border: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%);
+      }
+    }
+    .btn:is([aria-pressed="true"], [aria-checked="true"], [aria-current]:not([aria-current="false"], [aria-current=""]) ) {
+      --btn-border-style: solid;
+      --btn-inset: 0 0 0 0 oklch(0% 0 0/0);
+      --btn-shadow: 0 0 0 0 oklch(0% 0 0/0);
       isolation: isolate;
     }
   }
@@ -1179,22 +980,22 @@
     }
   }
   @layer daisyui.l1.l2 {
-    .list .list-row:has(.list-col-grow:nth-child(1)) {
+    .list .list-row:has( > .list-col-grow:nth-child(1)) {
       --list-grid-cols: 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(2)) {
+    .list .list-row:has( > .list-col-grow:nth-child(2)) {
       --list-grid-cols: minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(3)) {
+    .list .list-row:has( > .list-col-grow:nth-child(3)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(4)) {
+    .list .list-row:has( > .list-col-grow:nth-child(4)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(5)) {
+    .list .list-row:has( > .list-col-grow:nth-child(5)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(6)) {
+    .list .list-row:has( > .list-col-grow:nth-child(6)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto)
           minmax(0, auto) 1fr;
     }
@@ -1242,22 +1043,22 @@
     }
   }
   @layer daisyui.l1.l2 {
-    .list .list-row:has(.list-col-grow:nth-child(1)) {
+    .list .list-row:has( > .list-col-grow:nth-child(1)) {
       --list-grid-cols: 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(2)) {
+    .list .list-row:has( > .list-col-grow:nth-child(2)) {
       --list-grid-cols: minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(3)) {
+    .list .list-row:has( > .list-col-grow:nth-child(3)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(4)) {
+    .list .list-row:has( > .list-col-grow:nth-child(4)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(5)) {
+    .list .list-row:has( > .list-col-grow:nth-child(5)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(6)) {
+    .list .list-row:has( > .list-col-grow:nth-child(6)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto)
           minmax(0, auto) 1fr;
     }
@@ -1597,6 +1398,8 @@
         }
       }
     }
+  }
+  @layer daisyui.l1.l2 {
     .input:has( > input[disabled]) {
       cursor: not-allowed;
       border-color: var(--color-base-200);
@@ -1830,63 +1633,6 @@
       outline-offset: 2px;
       background-image: linear-gradient(135deg, #0000 50%, currentColor 50%), linear-gradient(45deg, currentColor 50%, #0000 50%);
     }
-    .select:has( > select[disabled]) {
-      cursor: not-allowed;
-      border-color: var(--color-base-200);
-      background-color: var(--color-base-200);
-    }
-    .select:has( > select[disabled]):is(select), .select:has( > select[disabled])  :is(select) {
-      color: var(--color-base-content);
-      @supports (color: color-mix(in lab, red, red)) {
-        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
-      }
-    }
-    .select:has( > select[disabled]) {
-      box-shadow: none;
-    }
-    .select:has( > select[disabled])::placeholder, .select:has( > select[disabled])  ::placeholder {
-      color: var(--color-base-content);
-      opacity: 20%;
-    }
-    .select:is(:disabled, [disabled]) {
-      cursor: not-allowed;
-      border-color: var(--color-base-200);
-      background-color: var(--color-base-200);
-    }
-    .select:is(:disabled, [disabled]):is(select), .select:is(:disabled, [disabled])  :is(select) {
-      color: var(--color-base-content);
-      @supports (color: color-mix(in lab, red, red)) {
-        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
-      }
-    }
-    .select:is(:disabled, [disabled]) {
-      box-shadow: none;
-    }
-    .select:is(:disabled, [disabled])::placeholder, .select:is(:disabled, [disabled])  ::placeholder {
-      color: var(--color-base-content);
-      opacity: 20%;
-    }
-    fieldset:disabled .select {
-      cursor: not-allowed;
-      border-color: var(--color-base-200);
-      background-color: var(--color-base-200);
-    }
-    fieldset:disabled .select:is(select), fieldset:disabled .select  :is(select) {
-      color: var(--color-base-content);
-      @supports (color: color-mix(in lab, red, red)) {
-        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
-      }
-    }
-    fieldset:disabled .select {
-      box-shadow: none;
-    }
-    fieldset:disabled .select::placeholder, fieldset:disabled .select  ::placeholder {
-      color: var(--color-base-content);
-      opacity: 20%;
-    }
-    .select:has( > select[disabled]) > select[disabled] {
-      cursor: not-allowed;
-    }
     @supports (appearance: base-select) {
       :is(:is(.select), .select select) {
         appearance: base-select;
@@ -1989,6 +1735,67 @@
     [dir="rtl"] .select select::picker(select) {
       translate: 0.5rem 0;
     }
+  }
+  @layer daisyui.l1.l2 {
+    .select:has( > select[disabled]) {
+      cursor: not-allowed;
+      border-color: var(--color-base-200);
+      background-color: var(--color-base-200);
+    }
+    .select:has( > select[disabled]):is(select), .select:has( > select[disabled])  :is(select) {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    .select:has( > select[disabled]) {
+      box-shadow: none;
+    }
+    .select:has( > select[disabled])::placeholder, .select:has( > select[disabled])  ::placeholder {
+      color: var(--color-base-content);
+      opacity: 20%;
+    }
+    .select:is(:disabled, [disabled]) {
+      cursor: not-allowed;
+      border-color: var(--color-base-200);
+      background-color: var(--color-base-200);
+    }
+    .select:is(:disabled, [disabled]):is(select), .select:is(:disabled, [disabled])  :is(select) {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    .select:is(:disabled, [disabled]) {
+      box-shadow: none;
+    }
+    .select:is(:disabled, [disabled])::placeholder, .select:is(:disabled, [disabled])  ::placeholder {
+      color: var(--color-base-content);
+      opacity: 20%;
+    }
+    fieldset:disabled .select {
+      cursor: not-allowed;
+      border-color: var(--color-base-200);
+      background-color: var(--color-base-200);
+    }
+    fieldset:disabled .select:is(select), fieldset:disabled .select  :is(select) {
+      color: var(--color-base-content);
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
+      }
+    }
+    fieldset:disabled .select {
+      box-shadow: none;
+    }
+    fieldset:disabled .select::placeholder, fieldset:disabled .select  ::placeholder {
+      color: var(--color-base-content);
+      opacity: 20%;
+    }
+    .select:has( > select[disabled]) > select[disabled] {
+      cursor: not-allowed;
+    }
+  }
+  @layer daisyui.l1.l2.l3 {
     .checkbox {
       border: var(--border) solid var(--input-color, var(--color-base-content));
     }
@@ -2041,6 +1848,7 @@
     }
     .checkbox:checked:before {
       clip-path: polygon(20% 100%, 20% 80%, 50% 80%, 50% 0%, 70% 0%, 70% 100%);
+      translate: 3.5% -7%;
       opacity: 100%;
     }
     @media (forced-colors: active) {
@@ -2065,6 +1873,7 @@
     }
     .checkbox[aria-checked="true"]:before {
       clip-path: polygon(20% 100%, 20% 80%, 50% 80%, 50% 0%, 70% 0%, 70% 100%);
+      translate: 3.5% -7%;
       opacity: 100%;
     }
     @media (forced-colors: active) {
@@ -2094,7 +1903,21 @@
     .checkbox:indeterminate:before {
       rotate: 0deg;
       opacity: 100%;
-      translate: 0 -35%;
+      translate: 0 -40%;
+      clip-path: polygon(20% 100%, 20% 80%, 50% 80%, 50% 80%, 80% 80%, 80% 100%);
+    }
+    .checkbox[aria-checked="mixed"] {
+      background-color: var( --input-color, var(--color-base-content) );
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .checkbox[aria-checked="mixed"] {
+        background-color: var( --input-color, color-mix(in oklab, var(--color-base-content) 20%, #0000) );
+      }
+    }
+    .checkbox[aria-checked="mixed"]:before {
+      rotate: 0deg;
+      opacity: 100%;
+      translate: 0 -40%;
       clip-path: polygon(20% 100%, 20% 80%, 50% 80%, 50% 80%, 80% 80%, 80% 100%);
     }
   }
@@ -2425,6 +2248,8 @@
     --join-se: 0;
     --join-es: 0;
     --join-ee: 0;
+    --join-ml: 0;
+    --join-mt: 0;
     --join-v: 0;
     --join-h: 1;
     @scope (&) {
@@ -2453,6 +2278,10 @@
         --join-se: var(--radius-field);
         --join-es: var(--radius-field);
         --join-ee: var(--radius-field);
+      }
+      :where(:scope > :not(:first-child)) {
+        --join-ml: calc(var(--border, 1px) * -1 * var(--join-h));
+        --join-mt: calc(var(--border, 1px) * -1 * var(--join-v));
       }
     }
   }
@@ -2646,9 +2475,9 @@
     border-start-end-radius: var(--join-se);
     border-end-start-radius: var(--join-es);
     border-end-end-radius: var(--join-ee);
-    &:not(:first-child, :disabled, [disabled], .btn-disabled) {
-      margin-inline-start: calc(var(--border, 1px) * -1 * var(--join-h));
-      margin-block-start: calc(var(--border, 1px) * -1 * var(--join-v));
+    &:not(:disabled, [disabled], .btn-disabled) {
+      margin-inline-start: var(--join-ml, 0);
+      margin-block-start: var(--join-mt, 0);
     }
     &:is(:disabled, [disabled], .btn-disabled) {
       border-width: var(--border, 1px);
@@ -2662,12 +2491,13 @@
   .mt-5 {
     margin-top: calc(var(--spacing) * 5);
   }
+  .ml-3 {
+    margin-left: calc(var(--spacing) * 3);
+  }
   @layer daisyui.l1.l2.l3 {
     .status {
       display: inline-block;
       aspect-ratio: 1 / 1;
-      width: calc(0.25rem * 2);
-      height: calc(0.25rem * 2);
       border-radius: var(--radius-selector);
       background-color: var(--color-base-content);
     }
@@ -2688,6 +2518,9 @@
       }
     }
     .status {
+      --size: calc(var(--size-selector, 0.25rem) * 2);
+      width: var(--size);
+      height: var(--size);
       background-image: radial-gradient( circle at 35% 30%, oklch(1 0 0 / calc(var(--depth) * 0.5)), #0000 );
       box-shadow: 0 2px 3px -1px currentColor;
     }
@@ -2773,20 +2606,11 @@
   .h-20 {
     height: calc(var(--spacing) * 20);
   }
-  .h-100 {
-    height: calc(var(--spacing) * 100);
-  }
-  .h-full {
-    height: 100%;
-  }
   .min-h-screen {
     min-height: 100vh;
   }
   .w-10\/12 {
     width: calc(10 / 12 * 100%);
-  }
-  .w-50 {
-    width: calc(var(--spacing) * 50);
   }
   .w-fit {
     width: fit-content;
@@ -2824,6 +2648,113 @@
       translate: 0 1px;
     }
   }
+  @layer daisyui.l1.l2 {
+    .swap .swap-on {
+      opacity: 0%;
+    }
+    .swap input:indeterminate ~ .swap-on {
+      opacity: 0%;
+    }
+    .swap input:checked ~ .swap-on {
+      opacity: 100%;
+      backface-visibility: visible;
+    }
+  }
+  @layer daisyui.l1 {
+    .swap-active .swap-on {
+      opacity: 100%;
+    }
+    .swap-active.swap-rotate .swap-on {
+      rotate: 0deg;
+    }
+    .swap-active.swap-flip .swap-on {
+      transform: rotateY(0deg);
+    }
+    .swap-rotate .swap-on {
+      rotate: 45deg;
+    }
+    .swap-rotate input:indeterminate ~ .swap-on {
+      rotate: 45deg;
+    }
+    .swap-rotate input:is(:checked, :indeterminate) ~ .swap-on {
+      rotate: 0deg;
+    }
+    .swap-rotate.swap-active .swap-on {
+      rotate: 0deg;
+    }
+    .swap-flip .swap-on {
+      transform: rotateY(180deg);
+      backface-visibility: hidden;
+    }
+    .swap-flip input:indeterminate ~ .swap-on {
+      transform: rotateY(180deg);
+      backface-visibility: hidden;
+    }
+    .swap-flip input:is(:checked, :indeterminate) ~ .swap-on {
+      transform: rotateY(0deg);
+    }
+    .swap-flip.swap-active .swap-on {
+      transform: rotateY(0deg);
+    }
+  }
+  @layer daisyui.l1.l2 {
+    .swap input:is(:checked, :indeterminate) ~ .swap-off {
+      opacity: 0%;
+    }
+  }
+  @layer daisyui.l1 {
+    .swap-active .swap-off {
+      opacity: 0%;
+    }
+    .swap-active.swap-rotate .swap-off {
+      rotate: calc(45deg * -1);
+    }
+    .swap-active.swap-flip .swap-off {
+      transform: rotateY(-180deg);
+      backface-visibility: hidden;
+      opacity: 100%;
+    }
+    .swap-rotate input:is(:checked, :indeterminate) ~ .swap-off {
+      rotate: calc(45deg * -1);
+    }
+    .swap-rotate.swap-active .swap-off {
+      rotate: calc(45deg * -1);
+    }
+    .swap-flip input:is(:checked, :indeterminate) ~ .swap-off {
+      transform: rotateY(-180deg);
+      backface-visibility: hidden;
+      opacity: 100%;
+    }
+    .swap-flip.swap-active .swap-off {
+      transform: rotateY(-180deg);
+      backface-visibility: hidden;
+      opacity: 100%;
+    }
+    .swap-active.swap-rotate .swap-on {
+      rotate: 0deg;
+    }
+    .swap-active.swap-rotate .swap-off {
+      rotate: calc(45deg * -1);
+    }
+    .swap-rotate .swap-on {
+      rotate: 45deg;
+    }
+    .swap-rotate input:indeterminate ~ .swap-on {
+      rotate: 45deg;
+    }
+    .swap-rotate input:is(:checked, :indeterminate) ~ .swap-on {
+      rotate: 0deg;
+    }
+    .swap-rotate.swap-active .swap-on {
+      rotate: 0deg;
+    }
+    .swap-rotate input:is(:checked, :indeterminate) ~ .swap-off {
+      rotate: calc(45deg * -1);
+    }
+    .swap-rotate.swap-active .swap-off {
+      rotate: calc(45deg * -1);
+    }
+  }
   .cursor-default {
     cursor: default;
   }
@@ -2857,27 +2788,6 @@
   .gap-6 {
     gap: calc(var(--spacing) * 6);
   }
-  @layer daisyui.l1.l2 {
-    .menu-sm :where(li:not(.menu-title) > :not(ul, menu, details, .menu-title)) {
-      border-radius: var(--radius-field);
-      padding-inline: calc(0.25rem * 2.5);
-      padding-block: 0.25rem;
-      font-size: 0.75rem;
-    }
-    .menu-sm :where(li:not(.menu-title) > details > summary:not(.menu-title)) {
-      border-radius: var(--radius-field);
-      padding-inline: calc(0.25rem * 2.5);
-      padding-block: 0.25rem;
-      font-size: 0.75rem;
-    }
-    .menu-sm details[open] > summary:before {
-      font-size: 0.75rem;
-    }
-    .menu-sm .menu-title {
-      padding-inline: calc(0.25rem * 3);
-      padding-block: calc(0.25rem * 2);
-    }
-  }
   .rounded-box {
     border-radius: var(--radius-box);
   }
@@ -2885,11 +2795,20 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
-  .border-base-300 {
-    border-color: var(--color-base-300);
-  }
   .border-blue-300 {
     border-color: var(--color-blue-300);
+  }
+  :root[data-theme="dukelight"] .duke-item-completed {
+    background-color: var(--color-green-100);
+  }
+  :root[data-theme="dukedark"] .duke-item-completed {
+    background-color: var(--color-lime-800);
+  }
+  :root[data-theme="dukelight"] .duke-item-pending {
+    background-color: var(--color-blue-100);
+  }
+  :root[data-theme="dukedark"] .duke-item-pending {
+    background-color: var(--color-sky-800);
   }
   .bg-base-100 {
     background-color: var(--color-base-100);
@@ -2897,29 +2816,23 @@
   .bg-base-200 {
     background-color: var(--color-base-200);
   }
-  .bg-blue-100 {
-    background-color: var(--color-blue-100);
+  .bg-base-200\/20 {
+    background-color: var(--color-base-200);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-base-200) 20%, transparent);
+    }
   }
   .bg-blue-700 {
     background-color: var(--color-blue-700);
   }
-  .bg-green-100 {
-    background-color: var(--color-green-100);
-  }
-  .bg-neutral\/80 {
+  .bg-neutral {
     background-color: var(--color-neutral);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-neutral) 80%, transparent);
-    }
+  }
+  .bg-primary {
+    background-color: var(--color-primary);
   }
   .bg-purple-900 {
     background-color: var(--color-purple-900);
-  }
-  .bg-secondary {
-    background-color: var(--color-secondary);
-  }
-  .bg-secondary-content {
-    background-color: var(--color-secondary-content);
   }
   @layer daisyui.l1.l2.l3 {
     .btn-outline {
@@ -2948,44 +2861,6 @@
   }
   .p-10 {
     padding: calc(var(--spacing) * 10);
-  }
-  @layer daisyui.l1.l2.l3 {
-    .menu-title {
-      padding-inline: calc(0.25rem * 3);
-      padding-block: calc(0.25rem * 2);
-      color: var(--color-base-content);
-    }
-    @supports (color: color-mix(in lab, red, red)) {
-      .menu-title {
-        color: color-mix(in oklab, var(--color-base-content) 40%, transparent);
-      }
-    }
-    .menu-title {
-      font-size: 0.875rem;
-      font-weight: 600;
-    }
-  }
-  @layer daisyui.l1.l2 {
-    .menu-xs .menu-title {
-      padding-inline: calc(0.25rem * 2);
-      padding-block: 0.25rem;
-    }
-    .menu-sm .menu-title {
-      padding-inline: calc(0.25rem * 3);
-      padding-block: calc(0.25rem * 2);
-    }
-    .menu-md .menu-title {
-      padding-inline: calc(0.25rem * 3);
-      padding-block: calc(0.25rem * 2);
-    }
-    .menu-lg .menu-title {
-      padding-inline: calc(0.25rem * 6);
-      padding-block: calc(0.25rem * 3);
-    }
-    .menu-xl .menu-title {
-      padding-inline: calc(0.25rem * 6);
-      padding-block: calc(0.25rem * 3);
-    }
   }
   .px-0 {
     padding-inline: 0px;
@@ -3052,26 +2927,38 @@
     --tw-font-weight: var(--font-weight-thin);
     font-weight: var(--font-weight-thin);
   }
-  .text-base-200 {
-    color: var(--color-base-200);
+  :root[data-theme="dukelight"] .duke-fg-label {
+    color: rgb(0,120,180);
+  }
+  :root[data-theme="dukedark"] .duke-fg-label {
+    color: rgb(180,200,240);
+  }
+  :root[data-theme="dukelight"] .duke-fg-title {
+    color: rgb(60,10,100);
+  }
+  :root[data-theme="dukedark"] .duke-fg-title {
+    color: rgb(180,180,240);
+  }
+  .text-base-content {
+    color: var(--color-base-content);
+  }
+  .text-base-content\/70 {
+    color: var(--color-base-content);
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, var(--color-base-content) 70%, transparent);
+    }
   }
   .text-error {
     color: var(--color-error);
   }
-  .text-primary-content\/70 {
-    color: var(--color-primary-content);
-    @supports (color: color-mix(in lab, red, red)) {
-      color: color-mix(in oklab, var(--color-primary-content) 70%, transparent);
-    }
+  .text-primary {
+    color: var(--color-primary);
   }
-  .text-purple-900 {
-    color: var(--color-purple-900);
+  .text-primary-content {
+    color: var(--color-primary-content);
   }
   .text-secondary {
     color: var(--color-secondary);
-  }
-  .text-secondary-content {
-    color: var(--color-secondary-content);
   }
   .text-success {
     color: var(--color-success);
@@ -3107,22 +2994,22 @@
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
   @layer daisyui.l1.l2 {
-    .list .list-row:has(.list-col-grow:nth-child(1)) {
+    .list .list-row:has( > .list-col-grow:nth-child(1)) {
       --list-grid-cols: 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(2)) {
+    .list .list-row:has( > .list-col-grow:nth-child(2)) {
       --list-grid-cols: minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(3)) {
+    .list .list-row:has( > .list-col-grow:nth-child(3)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(4)) {
+    .list .list-row:has( > .list-col-grow:nth-child(4)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(5)) {
+    .list .list-row:has( > .list-col-grow:nth-child(5)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto) 1fr;
     }
-    .list .list-row:has(.list-col-grow:nth-child(6)) {
+    .list .list-row:has( > .list-col-grow:nth-child(6)) {
       --list-grid-cols: minmax(0, auto) minmax(0, auto) minmax(0, auto) minmax(0, auto)
           minmax(0, auto) 1fr;
     }
@@ -3144,17 +3031,17 @@
       --top-mul: 4;
       --font-size: 0.75rem;
     }
-    :is(.select-secondary) {
-      --input-color: var(--color-secondary);
+    :is(.select-primary) {
+      --input-color: var(--color-primary);
     }
-    .select-secondary:focus {
-      --input-color: var(--color-secondary);
+    .select-primary:focus {
+      --input-color: var(--color-primary);
     }
-    .select-secondary:focus-within {
-      --input-color: var(--color-secondary);
+    .select-primary:focus-within {
+      --input-color: var(--color-primary);
     }
-    .select-secondary:open {
-      --input-color: var(--color-secondary);
+    .select-primary:open {
+      --input-color: var(--color-primary);
     }
     .btn-accent {
       --btn-color: var(--color-accent);
@@ -3164,11 +3051,6 @@
     .btn-error {
       --btn-color: var(--color-error);
       --btn-fg: var(--color-error-content);
-      --btn-soft-bg: initial;
-    }
-    .btn-info {
-      --btn-color: var(--color-info);
-      --btn-fg: var(--color-info-content);
       --btn-soft-bg: initial;
     }
     .btn-primary {
@@ -3191,6 +3073,11 @@
       --btn-fg: var(--color-success-content);
       --btn-soft-bg: initial;
     }
+    .btn-warning {
+      --btn-color: var(--color-warning);
+      --btn-fg: var(--color-warning-content);
+      --btn-soft-bg: initial;
+    }
     :is(.input-error) {
       --input-color: var(--color-error);
     }
@@ -3200,14 +3087,14 @@
     .input-error:focus-within {
       --input-color: var(--color-error);
     }
-    :is(.input-secondary) {
-      --input-color: var(--color-secondary);
+    :is(.input-primary) {
+      --input-color: var(--color-primary);
     }
-    .input-secondary:focus {
-      --input-color: var(--color-secondary);
+    .input-primary:focus {
+      --input-color: var(--color-primary);
     }
-    .input-secondary:focus-within {
-      --input-color: var(--color-secondary);
+    .input-primary:focus-within {
+      --input-color: var(--color-primary);
     }
     .toggle-info:checked {
       --input-color: var(--color-info);
@@ -3215,11 +3102,11 @@
     .toggle-info[aria-checked="true"] {
       --input-color: var(--color-info);
     }
-    .toggle-secondary:checked {
-      --input-color: var(--color-secondary);
+    .toggle-primary:checked {
+      --input-color: var(--color-primary);
     }
-    .toggle-secondary[aria-checked="true"] {
-      --input-color: var(--color-secondary);
+    .toggle-primary[aria-checked="true"] {
+      --input-color: var(--color-primary);
     }
     .toggle-success:checked {
       --input-color: var(--color-success);
@@ -3250,8 +3137,8 @@
     }
   }
   @layer daisyui.l1.l2 {
-    .radio-secondary {
-      --input-color: var(--color-secondary);
+    .radio-primary {
+      --input-color: var(--color-primary);
     }
   }
   @layer daisyui.l1.l2.l3 {
@@ -3263,8 +3150,8 @@
     }
   }
   @media (hover: hover) {
-    .hover\:text-secondary-content:hover {
-      color: var(--color-secondary-content);
+    .hover\:text-base-content:hover {
+      color: var(--color-base-content);
     }
   }
 }
@@ -3284,7 +3171,7 @@
   label.input {
     border-color: #87b8ff !important;
   }
-  label:focus-within {
+  label.input:focus-within {
     outline: none !important;
     border: 2px solid #87b8ff !important;
     box-shadow: 0 0 0 .15rem rgba(13,110,253,0.25);
@@ -3417,47 +3304,6 @@
     --depth: 1;
     --noise: 0;
   }
-  :root:has(input.theme-controller[value=emerald]:checked),[data-theme=emerald] {
-    color-scheme: light;
-    --color-base-100: oklch(100% 0 0);
-    --color-base-200: oklch(93% 0 0);
-    --color-base-300: oklch(86% 0 0);
-    --color-base-content: oklch(35.519% 0.032 262.988);
-    --color-primary: oklch(76.662% 0.135 153.45);
-    --color-primary-content: oklch(33.387% 0.04 162.24);
-    --color-secondary: oklch(61.302% 0.202 261.294);
-    --color-secondary-content: oklch(100% 0 0);
-    --color-accent: oklch(72.772% 0.149 33.2);
-    --color-accent-content: oklch(0% 0 0);
-    --color-neutral: oklch(35.519% 0.032 262.988);
-    --color-neutral-content: oklch(98.462% 0.001 247.838);
-    --color-info: oklch(72.06% 0.191 231.6);
-    --color-info-content: oklch(0% 0 0);
-    --color-success: oklch(64.8% 0.15 160);
-    --color-success-content: oklch(0% 0 0);
-    --color-warning: oklch(84.71% 0.199 83.87);
-    --color-warning-content: oklch(0% 0 0);
-    --color-error: oklch(71.76% 0.221 22.18);
-    --color-error-content: oklch(0% 0 0);
-    --radius-selector: 1rem;
-    --radius-field: 0.5rem;
-    --radius-box: 1rem;
-    --size-selector: 0.25rem;
-    --size-field: 0.25rem;
-    --border: 1px;
-    --depth: 0;
-    --noise: 0;
-  }
-  :root {
-    --page-scroll-lock: initial;
-    --page-overflow: var(--page-scroll-lock) hidden;
-  }
-  :root:not(span) {
-    overflow: var(--page-overflow);
-  }
-  :root {
-    --fx-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.34' numOctaves='4' stitchTiles='stitch'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23a)' opacity='0.2'%3E%3C/rect%3E%3C/svg%3E");
-  }
   :root, [data-theme] {
     background-color: var(--root-bg);
     color: var(--color-base-content);
@@ -3468,21 +3314,8 @@
   :where(:root, [data-theme]) {
     --root-bg: var(--color-base-100);
   }
-  @property --radialprogress {
-    syntax: "<percentage>";
-    inherits: true;
-    initial-value: 0%;
-  }
-  @property --aura-angle {
-    syntax: "<angle>";
-    inherits: false;
-    initial-value: 0deg;
-  }
   :root {
-    scrollbar-color: currentColor #0000;
-    @supports (color: color-mix(in lab, red, red)) {
-      scrollbar-color: color-mix(in oklch, currentColor 35%, #0000) #0000;
-    }
+    --fx-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.34' numOctaves='4' stitchTiles='stitch'%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23a)' opacity='0.2'%3E%3C/rect%3E%3C/svg%3E");
     --page-has-backdrop: var(--page-scroll-lock) 1;
     --page-scroll-bg: var(--page-scroll-lock)
     var(--root-bg, #0000);
@@ -3502,10 +3335,84 @@
       --page-has-scroll:  ;
     }
   }
+  @property --radialprogress {
+    syntax: "<percentage>";
+    inherits: true;
+    initial-value: 0%;
+  }
+  @property --aura-angle {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+  }
+  :root {
+    scrollbar-color: currentColor #0000;
+    @supports (color: color-mix(in lab, red, red)) {
+      scrollbar-color: color-mix(in oklch, currentColor 35%, #0000) #0000;
+    }
+    --page-scroll-lock: initial;
+    --page-overflow: var(--page-scroll-lock) hidden;
+  }
+  :root:not(span) {
+    overflow: var(--page-overflow);
+  }
+}
+@keyframes rotator {
+  89.9999%, 100% {
+    --first-item-position: 0 0%;
+  }
+  90%, 99.9999% {
+    --first-item-position: 0 calc(var(--items) * 100%);
+  }
+  100% {
+    translate: 0 -100%;
+  }
+}
+@keyframes skeleton {
+  0% {
+    background-position: 150%;
+  }
+  100% {
+    background-position: -50%;
+  }
+}
+@keyframes menu {
+  0% {
+    opacity: 0;
+  }
 }
 @keyframes dropdown {
   0% {
     opacity: 0;
+  }
+}
+@keyframes toast {
+  0% {
+    scale: 0.9;
+    opacity: 0;
+  }
+  100% {
+    scale: 1;
+    opacity: 1;
+  }
+}
+@keyframes radio {
+  0% {
+    padding: 5px;
+  }
+  50% {
+    padding: 3px;
+  }
+}
+@keyframes rating {
+  0%, 40% {
+    scale: 1.1;
+    filter: brightness(1.05) contrast(1.05);
+  }
+}
+@keyframes progress {
+  50% {
+    background-position-x: -115%;
   }
 }
 @keyframes aura {
@@ -3534,57 +3441,101 @@
     filter: blur(1.5rem);
   }
 }
-@keyframes progress {
-  50% {
-    background-position-x: -115%;
+@layer base {
+  :root:has(input.theme-controller[value="dukelight"]:checked),[data-theme="dukelight"] {
+    color-scheme: light;
+    --color-base-100: oklch(98% 0.002 247.839);
+    --color-base-200: oklch(97% 0.014 254.604);
+    --color-base-300: oklch(93% 0.032 255.585);
+    --color-base-content: oklch(12% 0.042 264.695);
+    --color-primary: oklch(62% 0.214 259.815);
+    --color-primary-content: oklch(98% 0.003 247.858);
+    --color-secondary: oklch(64% 0.2 131.684);
+    --color-secondary-content: oklch(100% 0 0);
+    --color-accent: oklch(64.9% 0.200 58.318);
+    --color-accent-content: oklch(98% 0.003 247.858);
+    --color-neutral: oklch(39% 0.09 240.876);
+    --color-neutral-content: oklch(98.462% 0.001 247.838);
+    --color-info: oklch(71% 0.143 215.221);
+    --color-info-content: oklch(98% 0.003 247.858);
+    --color-success: oklch(59% 0.145 163.225);
+    --color-success-content: oklch(98% 0.003 247.858);
+    --color-warning: oklch(60% 0.162 75.834);
+    --color-warning-content: oklch(98% 0.003 247.858);
+    --color-error: oklch(50% 0.213 27.518);
+    --color-error-content: oklch(98% 0.003 247.858);
+    --radius-selector: 1rem;
+    --radius-field: 0.5rem;
+    --radius-box: 1rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1.5px;
+    --depth: 1;
+    --noise: 0;
   }
-}
-@keyframes skeleton {
-  0% {
-    background-position: 150%;
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+      color-scheme: dark;
+      --color-base-100: oklch(29% 0.066 243.157);
+      --color-base-200: oklch(39% 0.09 240.876);
+      --color-base-300: oklch(44% 0.11 240.79);
+      --color-base-content: oklch(97% 0.013 236.62);
+      --color-primary: oklch(58% 0.158 241.966);
+      --color-primary-content: oklch(97% 0.013 17.38);
+      --color-secondary: oklch(64% 0.2 131.684);
+      --color-secondary-content: oklch(98% 0.022 95.277);
+      --color-accent: oklch(59.2% 0.177 75.834);
+      --color-accent-content: oklch(97% 0.013 236.62);
+      --color-neutral: oklch(29% 0.066 243.157);
+      --color-neutral-content: oklch(97% 0.013 236.62);
+      --color-info: oklch(60% 0.126 221.723);
+      --color-info-content: oklch(97% 0.014 254.604);
+      --color-success: oklch(62% 0.194 149.214);
+      --color-success-content: oklch(98% 0.031 120.757);
+      --color-warning: oklch(55% 0.163 48.998);
+      --color-warning-content: oklch(98% 0.022 95.277);
+      --color-error: oklch(50% 0.213 27.518);
+      --color-error-content: oklch(97% 0.014 343.198);
+      --radius-selector: 0.5rem;
+      --radius-field: 0.5rem;
+      --radius-box: 1rem;
+      --size-selector: 0.25rem;
+      --size-field: 0.25rem;
+      --border: 1.5px;
+      --depth: 1;
+      --noise: 0;
+    }
   }
-  100% {
-    background-position: -50%;
-  }
-}
-@keyframes rating {
-  0%, 40% {
-    scale: 1.1;
-    filter: brightness(1.05) contrast(1.05);
-  }
-}
-@keyframes menu {
-  0% {
-    opacity: 0;
-  }
-}
-@keyframes toast {
-  0% {
-    scale: 0.9;
-    opacity: 0;
-  }
-  100% {
-    scale: 1;
-    opacity: 1;
-  }
-}
-@keyframes rotator {
-  89.9999%, 100% {
-    --first-item-position: 0 0%;
-  }
-  90%, 99.9999% {
-    --first-item-position: 0 calc(var(--items) * 100%);
-  }
-  100% {
-    translate: 0 -100%;
-  }
-}
-@keyframes radio {
-  0% {
-    padding: 5px;
-  }
-  50% {
-    padding: 3px;
+  :root:has(input.theme-controller[value="dukedark"]:checked),[data-theme="dukedark"] {
+    color-scheme: dark;
+    --color-base-100: oklch(29% 0.066 243.157);
+    --color-base-200: oklch(39% 0.09 240.876);
+    --color-base-300: oklch(44% 0.11 240.79);
+    --color-base-content: oklch(97% 0.013 236.62);
+    --color-primary: oklch(58% 0.158 241.966);
+    --color-primary-content: oklch(97% 0.013 17.38);
+    --color-secondary: oklch(64% 0.2 131.684);
+    --color-secondary-content: oklch(98% 0.022 95.277);
+    --color-accent: oklch(59.2% 0.177 75.834);
+    --color-accent-content: oklch(97% 0.013 236.62);
+    --color-neutral: oklch(29% 0.066 243.157);
+    --color-neutral-content: oklch(97% 0.013 236.62);
+    --color-info: oklch(60% 0.126 221.723);
+    --color-info-content: oklch(97% 0.014 254.604);
+    --color-success: oklch(62% 0.194 149.214);
+    --color-success-content: oklch(98% 0.031 120.757);
+    --color-warning: oklch(55% 0.163 48.998);
+    --color-warning-content: oklch(98% 0.022 95.277);
+    --color-error: oklch(50% 0.213 27.518);
+    --color-error-content: oklch(97% 0.014 343.198);
+    --radius-selector: 0.5rem;
+    --radius-field: 0.5rem;
+    --radius-box: 1rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1.5px;
+    --depth: 1;
+    --noise: 0;
   }
 }
 @property --tw-border-style {

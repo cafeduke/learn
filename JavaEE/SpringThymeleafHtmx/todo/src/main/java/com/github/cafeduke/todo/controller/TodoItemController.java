@@ -52,7 +52,9 @@ public class TodoItemController
 
   public static final String SESSION_KEY_SETTINGS = "todos.settings";
 
-  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd-MMM-yyyy HH:mm:ss.SSS");
+  public static final String SESSION_KEY_THEME = "theme";
+
+  private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 
   public static void main(String arg[])
   {
@@ -79,6 +81,25 @@ public class TodoItemController
   public String daisy()
   {
     return "daisy";
+  }
+
+  // @HxRequest
+  // @GetMapping("/data-theme")
+  // public String getDataTheme(Model model, HttpSession session)
+  // {
+  //   String theme = SessionManager.getSessionAttribute(session, SESSION_KEY_THEME, "dukelight");
+  //   log.info("[refreshDataTheme] Theme = {}", theme);
+  //   model.addAttribute("theme", theme);
+  // }
+
+  @HxRequest
+  @GetMapping("/set-data-theme")
+  public String setDataTheme(@RequestParam(name = "mode", defaultValue = "off") String mode, HttpSession session)
+  {
+    String theme = mode.equals("off") ? "dukedark" : "dukelight";
+    log.info("[setDataTheme] mode={}, Theme = {}", mode, theme);
+    session.setAttribute(SESSION_KEY_THEME, theme);
+    return "redirect:htmx:/home";
   }
 
   /*

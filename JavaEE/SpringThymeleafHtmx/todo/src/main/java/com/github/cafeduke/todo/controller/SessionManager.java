@@ -4,12 +4,23 @@ import jakarta.servlet.http.HttpSession;
 
 public class SessionManager
 {
-  private static Object getSessionAttribute(HttpSession session, String key, Object reqParamValue)
+  public static <T> T getSessionAttribute(HttpSession session, String key, T defaultValue)
   {
-    Object obj = reqParamValue;
+    return getSessionAttribute(session, key, defaultValue, null);
+  }
+
+  @SuppressWarnings("unchecked")
+  public static <T> T getSessionAttribute(HttpSession session, String key, T defaultValue, T reqParamValue)
+  {
+    T obj = reqParamValue;
     if (obj == null)
-      obj = session.getAttribute(key);
+    {
+      // reqParamValue is null, check session, if that's null too then use the default value
+      obj = (T) session.getAttribute(key);
+      obj = obj == null ? defaultValue : obj;
+    }
     else
+      // reqParmValue exists, so update session and return the obj
       session.setAttribute(key, obj);
     return obj;
   }

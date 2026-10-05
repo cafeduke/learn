@@ -12,7 +12,7 @@
     <li
       th:fragment="fragTodoListItem"
       th:id="|item-id-${item.id}|"
-      th:classappend="${item.completed ? 'bg-green-100' : 'bg-blue-100'}"
+      th:classappend="${item.completed ? 'duke-item-completed' : 'duke-item-pending'}"
       class="list-row items-center">
       <!-- Serial number -->
       <div class="text-4xl font-thin opacity-30 tabular-nums" th:text="${#numbers.formatInteger(itemCount,2)}">00</div>
@@ -21,7 +21,7 @@
       <div>
         <span
           class="material-icons !text-2xl"
-          th:classappend="${item.completed ? 'text-success' : 'text-secondary'}"
+          th:classappend="${item.completed ? 'text-success' : 'text-primary'}"
           th:text="${item.completed ? 'done' : 'pending_actions'}">
           done
         </span>
@@ -42,7 +42,7 @@
         hx:swap="outerHTML"
         hx:trigger="change"
         th:checked="${item.completed}"
-        th:classappend="${item.completed ? 'toggle-success' : 'toggle-secondary text-secondary'}"
+        th:classappend="${item.completed ? 'toggle-success' : 'toggle-primary text-primary'}"
         class="toggle" />
 
       <!-- Delete -->
@@ -51,7 +51,7 @@
         hx:target="|#todo-container|"
         hx:swap="outerHTML"
         hx:confirm="|Confirm deleting todo item '${item.title}' ?|"
-        class="btn btn-square btn-ghost btn-error hover:text-secondary-content">
+        class="btn btn-square btn-ghost btn-error hover:text-base-content">
         <span class="material-icons">delete</span>
       </button>
     </li>

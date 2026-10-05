@@ -2,13 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <body>
     <div class="navbar bg-purple-900 shadow-sm" th:fragment="fragNavBar">
-      <span class="font-italianno text-4xl font-bold text-secondary-content">
+      <span class="font-italianno text-4xl font-bold text-primary-content">
         <a href="/home">Duke Todos</a>
       </span>
 
-      <span class="flex flex-row-reverse flex-grow">
+      <span class="flex flex-row-reverse items-center flex-grow">
+        <label class="swap swap-rotate text-primary-content ml-3">
+          <input
+            type="checkbox"
+            name="mode"
+            hx:trigger="change"
+            hx:get="@{/set-data-theme}"
+            hx:swap="outerHTML"
+            th:checked="${session.theme == null || session.theme == 'dukelight' ? true : false}" />
+          <span class="material-icons swap-on">light_mode</span>
+          <span class="material-icons swap-off">dark_mode</span>
+        </label>
+
         <!-- Timestamp -->
-        <span class="text-sm text-secondary-content" hx:get="@{/timestamp}" hx-trigger="load" hx-swap="innerHTML">
+        <span
+          class="text-sm font-bold text-primary-content"
+          hx:get="@{/timestamp}"
+          hx-trigger="load"
+          hx-swap="innerHTML">
           Loading time...
         </span>
       </span>

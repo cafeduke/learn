@@ -1,6 +1,10 @@
 <!doctype html>
 <!-- DaisyUI theme -->
-<html xmlns:th="http://thymeleaf.org" data-theme="emerald" style="background-color: darkgray">
+<html
+  id="root-container"
+  xmlns:th="http://thymeleaf.org"
+  th:data-theme="${session.theme ?: 'dukelight'}"
+  class="bg-base-200/20">
   <head>
     <meta charset="UTF-8" />
     <title>Spring Boot + daisyUI</title>
