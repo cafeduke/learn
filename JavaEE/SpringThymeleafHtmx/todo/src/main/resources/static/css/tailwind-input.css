@@ -45,6 +45,8 @@
   --border: 1.5px;
   --depth: 1;
   --noise: 0;
+
+  --root-bg: rgb(235,237,238);
 }
 
 @plugin "./daisyui-theme.mjs" {
@@ -80,6 +82,8 @@
   --border: 1.5px;
   --depth: 1;
   --noise: 0;
+
+  --root-bg: rgb(40,40,40);
 }
 
 
