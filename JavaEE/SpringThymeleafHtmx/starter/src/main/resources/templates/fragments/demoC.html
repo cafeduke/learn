@@ -1,0 +1,14 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+    <!-- Fragment DemoC1 -->
+    <div id="demoC1" role="alert" class="mt-5 h-12 alert alert-info alert-soft" th:fragment="fragDemoC1">
+      <span th:text="${name}"></span>
+    </div>
+
+    <!-- Fragment DemoC2 -->
+    <div id="demoC2" role="alert" class="mt-5 h-12 alert alert-success alert-soft" th:fragment="fragDemoC2" hx-swap-oob="true">
+      <span th:text="${count}"></span>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,188 @@
+#!/bin/bash -e
+
+# -------------------------------------------------------------------------------------------------
+# Functions
+# -------------------------------------------------------------------------------------------------
+BASEDIR=$(dirname $(readlink -f ${0}))
+BASENAME=$(basename ${0})
+PROJECT_NAME=$(basename "$BASEDIR")
+TOMCAT_LOGFILE="${BASEDIR}/logs/app.log"
+TAILWIND_PID_FILE="/tmp/${PROJECT_NAME}_tailwind_watch.pid"
+TAILWIND_LOG_FILE="/tmp/${PROJECT_NAME}_tailwind_watch.log"
+
+function usage {
+  echo "Start/Stop springboot using maven"
+  echo "Usage: ${BASENAME} <start|stop|restart>"
+}
+
+function dieUsage {
+  local mesg=${1}
+  echo "Error: ${1}"
+  usage
+  exit 1
+}
+
+function heading {
+  echo ""
+  echo "---------------------------------------------------------------------------------------------------"
+  for mesg in "$@"
+  do
+    echo "${mesg}"
+  done
+  echo "---------------------------------------------------------------------------------------------------"
+}
+
+function pollForMesg {
+  local mesg="$1"
+  local file="$2"
+  local timeoutSec="${3:-10}"
+  local i status=1
+  for (( i = 0; i < timeoutSec; ++i ))
+  do
+    status=$(grep -q "$mesg" "$file")
+    if [[ $status -eq 0 ]]
+    then
+      break
+    fi
+    sleep 1
+  done
+
+  if [[ $status -ne 0 ]]
+  then
+    dieUsage "Tomcat failed to start"
+  fi
+}
+
+function log {
+  local mesg="$1"
+  echo "["$(date)"] $mesg"
+}
+
+function startSpring {
+  local pid
+
+  heading "Starting Tomcat server"
+
+  pid=$(ps -ef | grep SpringApplication | grep -v grep | awk '{print $2}')
+  if [[ ! -z "$pid" ]]
+  then
+    log "Spring server is already running. PID=$pid"
+    return
+  fi
+
+  rm -f $TOMCAT_LOGFILE
+  mvn clean compile spring-boot:start
+  log "Waiting for Tomcat to start"
+  pollForMesg "Tomcat started on port" "$TOMCAT_LOGFILE"
+  log "Tomcat started successfully"
+  grep "Tomcat started on port" $TOMCAT_LOGFILE | head -1 | sed -re "s%.*(Tomcat started on port [0-9]+).*%\1%"
+  log "Log=$TOMCAT_LOGFILE"
+}
+
+function stopSpring {
+  local pid
+
+  heading "Stopping Tomcat server"
+  set +e
+  mvn spring-boot:stop
+  pid=$(ps -ef | grep SpringApplication | grep -v grep | awk '{print $2}')
+  if [[ ! -z "$pid" ]]
+  then
+    log "Killing spring processes"
+    kill -9 $pid
+  fi
+  set -e
+}
+
+function startTailwindWatch {
+  local pid
+
+  heading "Starting tailwind watcher"
+
+  # Note
+  # ----
+  # The basic synatx of 'if' is as follows
+  #   if <commands to run>
+  #   then
+  #     ...
+  #   fi
+  # For expression evaluation we can use [...] or preferably [[ ... ]]
+  if [[ -f $TAILWIND_PID_FILE ]] && kill -0 $(cat $TAILWIND_PID_FILE) 2>/dev/null
+  then
+    pid=$(cat $TAILWIND_PID_FILE)
+    log "Tailwind watcher is already running. PID=$pid"
+    return
+  fi
+
+  # Start in a new background subshell, keeping stdin open and logging to file
+  nohup bash -c 'tail -f /dev/null | mvn tailwind:watch' &> $TAILWIND_LOG_FILE &
+
+  # Save the background subshell PID
+  echo $! > $TAILWIND_PID_FILE
+  pid=$(cat $TAILWIND_PID_FILE)
+  log "Started watcher successfully. PID=$pid Log=$TAILWIND_LOG_FILE"
+}
+
+function stopTailwindWatch {
+  local pid
+
+  heading "Stopping tailwind watcher"
+
+  if [[ ! -f $TAILWIND_PID_FILE ]]
+  then
+    log "Tailwind watcher is not running."
+    return
+  fi
+
+  pid=$(cat $TAILWIND_PID_FILE)
+  log "Stopping watcher. PID=$pid"
+
+  # Kill the entire process tree (subshell, tail, mvn, and tailwindcss binary)
+  pkill -P "$pid" 2>/dev/null
+  kill "$pid" 2>/dev/null
+
+  rm -f $TAILWIND_PID_FILE $TAILWIND_LOG_FILE
+  log "Stopped watcher successfully. PID=$pid"
+}
+
+# -------------------------------------------------------------------------------------------------
+# Parse Arg
+# -------------------------------------------------------------------------------------------------
+if [[ ${#} -eq 1 && ("${1}" == "--help" || "${1}" == "-h") ]]
+then
+  usage
+  exit 0
+fi
+
+if [[ ${#} -ne 1 ]]
+then
+  dieUsage "Incorrect argument count"
+fi
+
+op=${1}
+
+# -------------------------------------------------------------------------------------------------
+# Main
+# -------------------------------------------------------------------------------------------------
+cd ${BASEDIR}
+
+# Create logs directory
+mkdir -p ${BASEDIR}/logs
+
+if [[ ${op} == "start" ]]
+then
+  startSpring
+  startTailwindWatch
+elif [[ ${op} == "stop" ]]
+then
+  stopSpring
+  stopTailwindWatch
+elif [[ ${op} == "restart" ]]
+then
+  stopSpring
+  stopTailwindWatch
+  startSpring
+  startTailwindWatch
+else
+  dieUsage "Unknown option ${op}"
+fi

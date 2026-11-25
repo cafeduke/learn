@@ -25,6 +25,7 @@
 - [Putting it all together](#putting-it-all-together)
 
 # Introduction
+
 This document details the setup required for SpringBoot-4, SQLite, Thymeleaf and HTMX (using DaisyUI and Tailwind) setup on VSCode IDE.
 
 # Technologies
@@ -41,22 +42,26 @@ The following technologies were used
 | DaisyUI    | 5.0     | A component framework that uses Tailwind         |
 
 # VSCode IDE setup
+
 The following VS code extensions needs to be installed
-  - Language Support for Java(TM) by Red Hat (redhat.java)
-  - Maven for Java (vscjava.vscode-maven)
-  - Spring Boot Extension Pack (vmware.vscode-boot-dev-pack)
-    - Spring Boot Tools
-    - Spring Initializr Java Support
-    - Spring Boot Dashboard
-  - thymeleaf (juhahinkula.thymeleaf)
+
+- Language Support for Java(TM) by Red Hat (redhat.java)
+- Maven for Java (vscjava.vscode-maven)
+- Spring Boot Extension Pack (vmware.vscode-boot-dev-pack)
+  - Spring Boot Tools
+  - Spring Initializr Java Support
+  - Spring Boot Dashboard
+- thymeleaf (juhahinkula.thymeleaf)
 
 # Project creation
 
 ## Spring Initializr
+
 Go to [Spring Initializr](https://start.spring.io/) and select the following dependencies
+
 - SQLite driver
 - Spring boot data JPA
-- Spring boot valiation
+- Spring boot validation
 - Spring boot dev tools
 - Spring boot WebMVC
 - Spring boot thymeleaf
@@ -66,6 +71,7 @@ Go to [Spring Initializr](https://start.spring.io/) and select the following dep
 # Maven Setup
 
 ## Maven dependency configuration
+
 Add the following maven dependencies
 
 | Group                 | Artifact                     | Version | Comment                                            |
@@ -77,6 +83,7 @@ Add the following maven dependencies
 ## Standard Maven plugin configuraiton
 
 ### maven-compiler-plugin
+
 This is maven's standard plugin that compiles project source. This is configured by Lomok and MapStruct.
 
 ```xml
@@ -103,11 +110,12 @@ This is maven's standard plugin that compiles project source. This is configured
     </annotationProcessorPaths>
   </configuration>
 </plugin>
-
 ```
+
 ## SpringBoot plugin for maven
 
 ### spring-boot-maven-plugin
+
 This is spring boot plugin for maven. If we are using maven to run the spring boot application using `mvn spring-boot:start` as opposed to using IDE,
 the following plugin ensures HOT reload of changes made to code.
 
@@ -121,6 +129,7 @@ the following plugin ensures HOT reload of changes made to code.
 ## Custom plugins for maven
 
 ### tailwind-maven-plugin
+
 The tailwind plugin for maven takes the input CSS file and generate output CSS file that shall contain CSS classes
 only for the subset of styles currently used. See [4ndreiDev/maven-tailwind-plugin](https://github.com/4ndreiDev/maven-tailwind-plugin) for detils
 
@@ -142,7 +151,9 @@ only for the subset of styles currently used. See [4ndreiDev/maven-tailwind-plug
   </configuration>
 </plugin>
 ```
+
 # SQLite database setup
+
 To create a SQLite database from SQL commands that create a schema and populates tables,
 execute the following commands
 
@@ -156,6 +167,7 @@ sqlite3 todo.sqlite < todo.sql
 ```
 
 # Tailwind Setup
+
 Tailwind is a utility-first CSS framework packed with classes. In the current setup,
 we shall download Tailwind binary and place it at a standard location. The binary shall
 generate CSS only for the styles required. See [Tailwind CSS](https://tailwindcss.com/)
@@ -176,15 +188,20 @@ cd src/main/resources/static/css
 wget https://github.com/saadeghi/daisyui/releases/latest/download/daisyui.mjs
 wget https://github.com/saadeghi/daisyui/releases/latest/download/daisyui-theme.mjs
 ```
+
 ## Choose daisy theme
+
 Select a theme name from [Daisy UI](https://daisyui.com/?lang=en)
 
 ## Install custom fonts
-  - Download custom fonts from [1001fonts.com](https://www.1001fonts.com/cursive+elegant-fonts.html)
-  - Extract the .ttf into `src/main/resources/static/fonts`
+
+- Download custom fonts from [1001fonts.com](https://www.1001fonts.com/cursive+elegant-fonts.html)
+- Extract the .ttf into `src/main/resources/static/fonts`
 
 ## Configure tailwind for daisy
+
 Add the following to `src/main/resources/static/css/tailwind-input.css`
+
 ```css
 @import "tailwindcss";
 
@@ -217,6 +234,7 @@ Add the following to `src/main/resources/static/css/tailwind-input.css`
     --font-italianno: 'Italianno', sans-serif;
 }
 ```
+
 # HTMX setup
 
 Download the latest verion of [HTMX](https://htmx.org/docs/#installing)
@@ -231,9 +249,10 @@ wget https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js
 ## Setup application.properties
 
 Here,
-  - `todo` is the name of the applicaiton
-  - `resource:database/todo.sqlite` provides relative path to DB file
-  - `target/logs/app.log` log is redirect to this directory instead of console
+
+- `todo` is the name of the applicaiton
+- `resource:database/todo.sqlite` provides relative path to DB file
+- `target/logs/app.log` log is redirect to this directory instead of console
 
 ```properties
 spring.application.name=todo
@@ -281,25 +300,25 @@ spring.jpa.show-sql=false
 ```bash
 todo
 ├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── com.github.cafeduke.todo
-│   │   │           ├── config
-│   │   │           ├── controller
-│   │   │           ├── dto
-│   │   │           ├── entity
-│   │   │           ├── mapper
-│   │   │           ├── repository
-│   │   │           └── service
-│   │   └── resources
-│   │       ├── database
-│   │       ├── static
-│   │       │   ├── css
-│   │       │   ├── fonts
-│   │       │   └── js
-│   │       └── templates
-│   │           └── fragments
-│   └── test
+│   ├── main
+│   │   ├── java
+│   │   │   └── com.github.cafeduke.todo
+│   │   │           ├── config
+│   │   │           ├── controller  # Executes service to perform business logic. Adds DTOs to Model and determines the next view to be rendered.
+│   │   │           ├── dto         # Typically implemented as an immutable Java record with validations. 
+│   │   │           ├── entity      # An object representation of the relational database table (ORM)
+│   │   │           ├── mapper      # Converts DTO to Entity and vice-versa
+│   │   │           ├── repository  # An extension of JPARepository with impicit/explicit query methods
+│   │   │           └── service     # Injects one or more repos to perform a business logic and return a DTO to the controller. At times the entire service is @Transactional
+│   │   └── resources
+│   │       ├── database
+│   │       ├── static
+│   │       │   ├── css
+│   │       │   ├── fonts
+│   │       │   └── js
+│   │       └── templates
+│   │           └── fragments
+│   └── test
 ├── target
 │   └── logs
 └── pom.xml
@@ -308,6 +327,6 @@ todo
 # Putting it all together
 
 - Copy the [sample DaisyUI HTML file](https://github.com/4ndreiDev/maven-tailwind-plugin#step-3-create-your-html-template-with-tailwind-classes)
-from [Github: maven-tailwind-plugin](https://github.com/4ndreiDev/maven-tailwind-plugin) into `src/main/resources/templates/index.html`
+  from [Github: maven-tailwind-plugin](https://github.com/4ndreiDev/maven-tailwind-plugin) into `src/main/resources/templates/index.html`
 - Start spring boot application using `mvn spring-boot:start`
 - Access `http://localhost:8080`
